@@ -4,16 +4,17 @@ A software development for graduation subject
 
 ## Requirements:
 ```
-SDK 21
-JFrame
-Swing UI Designer
+- SDK 21
+- JFrame
+- Swing UI Designer
+- SQL Lite 3
 ```
 
 ## Run project:
 
 ```
-Principal file: src.App.App
-execute main method.
+- set main class as: src.App.App
+- create a SQLite file named as db in folder /src/Domain/Infra/DB
 ```
 
 

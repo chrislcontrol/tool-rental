@@ -1,4 +1,4 @@
-package tool.rental.Domain;
+package tool.rental.Domain.UseCases;
 
 import tool.rental.Domain.Entities.User;
 import tool.rental.Domain.Repositories.UserRepository;
