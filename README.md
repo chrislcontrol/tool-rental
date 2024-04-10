@@ -8,13 +8,13 @@ A software development for graduation subject
 - JFrame
 - Swing UI Designer
 - SQL Lite 3
+- Maven
 ```
 
 ## Run project:
 
 ```
-- set main class as: src.App.App
-- create a SQLite file named as db in folder /src/Domain/Infra/DB
+- set main class as: src.main.java.tool.rental.App.App
 ```
 
 
