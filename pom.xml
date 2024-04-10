@@ -13,7 +13,6 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-<<<<<<< HEAD
     <dependencies>
         <dependency>
             <groupId>org.xerial</groupId>
@@ -21,7 +20,5 @@
             <version>3.44.1.0</version>
         </dependency>
     </dependencies>
-=======
->>>>>>> e16b755d5527a4dc00f1c9b0ac14dc05f6604b3e
 
 </project>
