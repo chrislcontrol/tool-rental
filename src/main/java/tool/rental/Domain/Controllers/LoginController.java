@@ -1,7 +1,7 @@
 package tool.rental.Domain.Controllers;
 
 import tool.rental.Domain.Entities.User;
-import tool.rental.Domain.LoginUseCase;
+import tool.rental.Domain.UseCases.LoginUseCase;
 import tool.rental.Presentation.LoginFrame;
 import tool.rental.Utils.Controller;
 import tool.rental.Utils.PresentationFrame;

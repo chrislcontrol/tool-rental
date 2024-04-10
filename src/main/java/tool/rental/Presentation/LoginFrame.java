@@ -15,6 +15,7 @@ public class LoginFrame extends PresentationFrame {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JCheckBox rememberMeCheckBox;
+    private JButton registerButton;
 
 
     public LoginFrame() {
