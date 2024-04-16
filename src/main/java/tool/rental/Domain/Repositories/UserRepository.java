@@ -8,21 +8,23 @@ import tool.rental.Utils.ToastError;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserRepository {
     public User findByUsernameAndPassword(String username, String encodedPassword) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT * FROM USER WHERE username = ? and password = ?"
+                    "SELECT * FROM USER WHERE username = ? AND password = ?"
             );
             stm.setString(1, username);
             stm.setString(2, encodedPassword);
 
-            ResultSet result = db.executeStatement(stm);
+            ResultSet result = stm.executeQuery();
             if (!result.next()) {
                 return null;
             }
+
             return new User(
                     result.getString("id"),
                     result.getString("username"),
@@ -31,7 +33,7 @@ public class UserRepository {
             );
 
         } catch (SQLException e) {
-            return null;
+            throw new ToastError("Erro ao consultar no banco de dados", "Erro de banco de dados.");
         }
     }
 
@@ -55,8 +57,7 @@ public class UserRepository {
             throw new ToastError(
                     "Não foi possível criar o usuário devido a um erro com o banco de dados.",
                     "Erro de banco de dados."
-                    );
+            );
         }
     }
-
 }

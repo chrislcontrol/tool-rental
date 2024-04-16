@@ -1,6 +1,10 @@
 package tool.rental.Domain.Entities;
 
-public class User {
+import tool.rental.Domain.Infra.DB.Contracts.Model;
+
+public class User extends Model {
+
+
     private final String id;
     private final String username;
     private final String password;
@@ -9,6 +13,7 @@ public class User {
     public User(String id, String username, String password) {
         this(id, username, password, false);
     }
+
 
     public User(String id, String username, String password, boolean authenticated) {
         this.id = id;
@@ -23,6 +28,14 @@ public class User {
 
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
 }

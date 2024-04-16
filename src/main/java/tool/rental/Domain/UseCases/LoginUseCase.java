@@ -26,5 +26,5 @@ public class LoginUseCase {
             throw new ToastError("Senha não pode ser nula.", "Campo não pode ser nulo");
         }
     }
-
 }
+

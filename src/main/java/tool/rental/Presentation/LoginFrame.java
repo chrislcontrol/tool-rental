@@ -19,14 +19,13 @@ public class LoginFrame extends PresentationFrame {
 
 
     public LoginFrame() {
-        this.setupPageLayout();
         this.setMainPanel();
+        this.setupPageLayout();
         this.setUpListeners();
     }
 
-    private void setUpListeners() {
+    protected void setUpListeners() {
         this.loginButtonActionListeners();
-
     }
 
     private void loginButtonActionListeners() {
@@ -46,14 +45,14 @@ public class LoginFrame extends PresentationFrame {
         });
     }
 
-    private void setMainPanel() {
-        this.setContentPane(this.MainPanel);
-    }
-
     private void setupPageLayout() {
         this.setTitle("Faça seu login");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(this.userScreen.widthFraction(20), this.userScreen.heightFraction(40));
         this.setLocationRelativeTo(null);
+    }
+
+    private void setMainPanel() {
+        this.setContentPane(this.MainPanel);
     }
 }

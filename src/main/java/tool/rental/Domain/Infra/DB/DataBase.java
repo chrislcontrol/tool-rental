@@ -2,6 +2,8 @@ package tool.rental.Domain.Infra.DB;
 
 import tool.rental.Utils.ToastError;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 
 public class DataBase implements AutoCloseable {
@@ -14,8 +16,8 @@ public class DataBase implements AutoCloseable {
 
     public DataBase() throws ToastError {
         this.connection = this.getConnection();
-    }
 
+    }
 
     public ResultSet executeStatement(PreparedStatement statement) throws ToastError {
         try {
@@ -25,12 +27,6 @@ public class DataBase implements AutoCloseable {
         } catch (SQLException exception) {
             throw this.ConnectionError;
 
-        } finally {
-            try {
-                statement.close();
-            } catch (SQLException exception) {
-                throw this.ConnectionError;
-            }
         }
     }
 
@@ -40,10 +36,13 @@ public class DataBase implements AutoCloseable {
             if (this.connection != null) {
                 return this.connection;
             }
-            return DriverManager.getConnection("jbdc:sqlite:base.db");
 
+            Class.forName("org.sqlite.JDBC");
 
-        } catch (SQLException exception) {
+            String dir = Paths.get("src", "main", "java", "tool", "rental", "Domain", "Infra", "DB", "db").toString();
+            return DriverManager.getConnection("jdbc:sqlite:" + dir);
+
+        } catch (SQLException | ClassNotFoundException exception) {
             throw this.ConnectionError;
         }
     }
