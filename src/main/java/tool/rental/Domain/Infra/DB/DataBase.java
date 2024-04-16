@@ -5,6 +5,7 @@ import tool.rental.Utils.ToastError;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.Objects;
 
 public class DataBase implements AutoCloseable {
     public Connection connection;
@@ -16,11 +17,13 @@ public class DataBase implements AutoCloseable {
 
     public DataBase() throws ToastError {
         this.connection = this.getConnection();
+        System.out.println("DB Connection open.");
 
     }
 
     public ResultSet executeStatement(PreparedStatement statement) throws ToastError {
         try {
+            System.out.println("Query: "+ statement);
             statement.setQueryTimeout(30);
             return statement.executeQuery();
 
@@ -39,7 +42,16 @@ public class DataBase implements AutoCloseable {
 
             Class.forName("org.sqlite.JDBC");
 
-            String dir = Paths.get("src", "main", "java", "tool", "rental", "Domain", "Infra", "DB", "db").toString();
+            String dir = Paths.get(
+                    "src",
+                    "main",
+                    "java", "tool",
+                    "rental",
+                    "Domain",
+                    "Infra",
+                    "DB",
+                    "db"
+            ).toString();
             return DriverManager.getConnection("jdbc:sqlite:" + dir);
 
         } catch (SQLException | ClassNotFoundException exception) {
@@ -62,6 +74,8 @@ public class DataBase implements AutoCloseable {
                     "Falha ao encerrar sessão do banco de dados.",
                     "Erro de banco de dados."
             );
+        } finally {
+            System.out.println("DB Connection closed.");
         }
     }
 }

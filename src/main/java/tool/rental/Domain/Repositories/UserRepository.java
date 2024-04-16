@@ -20,7 +20,7 @@ public class UserRepository {
             stm.setString(1, username);
             stm.setString(2, encodedPassword);
 
-            ResultSet result = stm.executeQuery();
+            ResultSet result = db.executeStatement(stm);
             if (!result.next()) {
                 return null;
             }
@@ -37,10 +37,6 @@ public class UserRepository {
         }
     }
 
-    public void setRememberMe(User user, boolean rememberMe) {
-
-    }
-
     public void createUser(String username, String encodedPassword) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
@@ -50,7 +46,7 @@ public class UserRepository {
             stm.setString(2, username);
             stm.setString(3, encodedPassword);
 
-            db.executeStatement(stm);
+            stm.executeQuery();
 
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
