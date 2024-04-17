@@ -1,25 +1,46 @@
 package tool.rental.Domain.Controllers;
 
-import tool.rental.Domain.Entities.Tool;
-import tool.rental.Domain.Repositories.ToolRepository;
+import tool.rental.App.Settings;
+import tool.rental.Domain.UseCases.ListToolsToMainTableUseCase;
+import tool.rental.Domain.UseCases.LogoutUseCase;
+import tool.rental.Presentation.LoginFrame;
+import tool.rental.Utils.Controller;
+import tool.rental.Utils.JOptionPaneUtils;
+import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.ToastError;
 
-import java.util.ArrayList;
+import javax.swing.*;
 
-public class AppMainController {
-    private final ToolRepository toolRepository = new ToolRepository();
+public class AppMainController extends Controller {
+    private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
+    private final LogoutUseCase logoutUseCase = new LogoutUseCase();
+
+    public AppMainController(PresentationFrame frame) {
+        super(frame);
+    }
 
     public String[][] listToolsAsTableRow() throws ToastError {
-        ArrayList<Tool> tools = this.toolRepository.listAll();
-        String[][] resultArray = new String[tools.size()][3];
+        return this.listToolsToMainTableUseCase.execute();
+    }
 
-        for (int i = 0; i < resultArray.length; i++) {
-            Tool tool = tools.get(i);
-            resultArray[i][0] = tool.getId();
-            resultArray[i][1] = tool.getBrand();
-            resultArray[i][2] = String.format("R$ %.2f", tool.getCost());
+    public void logout() throws ToastError {
+        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
+                "Tem certeza?",
+                "Sair"
+        );
+
+        if (userOption == JOptionPane.NO_OPTION) {
+            return;
         }
 
-        return resultArray;
+        JOptionPane.showMessageDialog(
+                null,
+                "Volte sempre " + Settings.getUser().getUsername(),
+                "Logout",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        this.logoutUseCase.execute();
+        this.frame.swapFrame(new LoginFrame());
     }
 }

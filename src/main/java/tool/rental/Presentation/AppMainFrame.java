@@ -5,19 +5,23 @@ import tool.rental.Domain.Controllers.AppMainController;
 import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.ToastError;
 
+import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AppMainFrame extends PresentationFrame {
-    private final AppMainController controller = new AppMainController();
+    private final AppMainController controller = new AppMainController(this);
     private JPanel MainPanel;
-    private JLabel registerFriendLabel;
-    private JLabel registerToolLabel;
-    private JLabel lendToolLabel;
-    private JLabel returnToolLabel;
-    private JLabel listBorrowedToolsLabel;
+    private JButton registerFriendButton;
+    private JButton registerToolButton;
+    private JButton lendToolButton;
+    private JButton returnToolButton;
+    private JButton listBorrowedToolsButton;
     private JTable toolsTable;
+    private JButton exitButton;
 
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
@@ -25,13 +29,15 @@ public class AppMainFrame extends PresentationFrame {
         this.setUpListeners();
         this.setPointer(
                 Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
-                this.registerFriendLabel,
-                this.registerToolLabel,
-                this.lendToolLabel,
-                this.returnToolLabel,
-                this.listBorrowedToolsLabel
+                this.registerFriendButton,
+                this.registerToolButton,
+                this.lendToolButton,
+                this.returnToolButton,
+                this.listBorrowedToolsButton,
+                this.exitButton
         );
         this.setupTable();
+
     }
 
     private void setupTable() throws ToastError {
@@ -48,9 +54,9 @@ public class AppMainFrame extends PresentationFrame {
         }
     }
 
-    private void setPointer(Cursor cursor, JLabel... labels) {
-        for (JLabel label : labels) {
-            label.setCursor(cursor);
+    private void setPointer(Cursor cursor, JComponent... components) {
+        for (JComponent component : components) {
+            component.setCursor(cursor);
         }
     }
 
@@ -66,5 +72,15 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     protected void setUpListeners() {
+        this.exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.logout();
+                } catch (ToastError exc) {
+                    exc.display();
+                }
+            }
+        });
     }
 }

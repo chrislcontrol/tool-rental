@@ -12,7 +12,7 @@ public abstract class PresentationFrame extends JFrame {
     }
 
     public void swapFrame(PresentationFrame nextFrame, boolean keepCurrentFrame) {
-        Settings.PREVIOUS_FRAME = this;
+        Settings.setPreviousFrame(this);
         nextFrame.setVisible(true);
         if (!keepCurrentFrame) {
             this.setVisible(false);

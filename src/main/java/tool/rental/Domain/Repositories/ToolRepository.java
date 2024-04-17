@@ -18,7 +18,7 @@ public class ToolRepository {
             );
             stm.setString(1, Settings.getUser().getId());
 
-            ResultSet result = db.executeStatement(stm);
+            ResultSet result = db.executeQuery(stm);
 
             ArrayList<Tool> tools = new ArrayList<Tool>();
 

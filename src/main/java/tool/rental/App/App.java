@@ -1,7 +1,9 @@
 package tool.rental.App;
 
 
+import tool.rental.Domain.Entities.Cache;
 import tool.rental.Domain.Infra.DB.DataBase;
+import tool.rental.Domain.Repositories.CacheRepository;
 import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.Toast;
 import tool.rental.Utils.ToastError;
@@ -10,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class App {
+    private static final CacheRepository cacheRepository = new CacheRepository();
+
     public static void main(String[] args) throws Exception {
         try {
             setupDB();
@@ -28,7 +32,13 @@ public class App {
     }
 
     public static void runApp() throws Toast {
-        PresentationFrame firstFrame = Settings.FIRST_FRAME;
+        Cache cache = cacheRepository.getCache();
+        if (cache != null) {
+            Settings.setUser(cache.getUser());
+            Settings.setFirstFrameAsMain();
+        }
+
+        PresentationFrame firstFrame = Settings.getFirstFrame();
         firstFrame.setVisible(true);
     }
 

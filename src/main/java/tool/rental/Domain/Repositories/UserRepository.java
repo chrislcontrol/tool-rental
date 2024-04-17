@@ -8,7 +8,6 @@ import tool.rental.Utils.ToastError;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 import java.util.UUID;
 
 public class UserRepository {
@@ -20,7 +19,7 @@ public class UserRepository {
             stm.setString(1, username);
             stm.setString(2, encodedPassword);
 
-            ResultSet result = db.executeStatement(stm);
+            ResultSet result = db.executeQuery(stm);
             if (!result.next()) {
                 return null;
             }
@@ -28,7 +27,6 @@ public class UserRepository {
             return new User(
                     result.getString("id"),
                     result.getString("username"),
-                    result.getString("password"),
                     true
             );
 
