@@ -1,12 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="tool.rental.Presentation.AppMainFrame">
-  <grid id="27dc6" binding="MainPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="MainPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="1044" height="656"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-14539224"/>
+    </properties>
     <border type="none"/>
-    <children/>
+    <children>
+      <grid id="d46fe" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="100">
+        <margin top="50" left="25" bottom="50" right="25"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-14539224"/>
+          <font swing-font="Button.font"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="7e6a" class="javax.swing.JLabel" binding="registerFriendLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14539224"/>
+              <foreground color="-1441800"/>
+              <text value="Cadastrar amigo"/>
+            </properties>
+          </component>
+          <component id="bd443" class="javax.swing.JLabel" binding="registerToolLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14539224"/>
+              <foreground color="-1441800"/>
+              <text value="Cadastrar ferramenta"/>
+            </properties>
+          </component>
+          <component id="1b9d4" class="javax.swing.JLabel" binding="lendToolLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14539224"/>
+              <foreground color="-1441800"/>
+              <text value="Emprestar ferramenta"/>
+            </properties>
+          </component>
+          <component id="99ad9" class="javax.swing.JLabel" binding="returnToolLabel">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14539224"/>
+              <foreground color="-1441800"/>
+              <text value="Devolver ferramenta"/>
+            </properties>
+          </component>
+          <component id="61238" class="javax.swing.JLabel" binding="listBorrowedToolsLabel">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14539224"/>
+              <foreground color="-1441800"/>
+              <text value="Listar ferramentas emprestadas"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="368ca">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-14408668"/>
+          <enabled value="true"/>
+          <font swing-font="Button.font"/>
+          <foreground color="-1441800"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="f5d86" class="javax.swing.JTable" binding="toolsTable">
+            <constraints/>
+            <properties>
+              <foreground color="-15527649"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+    </children>
   </grid>
 </form>

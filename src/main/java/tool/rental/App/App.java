@@ -21,6 +21,10 @@ public class App {
                 throw new Exception("Stop has been called.");
             }
         }
+
+        catch (RuntimeException exc) {
+            runApp();
+        }
     }
 
     public static void runApp() throws Toast {

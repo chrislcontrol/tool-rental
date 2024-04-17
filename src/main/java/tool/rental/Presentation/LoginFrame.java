@@ -1,6 +1,7 @@
 package tool.rental.Presentation;
 
 import tool.rental.Domain.Controllers.LoginController;
+import tool.rental.Utils.NotLogged;
 import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.ToastError;
 
@@ -40,6 +41,7 @@ public class LoginFrame extends PresentationFrame {
                     );
                 } catch (ToastError ex) {
                     ex.display();
+
                 }
             }
         });
