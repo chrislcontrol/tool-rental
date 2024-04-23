@@ -16,6 +16,7 @@ public class RegisterUserFrame extends PresentationFrame {
     private JPasswordField passwordField;
     private JButton confirmButton;
     private JButton cancelButton;
+    private JPasswordField confirmPasswordField;
 
     public RegisterUserFrame() {
         this.setMainPanel();
@@ -27,7 +28,8 @@ public class RegisterUserFrame extends PresentationFrame {
                 try {
                     registerUserController.registerUser(
                             usernameField.getText(),
-                            new String(passwordField.getPassword())
+                            new String(passwordField.getPassword()),
+                            new String(confirmPasswordField.getPassword())
                     );
                 } catch (ToastError ex) {
                     ex.display();

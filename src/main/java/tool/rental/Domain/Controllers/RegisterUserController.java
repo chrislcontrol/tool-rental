@@ -14,8 +14,8 @@ public class RegisterUserController extends Controller {
         super(frame);
     }
 
-    public void registerUser(String username, String password) throws ToastError {
-        this.registerUserUseCase.execute(username, password);
+    public void registerUser(String username, String password, String confirmPassword) throws ToastError {
+        this.registerUserUseCase.execute(username, password, confirmPassword);
 
         JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
 
