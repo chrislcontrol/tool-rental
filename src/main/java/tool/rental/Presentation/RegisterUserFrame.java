@@ -1,0 +1,52 @@
+package tool.rental.Presentation;
+
+import tool.rental.Domain.Controllers.RegisterUserController;
+import tool.rental.Utils.PresentationFrame;
+import tool.rental.Utils.ToastError;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class RegisterUserFrame extends PresentationFrame {
+    private final RegisterUserController registerUserController = new RegisterUserController(this);
+
+    private JPanel MainPanel;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton confirmButton;
+    private JButton cancelButton;
+
+    public RegisterUserFrame() {
+        this.setMainPanel();
+        this.setupPageLayout();
+        this.setUpListeners();
+        confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    registerUserController.registerUser(
+                            usernameField.getText(),
+                            new String(passwordField.getPassword())
+                    );
+                } catch (ToastError ex) {
+                    ex.display();
+                }
+            }
+        });
+    }
+
+    private void setUpListeners() {
+    }
+
+    private void setupPageLayout() {
+        this.setTitle("Registrar usuário");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setSize(this.userScreen.widthFraction(15), this.userScreen.heightFraction(30));
+        this.setLocationRelativeTo(null);
+    }
+
+    private void setMainPanel() {
+        this.setContentPane(this.MainPanel);
+    }
+}

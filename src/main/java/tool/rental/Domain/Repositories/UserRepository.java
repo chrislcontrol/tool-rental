@@ -35,7 +35,7 @@ public class UserRepository {
         }
     }
 
-    public void createUser(String username, String encodedPassword) throws ToastError {
+    public User createUser(String username, String encodedPassword) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 
@@ -44,12 +44,30 @@ public class UserRepository {
             stm.setString(2, username);
             stm.setString(3, encodedPassword);
 
-            stm.executeQuery();
+            db.executeUpdate(stm);
+
+            return new User(id, username);
 
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
             throw new ToastError(
                     "Não foi possível criar o usuário devido a um erro com o banco de dados.",
+                    "Erro de banco de dados."
+            );
+        }
+    }
+
+    public boolean existsByUsername(String username) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement("SELECT id FROM USER WHERE username = ?");
+            stm.setString(1, username);
+            ResultSet result = db.executeQuery(stm);
+            return result.next();
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
                     "Erro de banco de dados."
             );
         }

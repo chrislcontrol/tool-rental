@@ -1,6 +1,7 @@
 package tool.rental.Utils;
 
 import tool.rental.App.Settings;
+import tool.rental.Presentation.RegisterUserFrame;
 
 import javax.swing.*;
 

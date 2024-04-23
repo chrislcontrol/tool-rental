@@ -1,7 +1,6 @@
 package tool.rental.Presentation;
 
 import tool.rental.Domain.Controllers.LoginController;
-import tool.rental.Utils.NotLogged;
 import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.ToastError;
 
@@ -23,6 +22,12 @@ public class LoginFrame extends PresentationFrame {
         this.setMainPanel();
         this.setupPageLayout();
         this.setUpListeners();
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loginController.openRegisterModal();
+            }
+        });
     }
 
     protected void setUpListeners() {
@@ -34,7 +39,7 @@ public class LoginFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    loginController.execute(
+                    loginController.login(
                             usernameField.getText(),
                             new String(passwordField.getPassword()),
                             rememberMeCheckBox.isSelected()

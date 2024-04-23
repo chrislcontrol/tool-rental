@@ -1,11 +1,13 @@
 package tool.rental.Domain.UseCases;
 
 import tool.rental.Domain.Entities.User;
+import tool.rental.Domain.Repositories.CacheRepository;
 import tool.rental.Domain.Repositories.UserRepository;
 import tool.rental.Utils.ToastError;
 
 public class LoginUseCase {
     private final UserRepository userRepository = new UserRepository();
+    private final CacheRepository cacheRepository = new CacheRepository();
 
     public User execute(String username, String password, boolean rememberMe) throws ToastError {
         this.validateInputs(username, password);
@@ -14,6 +16,11 @@ public class LoginUseCase {
         if (user == null) {
             throw new ToastError("Usuário ou senha incorretos.", "Falha ao logar");
         }
+
+        if (rememberMe) {
+            this.cacheRepository.setUserAsCached(user);
+        }
+
         return user;
     }
 
