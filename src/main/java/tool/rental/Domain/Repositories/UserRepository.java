@@ -27,7 +27,8 @@ public class UserRepository {
             return new User(
                     result.getString("id"),
                     result.getString("username"),
-                    true
+                    true,
+                    result.getBoolean("has_mock")
             );
 
         } catch (SQLException e) {
@@ -39,7 +40,7 @@ public class UserRepository {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO USER VALUES(?, ?, ?)");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO USER VALUES(?, ?, ?, 0)");
             stm.setString(1, id);
             stm.setString(2, username);
             stm.setString(3, encodedPassword);
@@ -63,6 +64,25 @@ public class UserRepository {
             stm.setString(1, username);
             ResultSet result = db.executeQuery(stm);
             return result.next();
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
+                    "Erro de banco de dados."
+            );
+        }
+    }
+
+    public void setMock(User user, boolean hasMock) throws ToastError{
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement("UPDATE USER SET has_mock = ? WHERE id = ?");
+            stm.setBoolean(1, hasMock);
+            stm.setString(2, user.getId());
+
+            db.executeUpdate(stm);
+
+            user.setHasMock(true);
 
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());

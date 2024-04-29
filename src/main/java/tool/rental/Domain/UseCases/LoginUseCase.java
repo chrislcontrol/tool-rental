@@ -24,6 +24,7 @@ public class LoginUseCase {
         return user;
     }
 
+
     private void validateInputs(String username, String password) throws ToastError {
         if (username == null || username.isEmpty()) {
             throw new ToastError("Usuário não pode ser nulo.", "Campo não pode ser nulo");

@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CacheRepository {
     public void setUserAsCached(User user) throws ToastError {
         try (DataBase db = new DataBase()) {
-                PreparedStatement stm = db.connection.prepareStatement(
+            PreparedStatement stm = db.connection.prepareStatement(
                     "INSERT INTO main.CACHE VALUES (?, ?)"
             );
 
@@ -59,7 +59,12 @@ public class CacheRepository {
 
             return new Cache(
                     result.getString("id"),
-                    new User(result.getString("logged_user_id"), result.getString("U.username"), true)
+                    new User(
+                            result.getString("logged_user_id"),
+                            result.getString("U.username"),
+                            true,
+                            result.getBoolean("has_mock")
+                    )
             );
 
 

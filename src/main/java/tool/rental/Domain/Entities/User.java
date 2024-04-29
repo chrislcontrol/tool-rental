@@ -8,16 +8,18 @@ public class User extends Model {
     private final String id;
     private final String username;
     private boolean authenticated;
+    public boolean hasMock;
 
     public User(String id, String username) {
-        this(id, username, false);
+        this(id, username, false, false);
     }
 
 
-    public User(String id, String username, boolean authenticated) {
+    public User(String id, String username, boolean authenticated, boolean hasMock) {
         this.id = id;
         this.username = username;
         this.authenticated = authenticated;
+        this.hasMock = hasMock;
     }
 
     public boolean isAuthenticated() {
@@ -36,4 +38,7 @@ public class User extends Model {
         return username;
     }
 
+    public void setHasMock(boolean hasMock) {
+        this.hasMock = hasMock;
+    }
 }

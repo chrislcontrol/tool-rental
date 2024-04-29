@@ -2,14 +2,16 @@ package tool.rental.App;
 
 
 import tool.rental.Domain.Entities.Cache;
+import tool.rental.Domain.Entities.User;
 import tool.rental.Domain.Infra.DB.DataBase;
 import tool.rental.Domain.Repositories.CacheRepository;
 import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.Toast;
 import tool.rental.Utils.ToastError;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.UUID;
 
 public class App {
     private static final CacheRepository cacheRepository = new CacheRepository();
@@ -18,18 +20,16 @@ public class App {
         try {
             setupDB();
             runApp();
-        }
-        catch (Toast exc) {
+        } catch (Toast exc) {
             exc.display();
             if (exc.getStopRunTime()) {
                 throw new Exception("Stop has been called.");
             }
-        }
-
-        catch (RuntimeException exc) {
+        } catch (RuntimeException exc) {
             runApp();
         }
     }
+
 
     public static void runApp() throws Toast {
         Cache cache = cacheRepository.getCache();
@@ -50,6 +50,7 @@ public class App {
                 	id TEXT(36) NOT NULL,
                 	username TEXT(25) NOT NULL,
                 	password TEXT(100) NOT NULL,
+                	has_mock INTEGER DEFAULT (0) NOT NULL,
                 	CONSTRAINT USER_PK PRIMARY KEY (id)
                 );
                                 
@@ -109,18 +110,15 @@ public class App {
                 CREATE INDEX TOOL_user_id_IDX ON TOOL (user_id);
                 """;
 
+
         try (DataBase db = new DataBase()) {
-            Statement stm = db.connection.createStatement();
-            stm.executeQuery(query);
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            db.executeQuery(stm);
 
         } catch (SQLException e) {
-            if (e.getMessage().equals("query does not return ResultSet")) {
-                System.out.println("DB connected.");
-                return;
-            }
-
             throw new ToastError("Erro ao iniciar o banco de dados.",
                     "Erro de banco de dados.");
         }
     }
+
 }
