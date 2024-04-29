@@ -1,0 +1,17 @@
+- Rodar localmente
+- Cadastrar ferramentas (nome, marca, custo de aquisição)
+	- Listar ferramentas
+	-
+- Cadastrar amigos (nome, telefone)
+	- Listar amigos
+
+- Emprestar ferramenta para amigo
+	- Alertar em tela se amigo tem ferramentas emprestadas com ele
+
+- Relatórios
+	- Mostrar quanto ele gastou no total em ferramentas
+	- Mostra tela de empréstimos
+		- permitir filtar por empréstimos ativos
+
+	- Rank de amigos que mais pegaram emprestado
+	- Listagem de amigos que possuem ferramentas emprestadas
