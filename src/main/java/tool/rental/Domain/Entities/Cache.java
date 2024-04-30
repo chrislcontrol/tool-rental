@@ -1,6 +1,8 @@
 package tool.rental.Domain.Entities;
 
-public class Cache {
+import tool.rental.Domain.Infra.DB.Contracts.Model;
+
+public class Cache extends Model {
     private final String id;
     private final User user;
 

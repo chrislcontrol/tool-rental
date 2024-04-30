@@ -28,7 +28,7 @@
             <properties>
               <background color="-14408668"/>
               <foreground color="-1441800"/>
-              <text value="Cadastrar amigo"/>
+              <text value="Amigos"/>
             </properties>
           </component>
           <component id="5b5e6" class="javax.swing.JButton" binding="registerToolButton">
@@ -101,6 +101,7 @@
               <editingColumn value="-1"/>
               <enabled value="true"/>
               <foreground color="-15527649"/>
+              <selectionForeground color="-4649"/>
             </properties>
           </component>
         </children>

@@ -57,7 +57,8 @@ public class App {
                 """,
                 """
                                 
-                CREATE UNIQUE INDEX USER_username_IDX ON "USER" (username);
+                CREATE UNIQUE INDEX IF NOT EXISTS USER_username_IDX ON "USER" (username);
+                
                 """,
 
                 """
@@ -91,7 +92,7 @@ public class App {
                 """,
                 """
                                 
-                CREATE INDEX FRIEND_user_id_IDX ON FRIEND (user_id);
+                CREATE INDEX IF NOT EXISTS FRIEND_user_id_IDX ON FRIEND (user_id);
                 
                 """,
                 """
@@ -112,7 +113,7 @@ public class App {
                 """,
                 """
                                 
-                CREATE INDEX RENTAL_friend_id_IDX ON RENTAL (friend_id);
+                CREATE INDEX IF NOT EXISTS RENTAL_friend_id_IDX ON RENTAL (friend_id);
                 
                 """,
                 """
@@ -132,7 +133,7 @@ public class App {
                 """,
                 """
                                 
-                CREATE INDEX TOOL_user_id_IDX ON TOOL (user_id);
+                CREATE INDEX IF NOT EXISTS TOOL_user_id_IDX ON TOOL (user_id);
                 """
         };
 
@@ -147,5 +148,4 @@ public class App {
                     "Erro de banco de dados.");
         }
     }
-
 }
