@@ -18,6 +18,8 @@ public class ListToolsToMainTableUseCase {
             resultArray[i][0] = tool.getId();
             resultArray[i][1] = tool.getBrand();
             resultArray[i][2] = String.format("R$ %,.2f", tool.getCost());
+            resultArray[i][3] = String.format("R$ %,.2f", tool.getCost());
+            resultArray[i][4] = String.format("R$ %,.2f", tool.getCost());
         }
 
         return resultArray;

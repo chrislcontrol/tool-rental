@@ -14,7 +14,7 @@ public class ToolRepository {
     public ArrayList<Tool> listAll() throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT * FROM TOOL WHERE user_id = ?"
+                    "SELECT * FROM TOOL LEFT JOIN RENTAL r. on WHERE user_id = ? "
             );
             stm.setString(1, Settings.getUser().getId());
 

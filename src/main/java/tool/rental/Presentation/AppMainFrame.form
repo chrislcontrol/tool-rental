@@ -98,6 +98,8 @@
           <component id="f5d86" class="javax.swing.JTable" binding="toolsTable">
             <constraints/>
             <properties>
+              <editingColumn value="-1"/>
+              <enabled value="true"/>
               <foreground color="-15527649"/>
             </properties>
           </component>

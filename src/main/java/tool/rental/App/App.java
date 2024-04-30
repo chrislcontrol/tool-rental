@@ -43,7 +43,8 @@ public class App {
     }
 
     public static void setupDB() throws Toast {
-        String query = """
+        String[] queries = new String[]{
+                """
                 -- "USER" definition
                                 
                 CREATE TABLE IF NOT EXISTS "USER" (
@@ -53,8 +54,13 @@ public class App {
                 	has_mock INTEGER DEFAULT (0) NOT NULL,
                 	CONSTRAINT USER_PK PRIMARY KEY (id)
                 );
+                """,
+                """
                                 
                 CREATE UNIQUE INDEX USER_username_IDX ON "USER" (username);
+                """,
+
+                """
                                 
                                 
                 -- CACHE definition
@@ -65,6 +71,9 @@ public class App {
                 	CONSTRAINT CACHE_PK PRIMARY KEY (id),
                 	CONSTRAINT CACHE_USER_FK FOREIGN KEY (logged_user_id) REFERENCES "USER"(id) ON DELETE CASCADE
                 );
+                
+                """,
+                """
                                 
                                 
                 -- FRIEND definition
@@ -78,9 +87,14 @@ public class App {
                 	CONSTRAINT FRIENDS_PK PRIMARY KEY (id),
                 	CONSTRAINT FRIEND_USER_FK FOREIGN KEY (user_id) REFERENCES "USER"(id) ON DELETE CASCADE
                 );
+                
+                """,
+                """
                                 
                 CREATE INDEX FRIEND_user_id_IDX ON FRIEND (user_id);
-                                
+                
+                """,
+                """
                                 
                 -- RENTAL definition
                                 
@@ -89,11 +103,19 @@ public class App {
                 	rental_timestamp INTEGER NOT NULL,
                 	devolution_timestamp INTEGER,
                 	friend_id TEXT(36) NOT NULL,
+                	tool_id TEXT(36) NOT NULL,
                 	CONSTRAINT RENTAL_PK PRIMARY KEY (id),
-                	CONSTRAINT RENTAL_FRIEND_FK FOREIGN KEY (friend_id) REFERENCES FRIEND(id) ON DELETE CASCADE
+                	CONSTRAINT RENTAL_FRIEND_FK FOREIGN KEY (friend_id) REFERENCES "FRIEND"(id) ON DELETE CASCADE,
+                	CONSTRAINT RENTAL_TOOL_FK FOREIGN KEY (tool_id) REFERENCES "TOOL"(id) ON DELETE CASCADE
                 );
+                
+                """,
+                """
                                 
                 CREATE INDEX RENTAL_friend_id_IDX ON RENTAL (friend_id);
+                
+                """,
+                """
                                 
                                 
                 -- TOOL definition
@@ -106,17 +128,22 @@ public class App {
                 	CONSTRAINT TOOL_PK PRIMARY KEY (id),
                 	CONSTRAINT TOOL_USER_FK FOREIGN KEY (user_id) REFERENCES "USER"(id) ON DELETE CASCADE
                 );
+                
+                """,
+                """
                                 
                 CREATE INDEX TOOL_user_id_IDX ON TOOL (user_id);
-                """;
+                """
+        };
 
 
         try (DataBase db = new DataBase()) {
-            PreparedStatement stm = db.connection.prepareStatement(query);
-            db.executeQuery(stm);
-
+            for (String query : queries) {
+                PreparedStatement stm = db.connection.prepareStatement(query);
+                db.executeUpdate(stm);
+            }
         } catch (SQLException e) {
-            throw new ToastError("Erro ao iniciar o banco de dados.",
+            throw new ToastError(String.format("Erro ao iniciar o banco de dados. %s", e),
                     "Erro de banco de dados.");
         }
     }

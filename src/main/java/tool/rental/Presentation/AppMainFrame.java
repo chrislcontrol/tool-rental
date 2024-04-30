@@ -8,6 +8,7 @@ import tool.rental.Utils.ToastError;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,7 +45,9 @@ public class AppMainFrame extends PresentationFrame {
         String[][] toolRows = this.controller.listToolsAsTableRow();
 
         DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
-        String[] columns = {"ID", "Marca", "Custo"};
+
+
+        String[] columns = {"ID", "Marca", "Custo", "Emprestada para", "Data de empréstimo"};
 
         for (String column : columns) {
             model.addColumn(column);
@@ -52,6 +55,12 @@ public class AppMainFrame extends PresentationFrame {
         for (String[] toolRow : toolRows) {
             model.addRow(toolRow);
         }
+
+        TableColumn column = this.toolsTable.getColumnModel().getColumn(0);
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+
+        this.toolsTable.setDefaultEditor(Object.class, null);
     }
 
     private void setPointer(Cursor cursor, JComponent... components) {
