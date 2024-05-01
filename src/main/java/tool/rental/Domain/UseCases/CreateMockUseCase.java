@@ -29,6 +29,15 @@ public class CreateMockUseCase {
     }
 
     private String[] createQueries(User user) {
+        String[][] ids = new String[3][4];
+        String userId = user.getId();
+
+        for (String[] idArray : ids) {
+            for (int i = 0; i < idArray.length; i++) {
+                idArray[i] = UUID.randomUUID().toString();
+            }
+        }
+
         return new String[]{
                 String.format(
                         """
@@ -39,10 +48,10 @@ public class CreateMockUseCase {
                                   ('%s', 'Pedro Sousa', '1198765434', '111222333', '%s'),
                                   ('%s', 'Ana Paula', '1199876545', '444555666', '%s');
                                 """,
-                        UUID.randomUUID(), user.getId(),
-                        UUID.randomUUID(), user.getId(),
-                        UUID.randomUUID(), user.getId(),
-                        UUID.randomUUID(), user.getId()
+                        ids[0][0], userId,
+                        ids[0][1], userId,
+                        ids[0][2], userId,
+                        ids[0][3], userId
                 ),
                 String.format(
                         """
@@ -54,24 +63,25 @@ public class CreateMockUseCase {
                                   ('%s', 'Makita', 200.0, '%s'),
                                   ('%s', 'Hitachi', 150.0, '%s');
                                  """,
-                        UUID.randomUUID(), user.getId(),
-                        UUID.randomUUID(), user.getId(),
-                        UUID.randomUUID(), user.getId(),
-                        UUID.randomUUID(), user.getId()),
+
+                        ids[1][0], userId,
+                        ids[1][1], userId,
+                        ids[1][2], userId,
+                        ids[1][3], userId),
 
                 String.format(
                         """
                                 -- Inserindo dados na tabela RENTAL
-                                INSERT INTO RENTAL (id, rental_timestamp, devolution_timestamp, friend_id) VALUES
-                                  ('%s', 1643723400, 1643726800, '34567890-1234-5678-9012-345678909012'),
-                                  ('%s', 1643726800, 1643730200, '45678901-2345-6789-0123-456789012345'),
-                                  ('%s', 1643730200, 1643733600, '67890123-4567-8901-2345-678901234567'),
-                                  ('%s', 1643733600, 1643737000, '89012345-6789-0123-4567-890123456789');
+                                INSERT INTO RENTAL (id, rental_timestamp, devolution_timestamp, friend_id, tool_id) VALUES
+                                  ('%s', 1643723400, 1643726800, '%s', '%s'),
+                                  ('%s', 1643726800, 1643730200, '%s', '%s'),
+                                  ('%s', 1643730200, 1643733600, '%s', '%s'),
+                                  ('%s', 1643733600, 1643737000, '%s', '%s');
                                 """,
-                        UUID.randomUUID(),
-                        UUID.randomUUID(),
-                        UUID.randomUUID(),
-                        UUID.randomUUID()
+                        ids[2][0], ids[0][0], ids[1][0],
+                        ids[2][1], ids[0][1], ids[1][1],
+                        ids[2][2], ids[0][2], ids[1][2],
+                        ids[2][3], ids[0][3], ids[1][3]
                 )
         };
     }

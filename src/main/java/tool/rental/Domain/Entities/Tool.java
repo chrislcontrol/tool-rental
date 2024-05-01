@@ -4,13 +4,19 @@ public class Tool {
     private final String id;
     private final String brand;
     private final double cost;
-    private final String user_id;
+    private final User user;
+    private Rental latestRental;
 
-    public Tool(String id, String brand, double cost, String user_id) {
+    public Tool(String id, String brand, double cost, User user, Rental latestRental) {
         this.id = id;
         this.brand = brand;
         this.cost = cost;
-        this.user_id = user_id;
+        this.user = user;
+        this.latestRental = latestRental;
+    }
+
+    public Tool(String id, String brand, double cost, User user) {
+        this(id, brand, cost, user, null);
     }
 
     public String getId() {
@@ -25,8 +31,16 @@ public class Tool {
         return cost;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public User getUser() {
+        return this.user;
     }
 
+    public Rental getLatestRental() {
+        return this.latestRental;
+    }
+
+
+    public void setLatestRental(Rental latestRental) {
+        this.latestRental = latestRental;
+    }
 }

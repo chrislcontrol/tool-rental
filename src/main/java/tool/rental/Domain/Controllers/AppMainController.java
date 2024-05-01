@@ -1,6 +1,8 @@
 package tool.rental.Domain.Controllers;
 
 import tool.rental.App.Settings;
+import tool.rental.Domain.DTO.CalculateSummaryDTO;
+import tool.rental.Domain.UseCases.CalculateSummaryUseCase;
 import tool.rental.Domain.UseCases.ListToolsToMainTableUseCase;
 import tool.rental.Domain.UseCases.LogoutUseCase;
 import tool.rental.Presentation.LoginFrame;
@@ -14,6 +16,7 @@ import javax.swing.*;
 public class AppMainController extends Controller {
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
     private final LogoutUseCase logoutUseCase = new LogoutUseCase();
+    private final CalculateSummaryUseCase calculateSummaryUseCase = new CalculateSummaryUseCase();
 
     public AppMainController(PresentationFrame frame) {
         super(frame);
@@ -21,6 +24,10 @@ public class AppMainController extends Controller {
 
     public String[][] listToolsAsTableRow() throws ToastError {
         return this.listToolsToMainTableUseCase.execute();
+    }
+
+    public CalculateSummaryDTO calculateSummary() throws ToastError {
+        return this.calculateSummaryUseCase.execute();
     }
 
     public void logout() throws ToastError {
