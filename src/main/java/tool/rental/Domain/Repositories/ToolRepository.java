@@ -1,6 +1,7 @@
 package tool.rental.Domain.Repositories;
 
 import tool.rental.App.Settings;
+import tool.rental.Domain.DAO.CountIdAndSumCostDAO;
 import tool.rental.Domain.Entities.Friend;
 import tool.rental.Domain.Entities.Rental;
 import tool.rental.Domain.Entities.Tool;
@@ -86,6 +87,28 @@ public class ToolRepository {
 
         } catch (SQLException e) {
             throw new ToastError("Falha ao listar as ferramentas. " + e, "Erro de banco de dados.");
+        }
+    }
+
+    public CountIdAndSumCostDAO countAndSumCostByUser() throws ToastError {
+        try (DataBase dataBase = new DataBase()) {
+            String query = "SELECT COUNT(id) as total_count, SUM(cost) as total_cost from TOOL WHERE user_id = ?";
+            PreparedStatement stm = dataBase.connection.prepareStatement(query);
+            stm.setString(1, Settings.getUser().getId());
+
+            ResultSet result = dataBase.executeQuery(stm);
+
+            if (!result.next()) {
+                return new CountIdAndSumCostDAO(0, 0.0);
+            }
+
+            return new CountIdAndSumCostDAO(
+                    result.getInt("total_count"),
+                    result.getDouble("total_cost")
+            );
+
+        } catch (SQLException e) {
+            throw new ToastError(e.toString(), "Erro de banco de dados.");
         }
     }
 }

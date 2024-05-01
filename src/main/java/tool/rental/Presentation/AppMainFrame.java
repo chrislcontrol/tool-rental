@@ -2,10 +2,10 @@ package tool.rental.Presentation;
 
 import tool.rental.App.Settings;
 import tool.rental.Domain.Controllers.AppMainController;
+import tool.rental.Domain.DTO.CalculateSummaryDTO;
 import tool.rental.Utils.PresentationFrame;
 import tool.rental.Utils.ToastError;
 
-import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -23,6 +23,10 @@ public class AppMainFrame extends PresentationFrame {
     private JButton listBorrowedToolsButton;
     private JTable toolsTable;
     private JButton exitButton;
+    private JLabel toolCountLabel;
+    private JLabel loanToolCountLabel;
+    private JLabel friendsCountLabel;
+    private JLabel toolTotalAmountLabel;
 
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
@@ -38,7 +42,17 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
+        this.calculateSummary();
 
+    }
+
+    private void calculateSummary() throws ToastError {
+        CalculateSummaryDTO summary = this.controller.calculateSummary();
+
+        this.toolCountLabel.setText(this.toolCountLabel.getText() + summary.toolCount());
+        this.loanToolCountLabel.setText(this.loanToolCountLabel.getText() + summary.rentalCount());
+        this.friendsCountLabel.setText(this.friendsCountLabel.getText() + summary.friendCount());
+        this.toolTotalAmountLabel.setText(this.toolTotalAmountLabel.getText() + summary.toolCostSum());
     }
 
     private void setupTable() throws ToastError {
