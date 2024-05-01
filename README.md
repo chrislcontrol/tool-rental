@@ -12,7 +12,7 @@ A software development for graduation subject
 ## Run project:
 
 ```
-- set main class as: src.main.java.tool.rental.App.App
+- set main class as: src.main.java.tool.rental.app.App
 - run main class (don´t forget to build with Maven dependencies)
 ```
 
