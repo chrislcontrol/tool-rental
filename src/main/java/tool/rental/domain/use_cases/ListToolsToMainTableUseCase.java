@@ -1,4 +1,4 @@
-package tool.rental.domain.useCases;
+package tool.rental.domain.use_cases;
 
 import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Rental;
@@ -17,7 +17,7 @@ public class ListToolsToMainTableUseCase {
 
         for (int i = 0; i < resultArray.length; i++) {
             Tool tool = tools.get(i);
-            Rental latestRental = tool.getLatestRental();
+            Rental latestRental = tool.getCurrentRental();
             String loanTo = "";
             String loanSince = "";
 

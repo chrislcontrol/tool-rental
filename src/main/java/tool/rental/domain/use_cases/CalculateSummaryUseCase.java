@@ -1,4 +1,4 @@
-package tool.rental.domain.useCases;
+package tool.rental.domain.use_cases;
 
 import tool.rental.domain.DAO.CountIdAndSumCostDAO;
 import tool.rental.domain.DTO.CalculateSummaryDTO;

@@ -1,6 +1,6 @@
 package tool.rental.domain.controllers;
 
-import tool.rental.domain.useCases.RegisterUserUseCase;
+import tool.rental.domain.use_cases.RegisterUserUseCase;
 import tool.rental.utils.Controller;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;

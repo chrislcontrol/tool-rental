@@ -1,4 +1,4 @@
-package tool.rental.domain.useCases;
+package tool.rental.domain.use_cases;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.repositories.CacheRepository;
