@@ -10,12 +10,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class AppMainFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
-    private JPanel MainPanel;
+    private JPanel mainPanel;
     private JButton registerFriendButton;
     private JButton registerToolButton;
     private JButton lendToolButton;
@@ -42,39 +41,47 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
-        this.calculateSummary();
 
     }
 
     private void calculateSummary() throws ToastError {
         CalculateSummaryDTO summary = this.controller.calculateSummary();
 
-        this.toolCountLabel.setText(this.toolCountLabel.getText() + summary.toolCount());
-        this.loanToolCountLabel.setText(this.loanToolCountLabel.getText() + summary.rentalCount());
-        this.friendsCountLabel.setText(this.friendsCountLabel.getText() + summary.friendCount());
-        this.toolTotalAmountLabel.setText(this.toolTotalAmountLabel.getText() + summary.toolCostSum());
+        this.toolCountLabel.setText("Ferramentas: " + summary.toolCount());
+        this.loanToolCountLabel.setText("Ferramentas emprestadas: " + summary.rentalCount());
+        this.friendsCountLabel.setText("Amigos: " + summary.friendCount());
+        this.toolTotalAmountLabel.setText("Valor total: " + summary.toolCostSum());
     }
 
     private void setupTable() throws ToastError {
-        String[][] toolRows = this.controller.listToolsAsTableRow();
-
         DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
-
 
         String[] columns = {"ID", "Marca", "Custo", "Emprestada para", "Data de empréstimo"};
 
         for (String column : columns) {
             model.addColumn(column);
         }
-        for (String[] toolRow : toolRows) {
-            model.addRow(toolRow);
-        }
+
+        this.loadData();
 
         TableColumn column = this.toolsTable.getColumnModel().getColumn(0);
         column.setMinWidth(0);
         column.setMaxWidth(0);
 
         this.toolsTable.setDefaultEditor(Object.class, null);
+    }
+
+    private void loadData() throws ToastError {
+        DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
+        model.setNumRows(0);
+
+        String[][] toolRows = this.controller.listToolsAsTableRow();
+
+        for (String[] toolRow : toolRows) {
+            model.addRow(toolRow);
+        }
+
+        this.calculateSummary();
     }
 
     private void setPointer(Cursor cursor, JComponent... components) {
@@ -91,7 +98,7 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     private void setMainPanel() {
-        this.setContentPane(this.MainPanel);
+        this.setContentPane(this.mainPanel);
     }
 
     protected void setUpListeners() {
@@ -100,6 +107,39 @@ public class AppMainFrame extends PresentationFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     controller.logout();
+                } catch (ToastError exc) {
+                    exc.display();
+                }
+            }
+        });
+
+        this.toolsTable.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_F5) {
+                    try {
+                        loadData();
+                    } catch (ToastError ex) {
+                        ex.display();
+                    }
+                }
+
+            }
+        });
+
+        this.returnToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = toolsTable.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+                String toolId = toolsTable.getModel().getValueAt(row, 0).toString();
+                try {
+                    controller.returnTool(toolId);
+                    loadData();
+
                 } catch (ToastError exc) {
                     exc.display();
                 }

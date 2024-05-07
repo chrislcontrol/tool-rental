@@ -2,8 +2,8 @@ package tool.rental.domain.controllers;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.entities.User;
-import tool.rental.domain.useCases.CreateMockUseCase;
-import tool.rental.domain.useCases.LoginUseCase;
+import tool.rental.domain.use_cases.CreateMockUseCase;
+import tool.rental.domain.use_cases.LoginUseCase;
 import tool.rental.presentation.AppMainFrame;
 import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
