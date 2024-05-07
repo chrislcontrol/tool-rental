@@ -26,6 +26,7 @@ public class AppMainFrame extends PresentationFrame {
     private JLabel loanToolCountLabel;
     private JLabel friendsCountLabel;
     private JLabel toolTotalAmountLabel;
+    private JCheckBox rentalCB;
 
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
@@ -41,7 +42,6 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
-
     }
 
     private void calculateSummary() throws ToastError {
@@ -75,7 +75,8 @@ public class AppMainFrame extends PresentationFrame {
         DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
         model.setNumRows(0);
 
-        String[][] toolRows = this.controller.listToolsAsTableRow();
+        boolean rentedOnly = this.rentalCB.isSelected();
+        String[][] toolRows = this.controller.listToolsAsTableRow(rentedOnly);
 
         for (String[] toolRow : toolRows) {
             model.addRow(toolRow);
@@ -142,6 +143,18 @@ public class AppMainFrame extends PresentationFrame {
 
                 } catch (ToastError exc) {
                     exc.display();
+                }
+            }
+        });
+
+        rentalCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    loadData();
+                } catch (ToastError exc) {
+                    exc.display();
+
                 }
             }
         });

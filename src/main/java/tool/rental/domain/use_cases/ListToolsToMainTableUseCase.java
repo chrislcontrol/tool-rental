@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class ListToolsToMainTableUseCase {
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public String[][] execute() throws ToastError {
-        ArrayList<Tool> tools = this.toolRepository.listAll();
+    public String[][] execute(boolean rentedOnly) throws ToastError {
+        ArrayList<Tool> tools = this.toolRepository.listAll(rentedOnly);
         String[][] resultArray = new String[tools.size()][5];
 
         for (int i = 0; i < resultArray.length; i++) {
