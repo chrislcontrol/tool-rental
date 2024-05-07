@@ -41,33 +41,37 @@ public class ToolRepository {
 
     }
 
-    public ArrayList<Tool> listAll() throws ToastError {
+    public ArrayList<Tool> listAll(boolean rentedOnly) throws ToastError {
         try (DataBase db = new DataBase()) {
-            PreparedStatement stm = db.connection.prepareStatement(
-                    """
-                            SELECT
-                            	t.id as t__id,
-                            	t.brand as t__brand,
-                            	t.cost as t__cost,
-                            	r.id as r__id,
-                            	r.rental_timestamp as r__rental_timestamp,
-                            	r.devolution_timestamp as r__devolution_timestamp,
-                            	f.id as f__id,
-                            	f.name as f__name,
-                            	f.phone as f__phone,
-                            	f.social_security as f__social_security
-                            FROM
-                            	TOOL t
-                            LEFT JOIN RENTAL r
-                            	on	r.tool_id = t.id
-                            	and r.devolution_timestamp is null
-                            	
-                            LEFT JOIN FRIEND f
-                            	on f.id = r.friend_id
-                            WHERE
-                            	t.user_id = ?
-                            """
-            );
+            String query = """
+                    SELECT
+                    	t.id as t__id,
+                    	t.brand as t__brand,
+                    	t.cost as t__cost,
+                    	r.id as r__id,
+                    	r.rental_timestamp as r__rental_timestamp,
+                    	r.devolution_timestamp as r__devolution_timestamp,
+                    	f.id as f__id,
+                    	f.name as f__name,
+                    	f.phone as f__phone,
+                    	f.social_security as f__social_security
+                    	
+                    FROM
+                    	TOOL t
+                    LEFT JOIN RENTAL r
+                    	on	r.tool_id = t.id
+                    	and r.devolution_timestamp is null
+                    	
+                    LEFT JOIN FRIEND f
+                    	on f.id = r.friend_id
+                    WHERE
+                    	t.user_id = ?
+                    """;
+            if (rentedOnly) {
+                query += " and f__id is not null";
+            }
+
+            PreparedStatement stm = db.connection.prepareStatement(query);
             User user = Settings.getUser();
 
             stm.setString(1, user.getId());

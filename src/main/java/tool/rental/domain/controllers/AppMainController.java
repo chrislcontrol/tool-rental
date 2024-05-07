@@ -28,7 +28,11 @@ public class AppMainController extends Controller {
     }
 
     public String[][] listToolsAsTableRow() throws ToastError {
-        return this.listToolsToMainTableUseCase.execute();
+        return this.listToolsAsTableRow(false);
+    }
+
+    public String[][] listToolsAsTableRow(boolean rentedOnly) throws ToastError {
+        return this.listToolsToMainTableUseCase.execute(rentedOnly);
     }
 
     public CalculateSummaryDTO calculateSummary() throws ToastError {
