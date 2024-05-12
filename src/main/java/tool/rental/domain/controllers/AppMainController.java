@@ -9,7 +9,9 @@ import tool.rental.domain.use_cases.ListToolsToMainTableUseCase;
 import tool.rental.domain.use_cases.LogoutUseCase;
 import tool.rental.domain.use_cases.ReturnToolUseCase;
 import tool.rental.presentation.AppMainFrame;
+import tool.rental.presentation.LendToolFrame;
 import tool.rental.presentation.LoginFrame;
+import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.ToastError;
@@ -85,5 +87,9 @@ public class AppMainController extends Controller {
                 null,
                 "Ferramenta devolvida com sucesso."
         );
+    }
+
+    public void openRegisterModal() {
+        this.frame.swapFrame(new LendToolFrame(), true);
     }
 }

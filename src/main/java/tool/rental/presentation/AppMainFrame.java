@@ -30,6 +30,7 @@ public class AppMainFrame extends PresentationFrame {
 
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
+        this.lendToolButton.setEnabled(false);
         this.setupPageLayout();
         this.setUpListeners();
         this.setPointer(
@@ -42,6 +43,15 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
+        toolsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                if ()
+                lendToolButton.setEnabled(true);
+                super.mouseClicked(e);
+
+            }
+        });
     }
 
     private void calculateSummary() throws ToastError {
@@ -111,6 +121,13 @@ public class AppMainFrame extends PresentationFrame {
                 } catch (ToastError exc) {
                     exc.display();
                 }
+            }
+        });
+
+        this.lendToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openRegisterModal();
             }
         });
 
