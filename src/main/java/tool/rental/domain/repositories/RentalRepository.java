@@ -50,4 +50,25 @@ public class RentalRepository {
             throw new ToastError(e.toString(), "Erro de banco de dados");
         }
     }
+
+    public boolean verifyRental(String idSelecionado ) throws ToastError{
+        try (DataBase db = new DataBase()) {
+            String query = """
+                        SELECT
+                         tool_id
+                         FROM RENTAL
+                         WHERE tool_id = ?
+                    """;
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            stm.setString(1, idSelecionado);
+
+            ResultSet result = db.executeQuery(stm);
+            if (!result.next()){
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new ToastError(e.toString(), "Erro de banco de dados");
+        }
+    }
 }

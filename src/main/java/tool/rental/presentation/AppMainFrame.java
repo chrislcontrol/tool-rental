@@ -3,6 +3,7 @@ package tool.rental.presentation;
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.DTO.CalculateSummaryDTO;
+import tool.rental.domain.repositories.RentalRepository;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
@@ -14,6 +15,7 @@ import java.awt.event.*;
 
 public class AppMainFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
+    private final RentalRepository rentalRepository = new RentalRepository();
     private JPanel mainPanel;
     private JButton registerFriendButton;
     private JButton registerToolButton;
@@ -43,15 +45,6 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
-        toolsTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-//                if ()
-                lendToolButton.setEnabled(true);
-                super.mouseClicked(e);
-
-            }
-        });
     }
 
     private void calculateSummary() throws ToastError {
@@ -112,6 +105,22 @@ public class AppMainFrame extends PresentationFrame {
         this.setContentPane(this.mainPanel);
     }
 
+//EM TESTE
+
+    private String idSelecionado;
+
+    public AppMainFrame(String idSelecionado) {
+        this.idSelecionado = idSelecionado;
+    }
+
+    public String getIdSelecionado() {
+        return idSelecionado;
+    }
+
+    public void setIdSelecionado(String idSelecionado) {
+        this.idSelecionado = idSelecionado;
+    }
+
     protected void setUpListeners() {
         this.exitButton.addActionListener(new ActionListener() {
             @Override
@@ -124,12 +133,32 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        this.toolsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                setIdSelecionado(toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString());
+                System.out.println("Esse é o id = "+ getIdSelecionado());
+                lendToolButton.setEnabled(true);
+                super.mouseClicked(e);
+            }
+        });
+
         this.lendToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.openRegisterModal();
+                try {
+                    if(rentalRepository.verifyRental(getIdSelecionado())){
+                        JOptionPane.showMessageDialog(null, "A ferramenta selecionada já está emprestada!");
+
+                    }
+                    controller.openRegisterModal();
+                } catch (ToastError exc) {
+                    exc.display();
+                }
             }
         });
+
+        //ATÉ AQUI :D
 
         this.toolsTable.addKeyListener(new KeyAdapter() {
             @Override
