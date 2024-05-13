@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class AppMainFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
@@ -150,10 +151,13 @@ public class AppMainFrame extends PresentationFrame {
                     if(rentalRepository.verifyRental(getIdSelecionado())){
                         JOptionPane.showMessageDialog(null, "A ferramenta selecionada já está emprestada!");
 
+                    } else if(!rentalRepository.verifyRental(getIdSelecionado())){
+                        controller.openRegisterModal();
                     }
-                    controller.openRegisterModal();
                 } catch (ToastError exc) {
                     exc.display();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });

@@ -17,6 +17,7 @@ import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class AppMainController extends Controller {
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
@@ -89,7 +90,7 @@ public class AppMainController extends Controller {
         );
     }
 
-    public void openRegisterModal() {
+    public void openRegisterModal() throws ToastError, SQLException {
         this.frame.swapFrame(new LendToolFrame(), true);
     }
 }

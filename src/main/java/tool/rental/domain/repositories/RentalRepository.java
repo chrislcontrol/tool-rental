@@ -61,7 +61,6 @@ public class RentalRepository {
                     """;
             PreparedStatement stm = db.connection.prepareStatement(query);
             stm.setString(1, idSelecionado);
-
             ResultSet result = db.executeQuery(stm);
             if (!result.next()){
                 return false;
