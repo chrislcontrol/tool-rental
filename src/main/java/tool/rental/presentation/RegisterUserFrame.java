@@ -36,6 +36,12 @@ public class RegisterUserFrame extends PresentationFrame {
                 }
             }
         });
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registerUserController.closeFrame();
+            }
+        });
     }
 
     private void setUpListeners() {
