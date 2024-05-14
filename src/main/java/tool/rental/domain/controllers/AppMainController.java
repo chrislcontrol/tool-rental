@@ -12,6 +12,7 @@ import tool.rental.presentation.AppMainFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
+import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class AppMainController extends Controller {
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public AppMainController(AppMainFrame frame) {
+    public AppMainController(PresentationFrame frame) {
         super(frame);
     }
 
