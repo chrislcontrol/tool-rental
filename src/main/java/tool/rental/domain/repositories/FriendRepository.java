@@ -1,12 +1,15 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
+import tool.rental.domain.entities.Friend;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FriendRepository {
     public int countByUser() throws ToastError {
@@ -29,4 +32,26 @@ public class FriendRepository {
         }
 
     }
+
+//    public List<Friend> listFriends() throws ToastError{
+//        try(DataBase db = new DataBase()){
+//            String query = """
+//                        SELECT name FROM FRIEND ORDER BY name
+//                        """;
+//            PreparedStatement stm = db.connection.prepareStatement(query);
+//
+//            ResultSet result = db.executeQuery(stm);
+//
+//            List<Friend> friendList = new ArrayList<Friend>();
+//
+//            while (result.next()) {
+//                friendList.add(new Friend());
+//            }
+//
+//            return ;
+//
+//        } catch(SQLException e){
+//            throw new ToastError(e.getMessage(), "Erro de banco de dados.");
+//        }
+//    }
 }

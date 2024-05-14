@@ -67,16 +67,4 @@ public class LendToolFrame extends PresentationFrame {
         }
     }
 
-    public ResultSet listFriends() throws ToastError{
-        try(DataBase dataBase = new DataBase()){
-            String query = """ 
-                        SELECT name FROM FRIEND ORDER BY name
-                        """;
-            PreparedStatement stm = dataBase.connection.prepareStatement(query);
-            return stm.executeQuery();
-
-        } catch(SQLException e){
-            throw new ToastError(e.getMessage(), "Erro de banco de dados.");
-        }
-    }
 }
