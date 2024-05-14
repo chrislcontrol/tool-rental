@@ -16,7 +16,7 @@ public class RegisterToolController extends Controller{
 }
 
 public void registerTool(String name,String branch, double cost) throws ToastError {
-        this.registerToolUseCase.execute(name, branch, cost);
+        this.registerToolUseCase.execute(name, brand, cost);
 
         JOptionPane.showMessageDialog(null, "Ferramenta cadastrada com sucesso!");
 
