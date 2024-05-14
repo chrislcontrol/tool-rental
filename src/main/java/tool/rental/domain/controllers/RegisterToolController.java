@@ -7,11 +7,10 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 
-public class RegisterToolController {
-
-    public final RegisterToolController registerToolController = new RegisterToolController();
-
-    public registerToolController(PresentationFrame frame);
+public class RegisterToolController extends Controller{
+    private final RegisterToolController registerToolController = new RegisterToolController();
+    
+    public RegisterToolController(PresentationFrame frame);
     super(frame);
    
 }
