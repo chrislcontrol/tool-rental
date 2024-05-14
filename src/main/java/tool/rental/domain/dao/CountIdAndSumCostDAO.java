@@ -1,4 +1,4 @@
-package tool.rental.domain.DAO;
+package tool.rental.domain.dao;
 
 public class CountIdAndSumCostDAO {
     private final int totalCount;

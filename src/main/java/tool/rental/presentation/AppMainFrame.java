@@ -2,7 +2,7 @@ package tool.rental.presentation;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
-import tool.rental.domain.DTO.CalculateSummaryDTO;
+import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
