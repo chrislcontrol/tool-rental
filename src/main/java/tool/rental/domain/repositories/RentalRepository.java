@@ -51,7 +51,7 @@ public class RentalRepository {
         }
     }
 
-    public boolean verifyRental(String idSelecionado ) throws ToastError{
+    public boolean isRentalOpen(String idSelecionado ) throws ToastError{
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT

@@ -33,7 +33,6 @@ public class AppMainFrame extends PresentationFrame {
 
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
-        this.lendToolButton.setEnabled(false);
         this.setupPageLayout();
         this.setUpListeners();
         this.setPointer(
@@ -148,10 +147,10 @@ public class AppMainFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(rentalRepository.verifyRental(getIdSelecionado())){
+                    if(rentalRepository.isRentalOpen(getIdSelecionado())){
                         JOptionPane.showMessageDialog(null, "A ferramenta selecionada já está emprestada!");
 
-                    } else if(!rentalRepository.verifyRental(getIdSelecionado())){
+                    } else if(!rentalRepository.isRentalOpen(getIdSelecionado())){
                         controller.openRegisterModal();
                     }
                 } catch (ToastError exc) {
