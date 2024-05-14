@@ -51,7 +51,7 @@ public class RentalRepository {
         }
     }
 
-    public boolean isRentalOpen(String idSelecionado ) throws ToastError{
+    public boolean isRentalOpen(String toolId ) throws ToastError{
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT
@@ -60,7 +60,7 @@ public class RentalRepository {
                          WHERE tool_id = ?
                     """;
             PreparedStatement stm = db.connection.prepareStatement(query);
-            stm.setString(1, idSelecionado);
+            stm.setString(1, toolId);
             ResultSet result = db.executeQuery(stm);
             if (!result.next()){
                 return false;
