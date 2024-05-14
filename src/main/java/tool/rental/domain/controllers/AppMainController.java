@@ -1,7 +1,7 @@
 package tool.rental.domain.controllers;
 
 import tool.rental.app.Settings;
-import tool.rental.domain.DTO.CalculateSummaryDTO;
+import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Tool;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.CalculateSummaryUseCase;
