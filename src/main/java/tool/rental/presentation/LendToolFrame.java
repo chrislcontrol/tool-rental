@@ -21,10 +21,10 @@ public class LendToolFrame extends PresentationFrame {
     private JButton rentButton;
     private JButton cancelButton;
     private JLabel toolName;
-
-    public LendToolFrame() throws ToastError, SQLException {
+    private String toolId;
+    public LendToolFrame(String toolId) throws ToastError {
+        this.toolId = toolId;
         this.setMainPanel();
-        this.rentButton.setEnabled(false);
         this.setupPageLayout();
         this.setUpListeners();
         this.setPointer(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
@@ -32,16 +32,6 @@ public class LendToolFrame extends PresentationFrame {
                 this.cancelButton,
                 this.friendList
                 );
-        friendList.addContainerListener(new ContainerAdapter()  {
-//            try{
-//                ResultSet res = listFriends();
-//                while (res.next()){
-//                    friendList.addItem(res.getString(1));
-//                }
-//            } catch(SQLException e){
-//                throw new ToastError(e.getMessage(), "Erro de banco de dados.");
-//            }
-        });
     }
 
     private void setupPageLayout() {

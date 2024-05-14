@@ -106,21 +106,6 @@ public class AppMainFrame extends PresentationFrame {
     }
 
 //EM TESTE
-
-    private String idSelecionado;
-
-    public AppMainFrame(String idSelecionado) {
-        this.idSelecionado = idSelecionado;
-    }
-
-    public String getIdSelecionado() {
-        return idSelecionado;
-    }
-
-    public void setIdSelecionado(String idSelecionado) {
-        this.idSelecionado = idSelecionado;
-    }
-
     protected void setUpListeners() {
         this.exitButton.addActionListener(new ActionListener() {
             @Override
@@ -136,9 +121,6 @@ public class AppMainFrame extends PresentationFrame {
         this.toolsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                setIdSelecionado(toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString());
-                System.out.println("Esse é o id = "+ getIdSelecionado());
-                lendToolButton.setEnabled(true);
                 super.mouseClicked(e);
             }
         });
@@ -147,16 +129,10 @@ public class AppMainFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(rentalRepository.isRentalOpen(getIdSelecionado())){
-                        JOptionPane.showMessageDialog(null, "A ferramenta selecionada já está emprestada!");
-
-                    } else if(!rentalRepository.isRentalOpen(getIdSelecionado())){
-                        controller.openRegisterModal();
-                    }
+                    String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
+                    controller.openRegisterRentalModal(toolId);
                 } catch (ToastError exc) {
                     exc.display();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         });

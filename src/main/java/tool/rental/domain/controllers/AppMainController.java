@@ -11,7 +11,6 @@ import tool.rental.domain.use_cases.ReturnToolUseCase;
 import tool.rental.presentation.AppMainFrame;
 import tool.rental.presentation.LendToolFrame;
 import tool.rental.presentation.LoginFrame;
-import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.ToastError;
@@ -90,7 +89,7 @@ public class AppMainController extends Controller {
         );
     }
 
-    public void openRegisterModal() throws ToastError, SQLException {
-        this.frame.swapFrame(new LendToolFrame(), true);
+    public void openRegisterRentalModal(String toolId) throws ToastError {
+        this.frame.swapFrame(new LendToolFrame(toolId), true);
     }
 }
