@@ -10,6 +10,8 @@ import tool.rental.domain.use_cases.LogoutUseCase;
 import tool.rental.domain.use_cases.ReturnToolUseCase;
 import tool.rental.presentation.AppMainFrame;
 import tool.rental.presentation.LoginFrame;
+import tool.rental.presentation.RegisterToolFrame;
+import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.ToastError;
@@ -58,6 +60,7 @@ public class AppMainController extends Controller {
 
         this.logoutUseCase.execute();
         this.frame.swapFrame(new LoginFrame());
+
     }
 
     public void returnTool(String toolId) throws ToastError {
@@ -85,5 +88,8 @@ public class AppMainController extends Controller {
                 null,
                 "Ferramenta devolvida com sucesso."
         );
+    }
+    public void openRegisterToolModal() {
+        this.frame.swapFrame(new RegisterToolFrame(), true);
     }
 }

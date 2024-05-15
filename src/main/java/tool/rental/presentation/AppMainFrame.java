@@ -2,7 +2,9 @@ package tool.rental.presentation;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
+import tool.rental.domain.controllers.RegisterToolController;
 import tool.rental.domain.dto.CalculateSummaryDTO;
+import tool.rental.utils.Controller;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
@@ -42,7 +44,13 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
+        registerToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { controller.openRegisterToolModal();
+            }
+        });
     }
+
 
     private void calculateSummary() throws ToastError {
         CalculateSummaryDTO summary = this.controller.calculateSummary();
