@@ -7,15 +7,16 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 
-public class RegisterToolController extends Controller{
-    private final RegisterToolController registerToolController = new RegisterToolController();
-    
-    public RegisterToolController(PresentationFrame frame);
-    super(frame);
-   
-}
+public class RegisterToolController extends Controller {
 
-public void registerTool(String name,String branch, double cost) throws ToastError {
+    private final RegisterToolController registerToolController = new RegisterToolController();
+
+    public RegisterToolController(PresentationFrame frame) {
+        super(frame);
+
+    }
+
+    public void registerTool(String name, String branch, double cost) throws ToastError {
         this.registerToolUseCase.execute(name, brand, cost);
 
         JOptionPane.showMessageDialog(null, "Ferramenta cadastrada com sucesso!");
