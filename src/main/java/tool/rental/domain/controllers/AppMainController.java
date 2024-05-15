@@ -9,6 +9,7 @@ import tool.rental.domain.use_cases.ListToolsToMainTableUseCase;
 import tool.rental.domain.use_cases.LogoutUseCase;
 import tool.rental.domain.use_cases.ReturnToolUseCase;
 import tool.rental.presentation.AppMainFrame;
+import tool.rental.presentation.FriendsScreenFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
@@ -86,5 +87,9 @@ public class AppMainController extends Controller {
                 null,
                 "Ferramenta devolvida com sucesso."
         );
+    }
+
+    public void openFriendsScreenFrame() {
+        frame.swapFrame(new FriendsScreenFrame(),true);
     }
 }
