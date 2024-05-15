@@ -1,7 +1,7 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
-import tool.rental.domain.DAO.CountIdAndSumCostDAO;
+import tool.rental.domain.dao.CountIdAndSumCostDAO;
 import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Rental;
 import tool.rental.domain.entities.Tool;
