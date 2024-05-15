@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ToolRepository {
 
@@ -177,27 +178,28 @@ public class ToolRepository {
         } catch (SQLException e) {
             throw new ToastError(e.toString(), "Erro de banco de dados.");
         }
-        public Tool createTool(String name, String brand, double cost) throws ToastError{
-            try (DataBase db = new DataBase()) {
+    }
+
+    public Tool createTool(String name, String brand, double cost) throws ToastError {
+        try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 
-                
-                PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, 0)");
-                stm.setString(1,id);
-                stm.setString(2,name);
-                stm.setString(3,brand);
-                stm.setDouble(4,cost);
-               
-                db.executeUpdate(stm);
-                return new Tool(id, name, brand,cost);
-                
-            }catch (SQLException exc) {
-                System.out.println(exc.getMessage());
-                throw new ToastError(
-                        "Não foi possível cadastrar a ferramenta devido a um erro com banco de dados",
-                        "Erro de banco de dados" 
-                );
-            }
+
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?)");
+            stm.setString(1, id);
+            stm.setString(2, name);
+            stm.setString(3, brand);
+            stm.setDouble(4, cost);
+
+            db.executeUpdate(stm);
+            return new Tool(id, brand, cost, null);
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível cadastrar a ferramenta devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
         }
     }
 }
