@@ -7,6 +7,8 @@ import javax.swing.*;
 public abstract class PresentationFrame extends JFrame {
     final public Screen userScreen = new Screen();
 
+    final public Screen toolScreen = new Screen();
+
     public void swapFrame(PresentationFrame nextFrame) {
         this.swapFrame(nextFrame, false);
     }
