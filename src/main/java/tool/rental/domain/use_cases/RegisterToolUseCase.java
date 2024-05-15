@@ -14,8 +14,8 @@ public class RegisterToolUseCase {
         if (brand == null || brand.isEmpty()) {
             throw new ToastError("Nome da marca da ferramenta não pode ser nulo", "Campo não pode ser nulo");
         }
-        if (cost == 0.0 || cost.isEmpty()) {
-            throw new ToastError("Preço da ferramenta não pode ser nulo", "Campo não pode ser nulo");
+        if (cost == 0.0) {
+            throw new ToastError("Preço da ferramenta não pode ser zero", "Campo não pode ser zero");
         }
         this.toolRepository.createTool(name, brand, cost);
     }

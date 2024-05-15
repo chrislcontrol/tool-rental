@@ -9,16 +9,15 @@ import javax.swing.*;
 
 public class RegisterToolController extends Controller {
 
-    private final RegisterToolController registerToolController = new RegisterToolController();
+    private final RegisterToolUseCase registerToolUseCase = new RegisterToolUseCase();
 
     public RegisterToolController(PresentationFrame frame) {
         super(frame);
 
     }
 
-    public void registerTool(String name, String branch, double cost) throws ToastError {
+    public void registerTool(String name, String brand, double cost) throws ToastError {
         this.registerToolUseCase.execute(name, brand, cost);
-
         JOptionPane.showMessageDialog(null, "Ferramenta cadastrada com sucesso!");
 
         this.frame.setVisible(false);
