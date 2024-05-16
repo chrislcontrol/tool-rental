@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class AppMainFrame extends PresentationFrame {
+
     private final AppMainController controller = new AppMainController(this);
     private JPanel mainPanel;
     private JButton registerFriendButton;
@@ -42,6 +43,7 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
+
     }
 
     private void calculateSummary() throws ToastError {
@@ -111,6 +113,13 @@ public class AppMainFrame extends PresentationFrame {
                 } catch (ToastError exc) {
                     exc.display();
                 }
+            }
+        });
+
+        registerFriendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openFriendsScreenFrame();
             }
         });
 
