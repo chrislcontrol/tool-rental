@@ -1,21 +1,18 @@
 package tool.rental.presentation;
 
 import tool.rental.app.Settings;
-import tool.rental.domain.infra.db.DataBase;
+import tool.rental.domain.controllers.LendToolFrameController;
+import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ContainerAdapter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 public class LendToolFrame extends PresentationFrame {
-
+    private final LendToolFrameController lendToolFrameController = new LendToolFrameController(this);
     private JPanel mainPanel;
     private JComboBox friendList;
     private JButton rentButton;
@@ -27,6 +24,7 @@ public class LendToolFrame extends PresentationFrame {
         this.setMainPanel();
         this.setupPageLayout();
         this.setUpListeners();
+        this.loadData();
         this.setPointer(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
                 this.rentButton,
                 this.cancelButton,
@@ -59,6 +57,19 @@ public class LendToolFrame extends PresentationFrame {
 
             }
         });
+    }
+
+    private void setupComboBox() throws ToastError {
+        this.loadData();
+    }
+    private void loadData() throws ToastError {
+        DefaultComboBoxModel<Friend> model = new DefaultComboBoxModel<>();
+        friendList.setModel(model);
+        ArrayList<Friend> friendRows = this.lendToolFrameController.listFriendsAsComboBox();
+        friendList.addItem("Selecione");
+        for(Friend friendRow : friendRows) {
+            friendList.addItem(friendRow.getName());
+        }
     }
 
     private void setPointer(Cursor cursor, JComponent... components) {

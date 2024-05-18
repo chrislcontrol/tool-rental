@@ -57,15 +57,14 @@ public class RentalRepository {
                         SELECT
                          tool_id
                          FROM RENTAL
-                         WHERE tool_id = ?
+                         WHERE tool_id = ? AND devolution_timestamp is null
+                         ORDER BY tool_id
                     """;
             PreparedStatement stm = db.connection.prepareStatement(query);
             stm.setString(1, toolId);
             ResultSet result = db.executeQuery(stm);
-            if (!result.next()){
-                return false;
-            }
-            return true;
+            return result.next();
+
         } catch (SQLException e) {
             throw new ToastError(e.toString(), "Erro de banco de dados");
         }

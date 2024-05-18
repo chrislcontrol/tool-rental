@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
 
 public class AppMainFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
