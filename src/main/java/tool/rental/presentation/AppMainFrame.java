@@ -20,7 +20,6 @@ public class AppMainFrame extends PresentationFrame {
     private JButton registerToolButton;
     private JButton lendToolButton;
     private JButton returnToolButton;
-    private JButton listBorrowedToolsButton;
     private JTable toolsTable;
     private JButton exitButton;
     private JLabel toolCountLabel;
@@ -39,7 +38,6 @@ public class AppMainFrame extends PresentationFrame {
                 this.registerToolButton,
                 this.lendToolButton,
                 this.returnToolButton,
-                this.listBorrowedToolsButton,
                 this.exitButton
         );
         this.setupTable();
