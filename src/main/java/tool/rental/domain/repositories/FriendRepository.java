@@ -38,8 +38,17 @@ public class FriendRepository {
     public ArrayList<Friend> listAll()throws ToastError{
         try (DataBase db = new DataBase()) {
             String query = """
-                            SELECT id, name, phone, social_security
-                            FROM FRIEND
+                            SELECT
+                                f.id as f__id,
+                                f.name as f__name,
+                                f.phone as f__phone,
+                                f.social_security as f__social_security
+                            FROM
+                                FRIEND f
+                            WHERE
+                                f.user_id = ?
+                            ORDER BY 
+                                f.name
                             """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);

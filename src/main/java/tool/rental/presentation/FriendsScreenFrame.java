@@ -87,7 +87,7 @@ public class FriendsScreenFrame extends PresentationFrame {
         column.setMaxWidth(0);
 
         this.friendsTable.setDefaultEditor(Object.class, null);
-        //this.loadData();
+        this.loadData();
 
     }
 
