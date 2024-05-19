@@ -47,7 +47,7 @@ public class RegisterToolFrame extends PresentationFrame {
     private void setupPageLayout() {
         this.setTitle("Registrar ferramenta");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setSize(this.toolScreen.widthFraction(15), this.toolScreen.heightFraction(30));
+        this.setSize(this.userScreen.widthFraction(15), this.userScreen.heightFraction(30));
         this.setLocationRelativeTo(null);
     }
 
