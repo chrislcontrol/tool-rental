@@ -1,12 +1,17 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
+import tool.rental.domain.entities.Friend;
+import tool.rental.domain.entities.Rental;
+import tool.rental.domain.entities.Tool;
+import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FriendRepository {
     public int countByUser() throws ToastError {
@@ -29,4 +34,59 @@ public class FriendRepository {
         }
 
     }
+
+    public ArrayList<Friend> listAll()throws ToastError{
+        try (DataBase db = new DataBase()) {
+            String query = """
+                            SELECT id, name, phone, social_security
+                            FROM FRIEND
+                            """;
+
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            User user = Settings.getUser();
+            stm.setString(1, user.getId());
+            ResultSet result = db.executeQuery(stm);
+            ArrayList<Friend> friends = new ArrayList<>();
+
+            while (result.next()) {
+                Friend friend = new Friend(
+                        result.getString("f__id"),
+                        result.getString("f__name"),
+                        result.getString("f__phone"),
+                        result.getString("f__social_security"),
+                        user
+                );
+
+
+                friends.add(friend);
+            }
+            friends.trimToSize();
+
+            return friends;
+        }catch (SQLException e) {
+            throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
+        }
+    }
+
+//    private void setCurrentFriend(Friend friend, ResultSet result) throws SQLException{
+//        String friendId = result.getString("f__id");
+//        if(friendId == null){
+//            return;
+//        }
+//
+//        ActualFriend friend1 = new ActualFriend(
+//                result.getString("f__id"),
+//                result.getString("f__name"),
+//                result.getString("f__phone"),
+//                result.getString("f_social_security"),
+//                Settings.getUser()
+//        );
+//        setCurrentFriend(friend1, result);
+//    }
+//
+//    private class ActualFriend extends Friend{
+//        public ActualFriend(String id, String name, String phone, String socialSecurity, User user) {
+//            super(id, name, phone, socialSecurity, user);
+//        }
+//    }
 }
