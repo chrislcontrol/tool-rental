@@ -43,10 +43,10 @@ public class CreateMockUseCase {
                         """
                                 -- Inserindo dados na tabela FRIEND
                                 INSERT INTO FRIEND (id, name, phone, social_security, user_id) VALUES
-                                  ('%s', 'João Silva', '1198765432', '123456789', '%s'),
-                                  ('%s', 'Maria Oliveira', '1199876543', '987654321', '%s'),
-                                  ('%s', 'Pedro Sousa', '1198765434', '111222333', '%s'),
-                                  ('%s', 'Ana Paula', '1199876545', '444555666', '%s');
+                                  ('%s', 'João Silva', '1198765432', '12345678901', '%s'),
+                                  ('%s', 'Maria Oliveira', '1199876543', '98765432102', '%s'),
+                                  ('%s', 'Pedro Sousa', '1198765434', '11122233303', '%s'),
+                                  ('%s', 'Ana Paula', '1199876545', '44455566604', '%s');
                                 """,
                         ids[0][0], userId,
                         ids[0][1], userId,
