@@ -18,6 +18,7 @@ public class LendToolFrame extends PresentationFrame {
     private JButton rentButton;
     private JButton cancelButton;
     private JLabel toolName;
+    private JTable friendsTable;
     private String toolId;
     public LendToolFrame(String toolId) throws ToastError {
         this.toolId = toolId;
@@ -63,13 +64,7 @@ public class LendToolFrame extends PresentationFrame {
         this.loadData();
     }
     private void loadData() throws ToastError {
-        DefaultComboBoxModel<Friend> model = new DefaultComboBoxModel<>();
-        friendList.setModel(model);
-        ArrayList<Friend> friendRows = this.lendToolFrameController.listFriendsAsComboBox();
-        friendList.addItem("Selecione");
-        for(Friend friendRow : friendRows) {
-            friendList.addItem(friendRow.getName());
-        }
+
     }
 
     private void setPointer(Cursor cursor, JComponent... components) {

@@ -34,29 +34,26 @@ public class FriendRepository {
     }
 
     public ArrayList<Friend> listAll() throws ToastError {
-        try(DataBase db = new DataBase()) {
+        try (DataBase db = new DataBase()) {
             String query = """
                     SELECT
-                        f.id as f__id,
-                        f.name as f__name,
-                        f.phone as f__phone,
-                        f.social_security as f__social_security
-                    FROM 
-                        FRIEND f
-                    WHERE
-                        f.user_id = ?
-                    ORDER BY 
-                        f.name
-                    """;
+                                f.id as f__id,
+                                f.name as f__name,
+                                f.phone as f__phone,
+                                f.social_security as f__social_security
+                            FROM
+                                FRIEND f
+                            WHERE
+                                f.user_id = ?
+                            ORDER BY
+                                f.name
+                            """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
             User user = Settings.getUser();
-
             stm.setString(1, user.getId());
-
             ResultSet result = db.executeQuery(stm);
-
-            ArrayList<Friend> friends = new ArrayList<Friend>();
+            ArrayList<Friend> friends = new ArrayList<>();
 
             while (result.next()) {
                 Friend friend = new Friend(
@@ -67,15 +64,15 @@ public class FriendRepository {
                         user
                 );
 
+
                 friends.add(friend);
             }
-
             friends.trimToSize();
 
             return friends;
-
-        } catch (SQLException e){
-            throw new ToastError("Erro ao listar os amigos", "Erro de banco de dados.");
+        }catch (SQLException e) {
+            throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
         }
     }
+
 }

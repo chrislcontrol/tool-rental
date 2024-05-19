@@ -2,7 +2,6 @@ package tool.rental.domain.use_cases;
 
 import tool.rental.domain.dao.CountIdAndSumCostDAO;
 import tool.rental.domain.dto.CalculateSummaryDTO;
-import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.repositories.RentalRepository;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.utils.ToastError;
