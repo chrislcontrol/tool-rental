@@ -57,11 +57,11 @@ public class CreateMockUseCase {
                         """
                                                 
                                 -- Inserindo dados na tabela TOOL
-                                INSERT INTO TOOL (id, brand, cost, user_id) VALUES
-                                  ('%s', 'DeWalt', 100.0, '%s'),
-                                  ('%s', 'Bosch', 50.0, '%s'),
-                                  ('%s', 'Makita', 200.0, '%s'),
-                                  ('%s', 'Hitachi', 150.0, '%s');
+                                INSERT INTO TOOL (id, brand, name, cost, user_id) VALUES
+                                  ('%s', 'DeWalt', 'Martelo', 100.0, '%s'),
+                                  ('%s', 'Bosch', 'Furadeira', 50.0, '%s'),
+                                  ('%s', 'Makita', 'Chave de boca', 200.0, '%s'),
+                                  ('%s', 'Hitachi', 'Chave de fenda', 150.0, '%s');
                                  """,
 
                         ids[1][0], userId,

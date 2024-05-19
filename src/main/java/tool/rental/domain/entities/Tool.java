@@ -3,21 +3,23 @@ package tool.rental.domain.entities;
 public class Tool {
     private final String id;
     private final String brand;
+    private final String name;
     private final double cost;
     private final User user;
     private Rental currentRental;
 
-    public Tool(String id, String brand, double cost, User user, Rental latestRental) {
+    public Tool(String id, String brand, String name, double cost, User user, Rental latestRental) {
         this.id = id;
         this.brand = brand;
+        this.name = name;
         this.cost = cost;
         this.user = user;
         this.currentRental = latestRental;
     }
 
 
-    public Tool(String id, String brand, double cost, User user) {
-        this(id, brand, cost, user, null);
+    public Tool(String id, String brand, String name, double cost, User user) {
+        this(id, brand, name, cost, user, null);
     }
 
     public boolean isRented() {
@@ -47,5 +49,9 @@ public class Tool {
 
     public void setCurrentRental(Rental currentRental) {
         this.currentRental = currentRental;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

@@ -19,6 +19,10 @@ public class RegisterUserController extends Controller {
 
         JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
 
-        this.frame.setVisible(false);
+        closeFrame();
+    }
+
+    public void closeFrame() {
+        frame.setVisible(false);
     }
 }
