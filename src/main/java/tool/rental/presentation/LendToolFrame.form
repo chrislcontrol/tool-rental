@@ -74,7 +74,7 @@
         <properties>
           <font size="18"/>
           <foreground color="-1"/>
-          <text value="Label"/>
+          <text value=""/>
         </properties>
       </component>
       <hspacer id="a05ac">
