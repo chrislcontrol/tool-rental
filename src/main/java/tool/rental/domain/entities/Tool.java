@@ -2,15 +2,13 @@ package tool.rental.domain.entities;
 
 public class Tool {
     private final String id;
-    private final String name;
     private final String brand;
     private final double cost;
     private final User user;
     private Rental currentRental;
 
-    public Tool(String id, String name, String brand, double cost, User user, Rental latestRental) {
+    public Tool(String id, String brand, double cost, User user, Rental latestRental) {
         this.id = id;
-        this.name = name;
         this.brand = brand;
         this.cost = cost;
         this.user = user;
@@ -18,8 +16,8 @@ public class Tool {
     }
 
 
-    public Tool(String id, String name, String brand, double cost, User user) {
-        this(id, name, brand, cost, user, null);
+    public Tool(String id, String brand, double cost, User user) {
+        this(id, brand, cost, user, null);
     }
 
     public boolean isRented() {
@@ -29,8 +27,6 @@ public class Tool {
     public String getId() {
         return id;
     }
-
-    public String getName(){return name;}
 
     public String getBrand() {
         return brand;

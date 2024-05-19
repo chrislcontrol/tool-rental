@@ -47,7 +47,6 @@ public class ToolRepository {
             String query = """
                     SELECT
                     	t.id as t__id,
-	                    t.name as t__name,
                     	t.brand as t__brand,
                     	t.cost as t__cost,
                     	r.id as r__id,
@@ -85,7 +84,6 @@ public class ToolRepository {
             while (result.next()) {
                 Tool tool = new Tool(
                         result.getString("t__id"),
-                        result.getString("t__name"),
                         result.getString("t__brand"),
                         result.getDouble("t__cost"),
                         user
@@ -131,7 +129,6 @@ public class ToolRepository {
             String query = """
                         SELECT
                             t.id,
-                            t.name,
                             t.brand,
                             t.cost,
                             u.id as u__id,
@@ -169,7 +166,6 @@ public class ToolRepository {
 
             Tool tool = new Tool(
                     result.getString("id"),
-                    result.getString("name"),
                     result.getString("brand"),
                     result.getDouble("cost"),
                     user
@@ -184,20 +180,19 @@ public class ToolRepository {
         }
     }
 
-    public Tool createTool(String name, String brand, double cost) throws ToastError {
+    public Tool createTool(String brand, double cost) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?, ?)");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?)");
             stm.setString(1, id);
-            stm.setString(2, name);
-            stm.setString(3, brand);
-            stm.setDouble(4, cost);
-            stm.setString(5, Settings.getUser().getId());
+            stm.setString(2, brand);
+            stm.setDouble(3, cost);
+            stm.setString(4, Settings.getUser().getId());
 
             db.executeUpdate(stm);
-            return new Tool(id, name, brand, cost, Settings.getUser());
+            return new Tool(id, brand, cost, Settings.getUser());
 
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
