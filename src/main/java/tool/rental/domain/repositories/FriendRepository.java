@@ -2,8 +2,6 @@ package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.entities.Friend;
-import tool.rental.domain.entities.Rental;
-import tool.rental.domain.entities.Tool;
 import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
@@ -35,10 +33,10 @@ public class FriendRepository {
 
     }
 
-    public ArrayList<Friend> listAll()throws ToastError{
+    public ArrayList<Friend> listAll() throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
-                            SELECT
+                    SELECT
                                 f.id as f__id,
                                 f.name as f__name,
                                 f.phone as f__phone,
@@ -47,7 +45,7 @@ public class FriendRepository {
                                 FRIEND f
                             WHERE
                                 f.user_id = ?
-                            ORDER BY 
+                            ORDER BY
                                 f.name
                             """;
 
@@ -77,25 +75,4 @@ public class FriendRepository {
         }
     }
 
-//    private void setCurrentFriend(Friend friend, ResultSet result) throws SQLException{
-//        String friendId = result.getString("f__id");
-//        if(friendId == null){
-//            return;
-//        }
-//
-//        ActualFriend friend1 = new ActualFriend(
-//                result.getString("f__id"),
-//                result.getString("f__name"),
-//                result.getString("f__phone"),
-//                result.getString("f_social_security"),
-//                Settings.getUser()
-//        );
-//        setCurrentFriend(friend1, result);
-//    }
-//
-//    private class ActualFriend extends Friend{
-//        public ActualFriend(String id, String name, String phone, String socialSecurity, User user) {
-//            super(id, name, phone, socialSecurity, user);
-//        }
-//    }
 }
