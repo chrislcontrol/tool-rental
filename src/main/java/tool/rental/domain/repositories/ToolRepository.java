@@ -1,7 +1,7 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
-import tool.rental.domain.DAO.CountIdAndSumCostDAO;
+import tool.rental.domain.dao.CountIdAndSumCostDAO;
 import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Rental;
 import tool.rental.domain.entities.Tool;
@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ToolRepository {
 
@@ -47,6 +48,7 @@ public class ToolRepository {
                     SELECT
                     	t.id as t__id,
                     	t.brand as t__brand,
+                    	t.name as t__name,
                     	t.cost as t__cost,
                     	r.id as r__id,
                     	r.rental_timestamp as r__rental_timestamp,
@@ -84,6 +86,7 @@ public class ToolRepository {
                 Tool tool = new Tool(
                         result.getString("t__id"),
                         result.getString("t__brand"),
+                        result.getString("t__name"),
                         result.getDouble("t__cost"),
                         user
                 );
@@ -129,6 +132,7 @@ public class ToolRepository {
                         SELECT
                             t.id,
                             t.brand,
+                            t.name,
                             t.cost,
                             u.id as u__id,
                             u.username as u__username,
@@ -166,6 +170,7 @@ public class ToolRepository {
             Tool tool = new Tool(
                     result.getString("id"),
                     result.getString("brand"),
+                    result.getString("name"),
                     result.getDouble("cost"),
                     user
             );
@@ -178,4 +183,49 @@ public class ToolRepository {
             throw new ToastError(e.toString(), "Erro de banco de dados.");
         }
     }
+
+    public Tool createTool(String brand, String name, double cost) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String id = UUID.randomUUID().toString();
+
+
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?, ?)");
+            stm.setString(1, id);
+            stm.setString(2, brand);
+            stm.setString(3, name);
+            stm.setDouble(4, cost);
+            stm.setString(5, Settings.getUser().getId());
+
+            db.executeUpdate(stm);
+            return new Tool(id, brand, name, cost, Settings.getUser());
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível cadastrar a ferramenta devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
+        }
+    }
+
+    public boolean existsByNameAndBrand(String name, String brand) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement(
+                    "SELECT id FROM TOOL WHERE user_id = ? and name = ? and brand = ?"
+            );
+            stm.setString(1, Settings.getUser().getId());
+            stm.setString(2, name);
+            stm.setString(3, brand);
+            ResultSet result = db.executeQuery(stm);
+            return result.next();
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
+                    "Erro de banco de dados."
+            );
+        }
+    }
+
 }

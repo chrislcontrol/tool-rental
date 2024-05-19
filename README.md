@@ -34,4 +34,6 @@ return to user the correct Frame according to Use Case response.
 ### Credits: 
 ```
 Christian Silva (RA: 1072322888)
+Lucas Roberto da Rosa (RA: 10724111936)
+Nicholas da Silva (RA: 1072320766)
 ```

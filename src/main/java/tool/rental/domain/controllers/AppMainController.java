@@ -1,18 +1,23 @@
 package tool.rental.domain.controllers;
 
 import tool.rental.app.Settings;
-import tool.rental.domain.DTO.CalculateSummaryDTO;
+import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Tool;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
 import tool.rental.presentation.AppMainFrame;
 import tool.rental.presentation.LendToolFrame;
+import tool.rental.presentation.FriendsScreenFrame;
 import tool.rental.presentation.LoginFrame;
+import tool.rental.presentation.RegisterToolFrame;
+import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
+import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import java.util.function.Function;
 
 public class AppMainController extends Controller {
     private final IsRentalOpenUseCase isRentalOpenUseCase = new IsRentalOpenUseCase();
@@ -22,7 +27,7 @@ public class AppMainController extends Controller {
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public AppMainController(AppMainFrame frame) {
+    public AppMainController(PresentationFrame frame) {
         super(frame);
     }
 
@@ -57,6 +62,7 @@ public class AppMainController extends Controller {
 
         this.logoutUseCase.execute();
         this.frame.swapFrame(new LoginFrame());
+
     }
 
     public void returnTool(String toolId) throws ToastError {
@@ -87,7 +93,7 @@ public class AppMainController extends Controller {
     }
 
     public void openRegisterRentalModal(String toolId) throws ToastError {
-        if (isRentalOpenUseCase.checkOutTool(toolId)){
+        if (isRentalOpenUseCase.checkOutTool(toolId)) {
             JOptionPane.showMessageDialog(
                     null,
                     "Ferramenta selecionada já está emprestada!"
@@ -95,5 +101,12 @@ public class AppMainController extends Controller {
         } else {
             this.frame.swapFrame(new LendToolFrame(toolId), true);
         }
+    }
+
+    public void openRegisterToolModal(Runnable callback) {
+        this.frame.swapFrame(new RegisterToolFrame(callback), true);
+    }
+    public void openFriendsScreenFrame() {
+        frame.swapFrame(new FriendsScreenFrame(),true);
     }
 }

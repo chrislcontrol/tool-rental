@@ -2,8 +2,8 @@ package tool.rental.presentation;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
-import tool.rental.domain.DTO.CalculateSummaryDTO;
 import tool.rental.domain.repositories.RentalRepository;
+import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class AppMainFrame extends PresentationFrame {
+
     private final AppMainController controller = new AppMainController(this);
     private final RentalRepository rentalRepository = new RentalRepository();
     private JPanel mainPanel;
@@ -44,7 +45,20 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
+        registerToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openRegisterToolModal(() -> {
+                    try {
+                        loadData();
+                    } catch (ToastError exc) {
+                        exc.display();
+                    }
+                });
+            }
+        });
     }
+
 
     private void calculateSummary() throws ToastError {
         CalculateSummaryDTO summary = this.controller.calculateSummary();
@@ -58,7 +72,7 @@ public class AppMainFrame extends PresentationFrame {
     private void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
 
-        String[] columns = {"ID", "Marca", "Custo", "Emprestada para", "Data de empréstimo"};
+        String[] columns = {"ID", "Marca", "Nome", "Custo", "Emprestada para", "Data de empréstimo"};
 
         for (String column : columns) {
             model.addColumn(column);
@@ -137,6 +151,13 @@ public class AppMainFrame extends PresentationFrame {
         });
 
         //ATÉ AQUI :D
+
+        registerFriendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openFriendsScreenFrame();
+            }
+        });
 
         this.toolsTable.addKeyListener(new KeyAdapter() {
             @Override

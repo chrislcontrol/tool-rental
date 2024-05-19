@@ -1,35 +1,39 @@
 package tool.rental.presentation;
 
-import tool.rental.domain.controllers.RegisterUserController;
+import tool.rental.domain.controllers.RegisterToolController;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterUserFrame extends PresentationFrame {
-    private final RegisterUserController registerUserController = new RegisterUserController(this);
+public class RegisterToolFrame extends PresentationFrame {
 
-    private JPanel MainPanel;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
+    private final RegisterToolController registerToolController = new RegisterToolController(this);
+
+    private JTextField costField;
+    private JTextField brandField;
     private JButton confirmButton;
-    private JButton cancelButton; // Chris, favor configurar o botão!!
-    private JPasswordField confirmPasswordField;
+    private JButton cancelButton;
+    private JPanel MainPanel;
+    private JTextField nameField;
 
-    public RegisterUserFrame() {
+
+    public RegisterToolFrame(Runnable successCallback) {
         this.setMainPanel();
         this.setupPageLayout();
-        this.setUpListeners();
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    registerUserController.registerUser(
-                            usernameField.getText(),
-                            new String(passwordField.getPassword()),
-                            new String(confirmPasswordField.getPassword())
+                    registerToolController.registerTool(
+                            brandField.getText(),
+                            nameField.getText(),
+                            Double.parseDouble(costField.getText()),
+                            successCallback
+
                     );
                 } catch (ToastError ex) {
                     ex.display();
@@ -39,16 +43,13 @@ public class RegisterUserFrame extends PresentationFrame {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registerUserController.closeFrame();
+                registerToolController.closeFrame();
             }
         });
     }
 
-    private void setUpListeners() {
-    }
-
     private void setupPageLayout() {
-        this.setTitle("Registrar usuário");
+        this.setTitle("Registrar ferramenta");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(this.userScreen.widthFraction(15), this.userScreen.heightFraction(30));
         this.setLocationRelativeTo(null);
@@ -58,3 +59,4 @@ public class RegisterUserFrame extends PresentationFrame {
         this.setContentPane(this.MainPanel);
     }
 }
+
