@@ -13,7 +13,7 @@ public class ListToolsToMainTableUseCase {
 
     public String[][] execute(boolean rentedOnly) throws ToastError {
         ArrayList<Tool> tools = this.toolRepository.listAll(rentedOnly);
-        String[][] resultArray = new String[tools.size()][6];
+        String[][] resultArray = new String[tools.size()][5];
 
         for (int i = 0; i < resultArray.length; i++) {
             Tool tool = tools.get(i);
@@ -28,11 +28,10 @@ public class ListToolsToMainTableUseCase {
             }
 
             resultArray[i][0] = tool.getId();
-            resultArray[i][1] = tool.getName();
-            resultArray[i][2] = tool.getBrand();
-            resultArray[i][3] = String.format("R$ %,.2f", tool.getCost());
-            resultArray[i][4] = loanTo;
-            resultArray[i][5] = loanSince;
+            resultArray[i][1] = tool.getBrand();
+            resultArray[i][2] = String.format("R$ %,.2f", tool.getCost());
+            resultArray[i][3] = loanTo;
+            resultArray[i][4] = loanSince;
         }
 
         return resultArray;

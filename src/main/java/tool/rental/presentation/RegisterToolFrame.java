@@ -13,7 +13,6 @@ public class RegisterToolFrame extends PresentationFrame {
 
     private final RegisterToolController registerToolController = new RegisterToolController(this);
 
-    private JTextField toolNameField;
     private JTextField costField;
     private JTextField brandField;
     private JButton confirmButton;
@@ -29,7 +28,6 @@ public class RegisterToolFrame extends PresentationFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     registerToolController.registerTool(
-                            toolNameField.getText(),
                             brandField.getText(),
                             Double.parseDouble(costField.getText())
                     );
