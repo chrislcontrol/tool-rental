@@ -9,11 +9,13 @@ import tool.rental.domain.use_cases.ListToolsToMainTableUseCase;
 import tool.rental.domain.use_cases.LogoutUseCase;
 import tool.rental.domain.use_cases.ReturnToolUseCase;
 import tool.rental.presentation.AppMainFrame;
+import tool.rental.presentation.FriendsScreenFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
+import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
@@ -25,7 +27,7 @@ public class AppMainController extends Controller {
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public AppMainController(AppMainFrame frame) {
+    public AppMainController(PresentationFrame frame) {
         super(frame);
     }
 
@@ -91,5 +93,8 @@ public class AppMainController extends Controller {
     }
     public void openRegisterToolModal() {
         this.frame.swapFrame(new RegisterToolFrame(), true);
+
+    public void openFriendsScreenFrame() {
+        frame.swapFrame(new FriendsScreenFrame(),true);
     }
 }
