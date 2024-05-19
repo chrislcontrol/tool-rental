@@ -55,6 +55,7 @@
                                 
                 CREATE TABLE IF NOT EXISTS TOOL (
                 	id TEXT NOT NULL,
+                    name TEXT NOT NULL,
                 	brand TEXT NOT NULL,
                 	cost REAL NOT NULL,
                 	user_id TEXT NOT NULL,

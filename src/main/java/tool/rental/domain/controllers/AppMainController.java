@@ -93,7 +93,7 @@ public class AppMainController extends Controller {
     }
     public void openRegisterToolModal() {
         this.frame.swapFrame(new RegisterToolFrame(), true);
-
+    }
     public void openFriendsScreenFrame() {
         frame.swapFrame(new FriendsScreenFrame(),true);
     }
