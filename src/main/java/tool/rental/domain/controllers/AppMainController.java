@@ -5,19 +5,16 @@ import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Tool;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
-import tool.rental.presentation.AppMainFrame;
-import tool.rental.presentation.LendToolFrame;
 import tool.rental.presentation.FriendsScreenFrame;
+import tool.rental.presentation.LendToolFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.presentation.RegisterToolFrame;
-import tool.rental.presentation.RegisterUserFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
-import java.util.function.Function;
 
 public class AppMainController extends Controller {
     private final IsRentalOpenUseCase isRentalOpenUseCase = new IsRentalOpenUseCase();
@@ -94,19 +91,19 @@ public class AppMainController extends Controller {
 
     public void openRegisterRentalModal(String toolId) throws ToastError {
         if (isRentalOpenUseCase.checkOutTool(toolId)) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Ferramenta selecionada já está emprestada!"
+            throw new ToastError(
+                    "Ferramenta selecionada já está emprestada!",
+                    "Ferramenta já emprestada"
             );
-        } else {
-            this.frame.swapFrame(new LendToolFrame(toolId), true);
         }
+        this.frame.swapFrame(new LendToolFrame(toolId), true);
     }
 
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
     }
+
     public void openFriendsScreenFrame() {
-        frame.swapFrame(new FriendsScreenFrame(),true);
+        frame.swapFrame(new FriendsScreenFrame(), true);
     }
 }
