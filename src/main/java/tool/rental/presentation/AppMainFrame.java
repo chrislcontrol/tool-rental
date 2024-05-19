@@ -4,13 +4,15 @@ import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.utils.PresentationFrame;
+import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AppMainFrame extends PresentationFrame {
 
@@ -27,6 +29,7 @@ public class AppMainFrame extends PresentationFrame {
     private JLabel friendsCountLabel;
     private JLabel toolTotalAmountLabel;
     private JCheckBox rentalCB;
+    private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable);
 
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
@@ -66,33 +69,15 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     private void setupTable() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
-
-        String[] columns = {"ID", "Marca", "Nome", "Custo", "Emprestada para", "Data de empréstimo"};
-
-        for (String column : columns) {
-            model.addColumn(column);
-        }
-
+        tableConfigurator.setup("ID", "Marca", "Nome", "Custo", "Emprestada para", "Data de empréstimo");
         this.loadData();
-
-        TableColumn column = this.toolsTable.getColumnModel().getColumn(0);
-        column.setMinWidth(0);
-        column.setMaxWidth(0);
-
-        this.toolsTable.setDefaultEditor(Object.class, null);
     }
 
     private void loadData() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
-        model.setNumRows(0);
-
         boolean rentedOnly = this.rentalCB.isSelected();
         String[][] toolRows = this.controller.listToolsAsTableRow(rentedOnly);
 
-        for (String[] toolRow : toolRows) {
-            model.addRow(toolRow);
-        }
+        tableConfigurator.insertRows(toolRows, true);
 
         this.calculateSummary();
     }
@@ -131,7 +116,7 @@ public class AppMainFrame extends PresentationFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     controller.openFriendsScreenFrame();
-                } catch (ToastError exc){
+                } catch (ToastError exc) {
                     exc.display();
                 }
             }

@@ -2,6 +2,7 @@ package tool.rental.presentation;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
+import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     private JButton exitButton;
     private JButton rankingButton;
     private JPanel MainPanel;
+    private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
 
 
     private void createUIComponents() {
@@ -76,29 +78,13 @@ public class FriendsScreenFrame extends PresentationFrame {
 
     private Friend friend;
     public void setupTable() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
-        for (String column : columns) {
-            model.addColumn(column);
-        }
-
-        TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
-        column.setMinWidth(0);
-        column.setMaxWidth(0);
-
-        this.friendsTable.setDefaultEditor(Object.class, null);
+        tableConfigurator.setup("ID", "Nome", "Telefone", "Identidade");
         this.loadData();
 
     }
 
     private void loadData() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        model.setNumRows(0);
         String[][] friendsRows = this.controller.listFriendAsTableRow();
-
-        for (String[] friendRow : friendsRows) {
-            model.addRow(friendRow);
-    }
-
+        tableConfigurator.insertRows(friendsRows, true);
     }
 }
