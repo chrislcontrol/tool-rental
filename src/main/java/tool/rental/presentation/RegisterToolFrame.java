@@ -18,6 +18,7 @@ public class RegisterToolFrame extends PresentationFrame {
     private JButton confirmButton;
     private JButton cancelButton;
     private JPanel MainPanel;
+    private JTextField nameField;
 
 
     public RegisterToolFrame(Runnable successCallback) {
@@ -29,6 +30,7 @@ public class RegisterToolFrame extends PresentationFrame {
                 try {
                     registerToolController.registerTool(
                             brandField.getText(),
+                            nameField.getText(),
                             Double.parseDouble(costField.getText()),
                             successCallback
 

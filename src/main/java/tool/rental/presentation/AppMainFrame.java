@@ -70,7 +70,7 @@ public class AppMainFrame extends PresentationFrame {
     private void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.toolsTable.getModel();
 
-        String[] columns = {"ID", "Marca", "Custo", "Emprestada para", "Data de empréstimo"};
+        String[] columns = {"ID", "Marca", "Nome", "Custo", "Emprestada para", "Data de empréstimo"};
 
         for (String column : columns) {
             model.addColumn(column);

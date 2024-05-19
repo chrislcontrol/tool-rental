@@ -122,6 +122,7 @@ public class App {
                 CREATE TABLE IF NOT EXISTS TOOL (
                 	id TEXT NOT NULL,
                 	brand TEXT NOT NULL,
+                	name TEXT NOT NULL,
                 	cost REAL NOT NULL,
                 	user_id TEXT NOT NULL,
                 	CONSTRAINT TOOL_PK PRIMARY KEY (id),
