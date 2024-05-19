@@ -60,7 +60,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     private void setupPageLayout() {
         this.setTitle("Amigos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setSize(this.userScreen.widthFraction(20), this.userScreen.heightFraction(40));
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
         this.setLocationRelativeTo(null);
     }
 
@@ -77,7 +77,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     private Friend friend;
     public void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        String[] columns = {"ID", "Name", "Phone", "Social_Security", "User"};
+        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
         for (String column : columns) {
             model.addColumn(column);
         }

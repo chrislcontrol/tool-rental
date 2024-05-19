@@ -19,7 +19,6 @@ public class ListFriendsToMainTableUseCase {
             resultArray[i][1] = friend.getName();
             resultArray[i][2] = friend.getPhone();
             resultArray[i][3] = friend.getSocialSecurity();
-            resultArray[i][4] = String.valueOf(friend.getUser());
         }
         return resultArray;
     }
