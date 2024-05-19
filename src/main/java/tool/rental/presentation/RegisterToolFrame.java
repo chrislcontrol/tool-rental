@@ -20,7 +20,7 @@ public class RegisterToolFrame extends PresentationFrame {
     private JPanel MainPanel;
 
 
-    public RegisterToolFrame() {
+    public RegisterToolFrame(Runnable successCallback) {
         this.setMainPanel();
         this.setupPageLayout();
         confirmButton.addActionListener(new ActionListener() {
@@ -29,7 +29,9 @@ public class RegisterToolFrame extends PresentationFrame {
                 try {
                     registerToolController.registerTool(
                             brandField.getText(),
-                            Double.parseDouble(costField.getText())
+                            Double.parseDouble(costField.getText()),
+                            successCallback
+
                     );
                 } catch (ToastError ex) {
                     ex.display();

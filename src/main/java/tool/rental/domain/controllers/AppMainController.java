@@ -19,6 +19,7 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import java.util.function.Function;
 
 public class AppMainController extends Controller {
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
@@ -91,8 +92,8 @@ public class AppMainController extends Controller {
                 "Ferramenta devolvida com sucesso."
         );
     }
-    public void openRegisterToolModal() {
-        this.frame.swapFrame(new RegisterToolFrame(), true);
+    public void openRegisterToolModal(Runnable callback) {
+        this.frame.swapFrame(new RegisterToolFrame(callback), true);
     }
     public void openFriendsScreenFrame() {
         frame.swapFrame(new FriendsScreenFrame(),true);

@@ -45,7 +45,14 @@ public class AppMainFrame extends PresentationFrame {
         this.setupTable();
         registerToolButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { controller.openRegisterToolModal();
+            public void actionPerformed(ActionEvent e) {
+                controller.openRegisterToolModal(() -> {
+                    try {
+                        loadData();
+                    } catch (ToastError exc) {
+                        exc.display();
+                    }
+                });
             }
         });
     }
