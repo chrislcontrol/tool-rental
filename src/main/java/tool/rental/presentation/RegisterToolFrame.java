@@ -24,7 +24,6 @@ public class RegisterToolFrame extends PresentationFrame {
     public RegisterToolFrame() {
         this.setMainPanel();
         this.setupPageLayout();
-        this.setUpListeners();
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,9 +44,6 @@ public class RegisterToolFrame extends PresentationFrame {
                 registerToolController.closeFrame();
             }
         });
-    }
-
-    private void setUpListeners() {
     }
 
     private void setupPageLayout() {
