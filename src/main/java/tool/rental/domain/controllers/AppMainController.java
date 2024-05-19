@@ -19,6 +19,7 @@ import javax.swing.*;
 public class AppMainController extends Controller {
     private final IsRentalOpenUseCase isRentalOpenUseCase = new IsRentalOpenUseCase();
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
+    private final ListFriendsToMainTableUseCase listFriendsToMainTableUseCase = new ListFriendsToMainTableUseCase();
     private final LogoutUseCase logoutUseCase = new LogoutUseCase();
     private final CalculateSummaryUseCase calculateSummaryUseCase = new CalculateSummaryUseCase();
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
@@ -34,6 +35,10 @@ public class AppMainController extends Controller {
 
     public String[][] listToolsAsTableRow(boolean rentedOnly) throws ToastError {
         return this.listToolsToMainTableUseCase.execute(rentedOnly);
+    }
+
+    public String[][] listFriendAsTableRow() throws ToastError {
+        return this.listFriendsToMainTableUseCase.execute();
     }
 
     public CalculateSummaryDTO calculateSummary() throws ToastError {
@@ -102,8 +107,7 @@ public class AppMainController extends Controller {
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
     }
-
-    public void openFriendsScreenFrame() {
-        frame.swapFrame(new FriendsScreenFrame(), true);
+    public void openFriendsScreenFrame() throws ToastError {
+        frame.swapFrame(new FriendsScreenFrame(),true);
     }
 }
