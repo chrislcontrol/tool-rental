@@ -43,8 +43,13 @@ public class AppMainFrame extends PresentationFrame {
                 this.exitButton
         );
         this.setupTable();
-
+        registerToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { controller.openRegisterToolModal();
+            }
+        });
     }
+
 
     private void calculateSummary() throws ToastError {
         CalculateSummaryDTO summary = this.controller.calculateSummary();
