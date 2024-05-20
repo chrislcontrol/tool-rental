@@ -1,17 +1,21 @@
 package tool.rental.presentation;
 
 import tool.rental.app.Settings;
+import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.controllers.LendToolFrameController;
 import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
 public class LendToolFrame extends PresentationFrame {
+    private final AppMainController controller = new AppMainController(this);
     private final LendToolFrameController lendToolFrameController = new LendToolFrameController(this);
     private JPanel mainPanel;
     private JComboBox friendList;
@@ -25,11 +29,10 @@ public class LendToolFrame extends PresentationFrame {
         this.setMainPanel();
         this.setupPageLayout();
         this.setUpListeners();
-        this.loadData();
+        this.setupTable();
         this.setPointer(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
                 this.rentButton,
-                this.cancelButton,
-                this.friendList
+                this.cancelButton
                 );
     }
 
@@ -60,11 +63,34 @@ public class LendToolFrame extends PresentationFrame {
         });
     }
 
-    private void setupComboBox() throws ToastError {
-        this.loadData();
-    }
-    private void loadData() throws ToastError {
+    public void setupTable() throws ToastError {
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
+        for (String column : columns) {
+            model.addColumn(column);
+        }
 
+        TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+
+        TableColumn column2 = this.friendsTable.getColumnModel().getColumn(2);
+        column2.setMinWidth(0);
+        column2.setMaxWidth(0);
+
+        this.friendsTable.setDefaultEditor(Object.class, null);
+        this.loadData();
+
+    }
+
+    private void loadData() throws ToastError {
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        model.setNumRows(0);
+        String[][] friendsRows = this.controller.listFriendAsTableRow();
+
+        for (String[] friendRow : friendsRows) {
+            model.addRow(friendRow);
+        }
     }
 
     private void setPointer(Cursor cursor, JComponent... components) {

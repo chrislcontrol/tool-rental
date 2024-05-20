@@ -1,16 +1,16 @@
 package tool.rental.presentation;
+
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 public class FriendsScreenFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
@@ -31,7 +31,6 @@ public class FriendsScreenFrame extends PresentationFrame {
         JScrollPane JScrollPanel = new JScrollPane(friendsTable);
         JPanel Panel1 = new JPanel();
     }
-
 
 
     public FriendsScreenFrame() throws ToastError {
@@ -75,6 +74,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     }
 
     private Friend friend;
+
     public void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
         String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
@@ -98,7 +98,7 @@ public class FriendsScreenFrame extends PresentationFrame {
 
         for (String[] friendRow : friendsRows) {
             model.addRow(friendRow);
-    }
+        }
 
     }
 }
