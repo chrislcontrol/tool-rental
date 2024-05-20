@@ -2,6 +2,7 @@ package tool.rental.presentation;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
+import tool.rental.domain.repositories.RentalRepository;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
@@ -17,6 +18,7 @@ import java.awt.event.KeyEvent;
 public class AppMainFrame extends PresentationFrame {
 
     private final AppMainController controller = new AppMainController(this);
+    private final RentalRepository rentalRepository = new RentalRepository();
     private JPanel mainPanel;
     private JButton registerFriendButton;
     private JButton registerToolButton;
@@ -99,6 +101,7 @@ public class AppMainFrame extends PresentationFrame {
         this.setContentPane(this.mainPanel);
     }
 
+//EM TESTE
     protected void setUpListeners() {
         this.exitButton.addActionListener(new ActionListener() {
             @Override
@@ -110,6 +113,27 @@ public class AppMainFrame extends PresentationFrame {
                 }
             }
         });
+
+        this.toolsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+
+        this.lendToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
+                    controller.openRegisterRentalModal(toolId);
+                } catch (ToastError exc) {
+                    exc.display();
+                }
+            }
+        });
+
+        //ATÉ AQUI :D
 
         registerFriendButton.addActionListener(new ActionListener() {
             @Override

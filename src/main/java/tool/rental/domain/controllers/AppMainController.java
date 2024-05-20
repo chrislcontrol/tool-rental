@@ -6,6 +6,7 @@ import tool.rental.domain.entities.Tool;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
 import tool.rental.presentation.FriendsScreenFrame;
+import tool.rental.presentation.LendToolFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.utils.Controller;
@@ -16,6 +17,7 @@ import tool.rental.utils.ToastError;
 import javax.swing.*;
 
 public class AppMainController extends Controller {
+    private final IsRentalOpenUseCase isRentalOpenUseCase = new IsRentalOpenUseCase();
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
     private final ListFriendsToMainTableUseCase listFriendsToMainTableUseCase = new ListFriendsToMainTableUseCase();
     private final LogoutUseCase logoutUseCase = new LogoutUseCase();
@@ -91,6 +93,17 @@ public class AppMainController extends Controller {
                 "Ferramenta devolvida com sucesso."
         );
     }
+
+    public void openRegisterRentalModal(String toolId) throws ToastError {
+        if (isRentalOpenUseCase.checkOutTool(toolId)) {
+            throw new ToastError(
+                    "Ferramenta selecionada já está emprestada!",
+                    "Ferramenta já emprestada"
+            );
+        }
+        this.frame.swapFrame(new LendToolFrame(toolId), true);
+    }
+
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
     }
