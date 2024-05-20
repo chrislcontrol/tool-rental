@@ -31,8 +31,13 @@ return to user the correct Frame according to Use Case response.
 - Repository(Domain.Infra.DB): Database adapter that abstracts database's queries and dialect.
   * Repository's methods use to return subclasses of Model, witch is an database's entity abstraction for Java class.
 ## List of Functional Requirements:
- - RF_E01 : The system should let the user register a new friend.
- - RF_E02 : The system should let the user register a new tool.
+ - RF_E01 : The system must permit the user register a new friend.
+ - RF_E02 : The system must permit the user register a new tool.
+ - RF_E03 : The system must permit the user register a rent.
+ - RF_E04 : The system must have a report of how much the user spent.
+ - RF_E05 : The system must have a report with all actives loans.
+- RF_E05 : The system must have a report with all loans made.
+- RF_E05 : The system must show if the friend of the last loan still have pendencies.
 ### Credits: 
 ```
 Christian Silva (RA: 1072322888)
