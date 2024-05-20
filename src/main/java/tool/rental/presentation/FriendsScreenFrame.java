@@ -74,7 +74,6 @@ public class FriendsScreenFrame extends PresentationFrame {
     }
 
     private Friend friend;
-
     public void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
         String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
@@ -98,7 +97,7 @@ public class FriendsScreenFrame extends PresentationFrame {
 
         for (String[] friendRow : friendsRows) {
             model.addRow(friendRow);
-        }
+    }
 
     }
 }

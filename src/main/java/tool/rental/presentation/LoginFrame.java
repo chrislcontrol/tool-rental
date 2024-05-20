@@ -55,7 +55,7 @@ public class LoginFrame extends PresentationFrame {
     private void setupPageLayout() {
         this.setTitle("Faça seu login");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(this.userScreen.widthFraction(20), this.userScreen.heightFraction(40));
+        this.setSize(this.userScreen.widthFraction(30), this.userScreen.heightFraction(40));
         this.setLocationRelativeTo(null);
     }
 

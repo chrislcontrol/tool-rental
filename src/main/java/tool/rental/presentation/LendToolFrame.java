@@ -20,6 +20,7 @@ public class LendToolFrame extends PresentationFrame {
     private JButton cancelButton;
     private JLabel JLtoolName;
     private JTable friendsTable;
+    private JTextField textField1;
     private String toolId;
     private String toolName;
     public LendToolFrame(String toolId, String toolName) throws ToastError {
@@ -39,12 +40,13 @@ public class LendToolFrame extends PresentationFrame {
     private void setupPageLayout() {
         this.setTitle(String.format("Empréstimo de ferramenta (%s) ", Settings.getUser().getUsername()));
         this.setDefaultCloseOperation(LendToolFrame.DISPOSE_ON_CLOSE);
-        this.setSize(this.userScreen.widthFraction(30), this.userScreen.heightFraction(30));
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
         this.setLocationRelativeTo(null);
     }
 
     private void setMainPanel() {
         this.setContentPane(this.mainPanel);
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
     }
 
     public void setUpListeners(){
@@ -58,7 +60,7 @@ public class LendToolFrame extends PresentationFrame {
         rentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
     }
@@ -67,12 +69,24 @@ public class LendToolFrame extends PresentationFrame {
         JLtoolName.setText(toolName);
     }
 
+    private void loadData() throws ToastError {
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        model.setNumRows(0);
+        String[][] friendsRows = this.controller.listFriendAsTableRow();
+
+        for (String[] friendRow : friendsRows) {
+            model.addRow(friendRow);
+        }
+
+    }
+
     public void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
+        String[] columns = {"Id", "Nome", "Telefone", "Identidade"};
         for (String column : columns) {
             model.addColumn(column);
         }
+
 
         TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
         column.setMinWidth(0);
@@ -85,18 +99,8 @@ public class LendToolFrame extends PresentationFrame {
         this.friendsTable.setDefaultEditor(Object.class, null);
         this.loadData();
 
+
     }
-
-    private void loadData() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        model.setNumRows(0);
-        String[][] friendsRows = this.controller.listFriendAsTableRow();
-
-        for (String[] friendRow : friendsRows) {
-            model.addRow(friendRow);
-        }
-    }
-
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);
