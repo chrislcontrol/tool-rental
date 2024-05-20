@@ -3,7 +3,6 @@ package tool.rental.presentation;
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.controllers.LendToolFrameController;
-import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
@@ -12,22 +11,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class LendToolFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
     private final LendToolFrameController lendToolFrameController = new LendToolFrameController(this);
     private JPanel mainPanel;
-    private JComboBox friendList;
     private JButton rentButton;
     private JButton cancelButton;
-    private JLabel toolName;
+    private JLabel JLtoolName;
     private JTable friendsTable;
     private String toolId;
-    public LendToolFrame(String toolId) throws ToastError {
+    private String toolName;
+    public LendToolFrame(String toolId, String toolName) throws ToastError {
         this.toolId = toolId;
+        this.toolName = toolName;
         this.setMainPanel();
         this.setupPageLayout();
+        this.setTextToolName();
         this.setUpListeners();
         this.setupTable();
         this.setPointer(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
@@ -58,9 +58,13 @@ public class LendToolFrame extends PresentationFrame {
         rentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                
             }
         });
+    }
+
+    public void setTextToolName(){
+        JLtoolName.setText(toolName);
     }
 
     public void setupTable() throws ToastError {

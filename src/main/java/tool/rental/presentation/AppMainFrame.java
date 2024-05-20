@@ -141,7 +141,8 @@ public class AppMainFrame extends PresentationFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
-                    controller.openRegisterRentalModal(toolId);
+                    String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
+                    controller.openRegisterRentalModal(toolId, toolName);
                 } catch (ToastError exc) {
                     exc.display();
                 }

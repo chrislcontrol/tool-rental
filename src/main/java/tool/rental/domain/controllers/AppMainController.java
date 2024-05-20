@@ -94,14 +94,14 @@ public class AppMainController extends Controller {
         );
     }
 
-    public void openRegisterRentalModal(String toolId) throws ToastError {
+    public void openRegisterRentalModal(String toolId, String toolName) throws ToastError {
         if (isRentalOpenUseCase.checkOutTool(toolId)) {
             throw new ToastError(
                     "Ferramenta selecionada já está emprestada!",
                     "Ferramenta já emprestada"
             );
         }
-        this.frame.swapFrame(new LendToolFrame(toolId), true);
+        this.frame.swapFrame(new LendToolFrame(toolId, toolName), true);
     }
 
     public void openRegisterToolModal(Runnable callback) {
