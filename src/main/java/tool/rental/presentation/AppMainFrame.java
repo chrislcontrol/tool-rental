@@ -10,10 +10,7 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class AppMainFrame extends PresentationFrame {
 
@@ -101,7 +98,6 @@ public class AppMainFrame extends PresentationFrame {
         this.setContentPane(this.mainPanel);
     }
 
-//EM TESTE
     protected void setUpListeners() {
         this.exitButton.addActionListener(new ActionListener() {
             @Override
@@ -132,8 +128,6 @@ public class AppMainFrame extends PresentationFrame {
                 }
             }
         });
-
-        //ATÉ AQUI :D
 
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
