@@ -30,7 +30,9 @@ return to user the correct Frame according to Use Case response.
 ####
 - Repository(Domain.Infra.DB): Database adapter that abstracts database's queries and dialect.
   * Repository's methods use to return subclasses of Model, witch is an database's entity abstraction for Java class.
-
+## List of Functional Requirements:
+ - RF_E01 : The system should let the user register a new friend.
+ - RF_E02 : The system should let the user register a new tool.
 ### Credits: 
 ```
 Christian Silva (RA: 1072322888)
