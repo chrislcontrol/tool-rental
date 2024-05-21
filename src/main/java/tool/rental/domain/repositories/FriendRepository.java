@@ -1,6 +1,7 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
+import tool.rental.domain.dao.FriendRentalSummary;
 import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendRepository {
     public int countByUser() throws ToastError {
@@ -72,6 +74,52 @@ public class FriendRepository {
             return friends;
         }catch (SQLException e) {
             throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
+        }
+    }
+
+    public List<FriendRentalSummary> findRentalSummary() throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String query = """
+                    SELECT
+                    	f.name,
+                    	f.social_security,
+                    	count(r.id) as total_rental,
+                    	SUM(CASE WHEN r.devolution_timestamp IS NULL THEN 1 ELSE 0 END) as current_borrowed
+                                        
+                    FROM
+                    	FRIEND f
+                    	
+                    LEFT JOIN RENTAL r
+                    	on r.friend_id = f.id
+                    	
+                    WHERE f.USER_ID = ?
+                    group by f.name, f.social_security
+                                        
+                    order by total_rental
+                    """;
+
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            stm.setString(1, Settings.getUser().getId());
+            ResultSet result = db.executeQuery(stm);
+
+            ArrayList<FriendRentalSummary> results = new ArrayList<>();
+
+            while (result.next()) {
+                FriendRentalSummary summary = new FriendRentalSummary(
+                        result.getString("name"),
+                        result.getString("social_security"),
+                        result.getInt("total_rental"),
+                        result.getInt("current_borrowed")
+                );
+                results.add(summary);
+            }
+
+            results.trimToSize();
+
+            return results;
+
+        } catch (SQLException e) {
+            throw new ToastError(e.toString(), "Erro de banco de dados");
         }
     }
 

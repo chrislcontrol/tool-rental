@@ -3,6 +3,7 @@ package tool.rental.utils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import java.util.List;
 
 public class TableConfigurator {
     private final JTable table;
@@ -30,10 +31,13 @@ public class TableConfigurator {
             model.addColumn(column);
         }
 
-        for (int idx : hiddenColumns) {
-            TableColumn columnModel = getColumn(idx);
-            columnModel.setMinWidth(0);
-            columnModel.setMaxWidth(0);
+        if (hiddenColumns != null) {
+
+            for (int idx : hiddenColumns) {
+                TableColumn columnModel = getColumn(idx);
+                columnModel.setMinWidth(0);
+                columnModel.setMaxWidth(0);
+            }
         }
 
         table.setDefaultEditor(Object.class, null);
@@ -44,7 +48,7 @@ public class TableConfigurator {
         model.addRow(row);
     }
 
-    public void insertRows(String[][] rows, boolean resetTable) {
+    public void insertRows(Iterable<String[]> rows, boolean resetTable) {
         DefaultTableModel model = getTableModel();
 
         if (resetTable) {
