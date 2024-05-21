@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendsScreenFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
@@ -57,6 +58,16 @@ public class FriendsScreenFrame extends PresentationFrame {
                 dispose();
             }
         });
+        rankingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.openFriendsRankFrame();
+                } catch (ToastError ex) {
+                    ex.display();
+                }
+            }
+        });
     }
 
     private void setupPageLayout() {
@@ -76,7 +87,6 @@ public class FriendsScreenFrame extends PresentationFrame {
         }
     }
 
-    private Friend friend;
     public void setupTable() throws ToastError {
         tableConfigurator.setup("ID", "Nome", "Telefone", "Identidade");
         this.loadData();
@@ -84,7 +94,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     }
 
     private void loadData() throws ToastError {
-        String[][] friendsRows = this.controller.listFriendAsTableRow();
+        List<String[]> friendsRows = this.controller.listFriendAsTableRow();
         tableConfigurator.insertRows(friendsRows, true);
     }
 }
