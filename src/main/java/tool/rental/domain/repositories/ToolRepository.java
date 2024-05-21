@@ -33,8 +33,8 @@ public class ToolRepository {
 
         Rental currentRental = new Rental(
                 result.getString("r__id"),
-                result.getInt("r__rental_timestamp"),
-                result.getInt("r__devolution_timestamp"),
+                result.getLong("r__rental_timestamp"),
+                result.getLong("r__devolution_timestamp"),
                 friend,
                 tool
         );

@@ -3,6 +3,7 @@ package tool.rental.domain.entities;
 import tool.rental.domain.infra.db.contracts.Model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,14 +38,15 @@ public class Rental extends Model {
         return devolutionTimestamp;
     }
 
-    public LocalDateTime getRentalDatetime() {
-        Instant instant = Instant.ofEpochMilli(this.rentalTimestamp);
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+    public Date getRentalDatetime() {
+        long timestamp = getRentalTimestamp();
+        return new Date(timestamp);
     }
 
     public String getFormattedRentalDate(String format) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return this.getRentalDatetime().format(formatter);
+        Date rentalDatetime = getRentalDatetime();
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(rentalDatetime);
     }
 
     public String getFormattedRentalDate() {
