@@ -5,6 +5,7 @@ import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Tool;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
+import tool.rental.presentation.FriendsRankFrame;
 import tool.rental.presentation.FriendsScreenFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.presentation.RegisterToolFrame;
@@ -14,6 +15,7 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import java.util.List;
 
 public class AppMainController extends Controller {
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
@@ -27,15 +29,15 @@ public class AppMainController extends Controller {
         super(frame);
     }
 
-    public String[][] listToolsAsTableRow() throws ToastError {
+    public List<String[]> listToolsAsTableRow() throws ToastError {
         return this.listToolsAsTableRow(false);
     }
 
-    public String[][] listToolsAsTableRow(boolean rentedOnly) throws ToastError {
+    public List<String[]> listToolsAsTableRow(boolean rentedOnly) throws ToastError {
         return this.listToolsToMainTableUseCase.execute(rentedOnly);
     }
 
-    public String[][] listFriendAsTableRow() throws ToastError {
+    public List<String[]> listFriendAsTableRow() throws ToastError {
         return this.listFriendsToMainTableUseCase.execute();
     }
 
@@ -91,10 +93,16 @@ public class AppMainController extends Controller {
                 "Ferramenta devolvida com sucesso."
         );
     }
+
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
     }
+
     public void openFriendsScreenFrame() throws ToastError {
-        frame.swapFrame(new FriendsScreenFrame(),true);
+        frame.swapFrame(new FriendsScreenFrame(), true);
+    }
+
+    public void openFriendsRankFrame() throws ToastError {
+        frame.swapFrame(new FriendsRankFrame(), true);
     }
 }

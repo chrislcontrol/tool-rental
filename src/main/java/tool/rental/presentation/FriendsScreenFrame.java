@@ -7,6 +7,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.*;
 import javax.swing.table.TableRowSorter;
 import javax.swing.event.DocumentEvent;
@@ -52,6 +57,16 @@ public class FriendsScreenFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+            }
+        });
+        rankingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.openFriendsRankFrame();
+                } catch (ToastError ex) {
+                    ex.display();
+                }
             }
         });
         nameFilter.addKeyListener(new KeyAdapter() {
@@ -138,9 +153,10 @@ public class FriendsScreenFrame extends PresentationFrame {
     }
 
     private void loadData() throws ToastError {
+        List<String[]> friendsRows = this.controller.listFriendAsTableRow();
+        tableConfigurator.insertRows(friendsRows, true);
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
         model.setNumRows(0);
-        String[][] friendsRows = this.controller.listFriendAsTableRow();
 
         for (String[] friendRow : friendsRows) {
             model.addRow(friendRow);
