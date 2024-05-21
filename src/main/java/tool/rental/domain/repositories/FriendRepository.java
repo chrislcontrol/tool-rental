@@ -77,8 +77,6 @@ public class FriendRepository {
         }
     }
 
-
-
     public List<FriendRentalSummary> findRentalSummary() throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """

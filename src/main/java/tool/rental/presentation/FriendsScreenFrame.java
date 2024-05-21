@@ -1,6 +1,5 @@
 package tool.rental.presentation;
 import tool.rental.domain.controllers.AppMainController;
-import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
@@ -13,6 +12,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.*;
+import javax.swing.table.TableRowSorter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class FriendsScreenFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
@@ -26,7 +29,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     private JButton rankingButton;
     private JPanel MainPanel;
     private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
-
+    private JTextField nameFilter;
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
@@ -34,8 +37,6 @@ public class FriendsScreenFrame extends PresentationFrame {
         JScrollPane JScrollPanel = new JScrollPane(friendsTable);
         JPanel Panel1 = new JPanel();
     }
-
-
 
     public FriendsScreenFrame() throws ToastError {
         this.createUIComponents();
@@ -68,6 +69,51 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
+        nameFilter.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if (nameFilter.getText().isEmpty()) {
+
+                    DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
+                    model.setRowCount(0);
+                    try {
+                        loadData();
+                    } catch (ToastError ex) {
+                        ex.display();
+                    }
+                }
+            }
+        });
+
+        nameFilter.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+            }
+        });
+
+        nameFilter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filterTable();
+            }
+        });
     }
 
     private void setupPageLayout() {
@@ -88,13 +134,47 @@ public class FriendsScreenFrame extends PresentationFrame {
     }
 
     public void setupTable() throws ToastError {
-        tableConfigurator.setup("ID", "Nome", "Telefone", "Identidade");
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
+        for (String column : columns) {
+            model.addColumn(column);
+        }
+
+        TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+
+        this.friendsTable.setDefaultEditor(Object.class, null);
         this.loadData();
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        friendsTable.setRowSorter(sorter);
 
     }
 
     private void loadData() throws ToastError {
         List<String[]> friendsRows = this.controller.listFriendAsTableRow();
         tableConfigurator.insertRows(friendsRows, true);
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        model.setNumRows(0);
+
+        for (String[] friendRow : friendsRows) {
+            model.addRow(friendRow);
     }
+
+    }
+
+    private void filterTable() {
+        String filterText = nameFilter.getText().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
+
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            String name = (String) model.getValueAt(i, 1);
+            if (!name.toLowerCase().contains(filterText)) {
+                model.removeRow(i);
+            }
+        }
+    }
+
+
 }
