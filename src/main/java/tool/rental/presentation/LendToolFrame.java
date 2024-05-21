@@ -57,10 +57,20 @@ public class LendToolFrame extends PresentationFrame {
             }
         });
 
-        rentButton.addActionListener(new ActionListener() {
+        this.rentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                try {
+                    String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
+                    lendToolFrameController.rentTool(friendId, toolId);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Empréstimo realizado com sucesso!"
+                            );
+                } catch (ToastError exc) {
+                    exc.display();
+                }
             }
         });
     }

@@ -2,7 +2,6 @@ package tool.rental.presentation;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
-import tool.rental.domain.repositories.RentalRepository;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
@@ -15,7 +14,6 @@ import java.awt.event.*;
 public class AppMainFrame extends PresentationFrame {
 
     private final AppMainController controller = new AppMainController(this);
-    private final RentalRepository rentalRepository = new RentalRepository();
     private JPanel mainPanel;
     private JButton registerFriendButton;
     private JButton registerToolButton;

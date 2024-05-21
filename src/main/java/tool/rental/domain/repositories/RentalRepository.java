@@ -1,13 +1,16 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
+import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Rental;
+import tool.rental.domain.entities.Tool;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class RentalRepository {
     public int countBorrowedByUser() throws ToastError {
@@ -51,22 +54,23 @@ public class RentalRepository {
         }
     }
 
-    public boolean isRentalOpen(String toolId ) throws ToastError{
+    public void updateRentalTimestamp(long rentalTimestamp, Friend friend, Tool tool) throws ToastError {
         try (DataBase db = new DataBase()) {
-            String query = """
-                        SELECT
-                         tool_id
-                         FROM RENTAL
-                         WHERE tool_id = ? AND devolution_timestamp is null
-                         ORDER BY tool_id
-                    """;
-            PreparedStatement stm = db.connection.prepareStatement(query);
-            stm.setString(1, toolId);
-            ResultSet result = db.executeQuery(stm);
-            return result.next();
+            String id = UUID.randomUUID().toString();
 
-        } catch (SQLException e) {
-            throw new ToastError(e.toString(), "Erro de banco de dados");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO RENTAL VALUES(?, ?, null, ?, ?)");
+            stm.setString(1, id);
+            stm.setLong(2, rentalTimestamp);
+            stm.setString(3, friend.getId());
+            stm.setString(4, tool.getId());
+
+            db.executeUpdate(stm);
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                "Não foi possível registrar o empréstimo da ferramenta devido a um erro de banco de dados.",
+                    "Erro de banco de dados");
         }
     }
 
