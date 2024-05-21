@@ -50,4 +50,5 @@ public class RentalRepository {
             throw new ToastError(e.toString(), "Erro de banco de dados");
         }
     }
+
 }

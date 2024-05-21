@@ -5,21 +5,27 @@ import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.utils.ToastError;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListFriendsToMainTableUseCase {
     private final FriendRepository friendRepository = new FriendRepository();
 
-    public String[][] execute()throws ToastError {
-        ArrayList<Friend>friends = this.friendRepository.listAll();
-        String[][] resultArray = new String[friends.size()][5];
-        for (int i = 0; i < resultArray.length; i++){
-            Friend friend = friends.get(i);
+    public List<String[]> execute() throws ToastError {
+        ArrayList<Friend> friends = this.friendRepository.listAll();
+        ArrayList<String[]> resultArray = new ArrayList<>(friends.size());
 
-            resultArray[i][0] = friend.getId();
-            resultArray[i][1] = friend.getName();
-            resultArray[i][2] = friend.getPhone();
-            resultArray[i][3] = friend.getSocialSecurity();
+        for (Friend friend : friends) {
+            String[] row = {
+                    friend.getId(),
+                    friend.getName(),
+                    friend.getPhone(),
+                    friend.getSocialSecurity()
+            };
+            resultArray.add(row);
         }
+
+        resultArray.trimToSize();
+
         return resultArray;
     }
 }
