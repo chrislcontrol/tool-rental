@@ -74,5 +74,4 @@ public class FriendRepository {
             throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
         }
     }
-
 }
