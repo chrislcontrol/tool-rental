@@ -40,6 +40,14 @@ return to user the correct Frame according to Use Case response.
  - RF06 : The system must have a report with all actives loans.
  - RF07 : The system must have a report with all loans made.
  - RF08 : The system must show if the friend of the last loan still have pendencies.
+## List of Non-Functional Requirements:
+ - RNF01 : The software must be executed locally on user's computer, with no need of wifi connection.
+ - RNF02 : The software should have an easy-to-use and intuitive interface suitable for non-technical 
+users like your great uncle.
+- RNF03 : The software must guarantee the security of registered data, protecting users' personal
+and financial information.
+  - The system must integrate effectively and reliably with Google Calendar, 
+ensuring correct sharing of event reminders.
 ### Credits: 
 ```
 Christian Silva (RA: 1072322888)
