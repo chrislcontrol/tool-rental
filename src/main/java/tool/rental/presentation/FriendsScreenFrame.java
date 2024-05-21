@@ -25,6 +25,7 @@ public class FriendsScreenFrame extends PresentationFrame {
     private JButton rankingButton;
     private JPanel MainPanel;
     private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
+    private JTextField textField1;
 
 
     private void createUIComponents() {
@@ -78,13 +79,29 @@ public class FriendsScreenFrame extends PresentationFrame {
 
     private Friend friend;
     public void setupTable() throws ToastError {
-        tableConfigurator.setup("ID", "Nome", "Telefone", "Identidade");
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
+        for (String column : columns) {
+            model.addColumn(column);
+        }
+
+        TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+
+        this.friendsTable.setDefaultEditor(Object.class, null);
         this.loadData();
 
     }
 
     private void loadData() throws ToastError {
+        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
+        model.setNumRows(0);
         String[][] friendsRows = this.controller.listFriendAsTableRow();
-        tableConfigurator.insertRows(friendsRows, true);
+
+        for (String[] friendRow : friendsRows) {
+            model.addRow(friendRow);
+    }
+
     }
 }
