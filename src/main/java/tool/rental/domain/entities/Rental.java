@@ -2,19 +2,22 @@ package tool.rental.domain.entities;
 
 import tool.rental.domain.infra.db.contracts.Model;
 
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Rental extends Model {
     private final String id;
-    private final int rentalTimestamp;
-    private final int devolutionTimestamp;
+    private final long rentalTimestamp;
+    private final long devolutionTimestamp;
     private final Friend friend;
     private final Tool tool;
 
-    public Rental(String id, int rentalTimestamp, int devolutionTimestamp, Friend friend, Tool tool) {
+    public Rental(String id, long rentalTimestamp, long devolutionTimestamp, Friend friend, Tool tool) {
         this.id = id;
         this.rentalTimestamp = rentalTimestamp;
         this.devolutionTimestamp = devolutionTimestamp;
@@ -26,16 +29,16 @@ public class Rental extends Model {
         return id;
     }
 
-    public int getRentalTimestamp() {
+    public long getRentalTimestamp() {
         return rentalTimestamp;
     }
 
-    public int getDevolutionTimestamp() {
+    public long getDevolutionTimestamp() {
         return devolutionTimestamp;
     }
 
     public LocalDateTime getRentalDatetime() {
-        Instant instant = Instant.ofEpochSecond(this.rentalTimestamp);
+        Instant instant = Instant.ofEpochMilli(this.rentalTimestamp);
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
 
