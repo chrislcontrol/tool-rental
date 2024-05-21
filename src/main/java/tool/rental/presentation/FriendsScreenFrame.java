@@ -114,6 +114,13 @@ public class FriendsScreenFrame extends PresentationFrame {
                 filterTable();
             }
         });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+            }
+        });
     }
 
     private void setupPageLayout() {
@@ -134,33 +141,15 @@ public class FriendsScreenFrame extends PresentationFrame {
     }
 
     public void setupTable() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        String[] columns = {"ID", "Nome", "Telefone", "Identidade"};
-        for (String column : columns) {
-            model.addColumn(column);
-        }
-
-        TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
-        column.setMinWidth(0);
-        column.setMaxWidth(0);
-
-        this.friendsTable.setDefaultEditor(Object.class, null);
+        tableConfigurator.setup("Id", "Nome", "Telefone", "Identidade");
         this.loadData();
-
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        friendsTable.setRowSorter(sorter);
 
     }
 
     private void loadData() throws ToastError {
         List<String[]> friendsRows = this.controller.listFriendAsTableRow();
-        tableConfigurator.insertRows(friendsRows, true);
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        model.setNumRows(0);
 
-        for (String[] friendRow : friendsRows) {
-            model.addRow(friendRow);
-    }
+        tableConfigurator.insertRows(friendsRows, true);
 
     }
 
@@ -175,6 +164,6 @@ public class FriendsScreenFrame extends PresentationFrame {
             }
         }
     }
-
-
 }
+
+
