@@ -10,6 +10,11 @@ import tool.rental.utils.ToastError;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.List;
 
 public class AppMainFrame extends PresentationFrame {
 
@@ -72,7 +77,7 @@ public class AppMainFrame extends PresentationFrame {
 
     private void loadData() throws ToastError {
         boolean rentedOnly = this.rentalCB.isSelected();
-        String[][] toolRows = this.controller.listToolsAsTableRow(rentedOnly);
+        List<String[]> toolRows = this.controller.listToolsAsTableRow(rentedOnly);
 
         tableConfigurator.insertRows(toolRows, true);
 
@@ -88,7 +93,8 @@ public class AppMainFrame extends PresentationFrame {
     private void setupPageLayout() {
         this.setTitle(String.format("Tool Rental (%s)", Settings.getUser().getUsername()));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(this.userScreen.widthFraction(100), this.userScreen.heightFraction(100));
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(50));
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
     }
 

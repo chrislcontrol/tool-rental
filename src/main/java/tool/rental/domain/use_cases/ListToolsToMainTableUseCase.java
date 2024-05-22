@@ -7,33 +7,37 @@ import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.utils.ToastError;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListToolsToMainTableUseCase {
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public String[][] execute(boolean rentedOnly) throws ToastError {
+    public List<String[]> execute(boolean rentedOnly) throws ToastError {
         ArrayList<Tool> tools = this.toolRepository.listAll(rentedOnly);
-        String[][] resultArray = new String[tools.size()][6];
+        ArrayList<String[]> resultArray = new ArrayList<>(tools.size());
 
-        for (int i = 0; i < resultArray.length; i++) {
-            Tool tool = tools.get(i);
+        for (Tool tool : tools) {
             Rental latestRental = tool.getCurrentRental();
             String loanTo = "";
             String loanSince = "";
-
             if (latestRental != null) {
                 Friend friend = latestRental.getFriend();
                 loanTo = String.format("%s - %s", friend.getName(), friend.getSocialSecurity());
                 loanSince = String.valueOf(latestRental.getFormattedRentalDate());
             }
 
-            resultArray[i][0] = tool.getId();
-            resultArray[i][1] = tool.getBrand();
-            resultArray[i][2] = tool.getName();
-            resultArray[i][3] = String.format("R$ %,.2f", tool.getCost());
-            resultArray[i][4] = loanTo;
-            resultArray[i][5] = loanSince;
+            String[] row = {
+                    tool.getId(),
+                    tool.getBrand(),
+                    tool.getName(),
+                    String.format("R$ %,.2f", tool.getCost()),
+                    loanTo,
+                    loanSince
+            };
+            resultArray.add(row);
         }
+
+        resultArray.trimToSize();
 
         return resultArray;
     }
