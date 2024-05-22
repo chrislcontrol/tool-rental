@@ -49,7 +49,7 @@ public class LendToolFrame extends PresentationFrame {
         this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
     }
 
-    public void setUpListeners(){
+    protected void setUpListeners() throws ToastError{
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,12 +62,18 @@ public class LendToolFrame extends PresentationFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
+                    if (lendToolFrameController.isToolRented(toolId)){
+                        throw new ToastError(
+                                "A ferramenta não pode ser emprestada para mais de um amigo!",
+                                "Ferramenta já emprestada");
+                    }
                     String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
                     lendToolFrameController.rentTool(friendId, toolId);
                     JOptionPane.showMessageDialog(
                             null,
                             "Empréstimo realizado com sucesso!"
                             );
+                    lendToolFrameController.swapFrame(new AppMainFrame());
                 } catch (ToastError exc) {
                     exc.display();
                 }
@@ -75,7 +81,7 @@ public class LendToolFrame extends PresentationFrame {
         });
     }
 
-    public void setTextToolName(){
+    private void setTextToolName(){
         JLtoolName.setText(toolName);
     }
 
@@ -90,7 +96,7 @@ public class LendToolFrame extends PresentationFrame {
 
     }
 
-    public void setupTable() throws ToastError {
+    private void setupTable() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
         String[] columns = {"Id", "Nome", "Telefone", "Identidade"};
         for (String column : columns) {

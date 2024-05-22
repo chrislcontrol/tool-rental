@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class IsRentalOpenUseCase {
 
-    public boolean checkOutTool(String toolId ) throws ToastError {
+    public boolean isToolRented(String toolId ) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT

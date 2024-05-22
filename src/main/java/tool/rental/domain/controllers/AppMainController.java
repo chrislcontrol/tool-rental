@@ -95,7 +95,7 @@ public class AppMainController extends Controller {
     }
 
     public void openRegisterRentalModal(String toolId, String toolName) throws ToastError {
-        if (isRentalOpenUseCase.checkOutTool(toolId)) {
+        if (isRentalOpenUseCase.isToolRented(toolId)) {
             throw new ToastError(
                     "Ferramenta selecionada já está emprestada!",
                     "Ferramenta já emprestada"
