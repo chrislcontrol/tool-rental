@@ -7,6 +7,8 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
@@ -20,7 +22,7 @@ public class LendToolFrame extends PresentationFrame {
     private JButton cancelButton;
     private JLabel JLtoolName;
     private JTable friendsTable;
-    private JTextField textField1;
+    private JTextField nameFilter;
     private String toolId;
     private String toolName;
     public LendToolFrame(String toolId, String toolName) throws ToastError {
@@ -49,7 +51,7 @@ public class LendToolFrame extends PresentationFrame {
         this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
     }
 
-    protected void setUpListeners() throws ToastError{
+    protected void setUpListeners() {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,6 +81,52 @@ public class LendToolFrame extends PresentationFrame {
                 }
             }
         });
+
+        nameFilter.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if (nameFilter.getText().isEmpty()) {
+
+                    DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
+                    model.setRowCount(0);
+                    try {
+                        loadData();
+                    } catch (ToastError ex) {
+                        ex.display();
+                    }
+                }
+            }
+        });
+
+        nameFilter.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+            }
+        });
+
+        nameFilter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filterTable();
+            }
+        });
     }
 
     private void setTextToolName(){
@@ -88,7 +136,7 @@ public class LendToolFrame extends PresentationFrame {
     private void loadData() throws ToastError {
         DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
         model.setNumRows(0);
-        String[][] friendsRows = this.controller.listFriendAsTableRow();
+        String[][] friendsRows = this.controller.listFriendAsTableRow().toArray(new String[0][]);
 
         for (String[] friendRow : friendsRows) {
             model.addRow(friendRow);
@@ -123,4 +171,15 @@ public class LendToolFrame extends PresentationFrame {
         }
     }
 
+    private void filterTable() {
+        String filterText = nameFilter.getText().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
+
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            String name = (String) model.getValueAt(i, 1);
+            if (!name.toLowerCase().contains(filterText)) {
+                model.removeRow(i);
+            }
+        }
+    }
 }
