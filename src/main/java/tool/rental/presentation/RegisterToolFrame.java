@@ -58,5 +58,9 @@ public class RegisterToolFrame extends PresentationFrame {
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
     }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
 
