@@ -37,4 +37,6 @@ public class Friend extends Model {
     public User getUser() {
         return user;
     }
+
+
 }

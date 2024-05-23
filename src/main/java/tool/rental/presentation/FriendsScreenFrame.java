@@ -117,9 +117,35 @@ public class FriendsScreenFrame extends PresentationFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
             }
+        });
+
+        friendsTable.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_F5) {
+                    try {
+                        loadData();
+                    } catch (ToastError ex) {
+                        ex.display();
+                    }
+                }
+            }
+        });
+        registerFriendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openRegisterFriendModal(() -> {
+                    try {
+                        loadData();
+                    } catch (ToastError exc) {
+                        exc.display();
+                    }
+                });
+            }
+
+
         });
     }
 
