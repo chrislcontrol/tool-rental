@@ -103,6 +103,16 @@ public class AppMainController extends Controller {
                     "Ferramenta já emprestada"
             );
         }
+
+        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
+          "Tem certeza que deseja emprestar esta ferramenta?",
+          "Emprestar ferramenta"
+        );
+
+        if(userOption == JOptionPane.NO_OPTION) {
+            return;
+        }
+
         this.frame.swapFrame(new LendToolFrame(toolId, toolName), true);
     }
 

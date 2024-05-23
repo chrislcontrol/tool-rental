@@ -125,6 +125,7 @@ public class AppMainFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+
                     String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
                     String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
                     controller.openRegisterRentalModal(toolId, toolName);

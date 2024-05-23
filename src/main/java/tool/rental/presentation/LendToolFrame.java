@@ -62,7 +62,6 @@ public class LendToolFrame extends PresentationFrame {
         this.rentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 try {
                     if (lendToolFrameController.isToolRented(toolId)){
                         throw new ToastError(
