@@ -43,9 +43,9 @@ return to user the correct Frame according to Use Case response.
 ## List of Non-Functional Requirements:
  - RNF01 : The software must be executed locally on user's computer, with no need of wifi connection.
  - RNF02 : The software should have an easy-to-use and intuitive interface suitable for non-technical 
-  users like your great uncle.
+users like your great uncle.
  - RNF03 : The software must guarantee the security of registered data, protecting users' personal
-  and financial information.
+and financial information.
  - RNF04 : The system must integrate effectively and reliably with Google Calendar, 
 ensuring correct sharing of event reminders.
 ### Credits: 
