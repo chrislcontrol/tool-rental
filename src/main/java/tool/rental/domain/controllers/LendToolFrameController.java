@@ -11,9 +11,6 @@ import tool.rental.presentation.LendToolFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.ToastError;
 
-import javax.swing.*;
-
-
 public class LendToolFrameController extends Controller {
     private final FriendRepository friendRepository = new FriendRepository();
     private final ToolRepository toolRepository = new ToolRepository();
@@ -25,15 +22,14 @@ public class LendToolFrameController extends Controller {
 
     }
 
-    public void rentTool(String friendId, String toolId) throws ToastError {
+    public void rentTool(String friendId, String toolId, Runnable callback) throws ToastError {
         Tool tool = this.toolRepository.getById(toolId);
         Friend friend = this.friendRepository.getById(friendId);
         this.rentalToolUseCase.execute(friend, tool);
-        JOptionPane.showMessageDialog(
-                null,
-                "Empréstimo realizado com sucesso!"
-        );
-        this.returnToMainFrame();
+
+        callback.run();
+
+        closeFrame();
     }
 
     public boolean isToolRented(String toolId) throws ToastError {

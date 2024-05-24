@@ -98,7 +98,7 @@ public class AppMainController extends Controller {
         );
     }
 
-    public void openRegisterRentalModal(String toolId, String toolName) throws ToastError {
+    public void openRegisterRentalModal(String toolId, String toolName, Runnable callback) throws ToastError {
         if (isToolRentedUseCase.execute(toolId)) {
             throw new ToastError(
                     "Ferramenta selecionada já está emprestada!",
@@ -115,7 +115,7 @@ public class AppMainController extends Controller {
             return;
         }
 
-        this.frame.swapFrame(new LendToolFrame(toolId, toolName), true);
+        this.frame.swapFrame(new LendToolFrame(toolId, toolName, callback), true);
     }
 
     public void openRegisterToolModal(Runnable callback) {

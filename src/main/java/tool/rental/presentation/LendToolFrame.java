@@ -13,6 +13,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class LendToolFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
@@ -25,9 +26,11 @@ public class LendToolFrame extends PresentationFrame {
     private JTextField nameFilter;
     private String toolId;
     private String toolName;
+    private Runnable sucessCallBack;
     private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
 
-    public LendToolFrame(String toolId, String toolName) throws ToastError {
+    public LendToolFrame(String toolId, String toolName, Runnable sucessCallback) throws ToastError {
+        this.sucessCallBack = sucessCallback;
         this.toolId = toolId;
         this.toolName = toolName;
         this.setMainPanel();
@@ -71,7 +74,7 @@ public class LendToolFrame extends PresentationFrame {
                                 "Ferramenta já emprestada");
                     }
                     String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
-                    lendToolFrameController.rentTool(friendId, toolId);
+                    lendToolFrameController.rentTool(friendId, toolId, sucessCallBack);
                 } catch (ToastError exc) {
                     exc.display();
                 }
@@ -130,12 +133,9 @@ public class LendToolFrame extends PresentationFrame {
     }
 
     private void loadData() throws ToastError {
+        List<String[]> friendsRows = this.controller.listFriendAsTableRow();
 
-        String[][] friendsRows = this.controller.listFriendAsTableRow().toArray(new String[0][]);
-
-        for (String[] friendRow : friendsRows) {
-            model.addRow(friendRow);
-        }
+        tableConfigurator.insertRows(friendsRows, true);
 
     }
 

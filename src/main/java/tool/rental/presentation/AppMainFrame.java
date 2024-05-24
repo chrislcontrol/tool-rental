@@ -124,17 +124,21 @@ public class AppMainFrame extends PresentationFrame {
         this.lendToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
+                String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
                 try {
-
-                    String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
-                    String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
-                    controller.openRegisterRentalModal(toolId, toolName);
-                } catch (ToastError exc) {
+                    controller.openRegisterRentalModal(toolId, toolName, () -> {
+                        try {
+                            loadData();
+                        } catch (ToastError exc) {
+                            exc.display();
+                        }
+                    });
+                } catch (ToastError exc){
                     exc.display();
                 }
-            }
+            };
         });
-
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
