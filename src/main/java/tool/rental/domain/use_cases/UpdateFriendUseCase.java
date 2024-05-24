@@ -5,20 +5,21 @@ import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.utils.ToastError;
 
 public class UpdateFriendUseCase {
-    private final ToolRepository toolRepository = new ToolRepository();
+    private final FriendRepository friendRepository = new FriendRepository();
 
-    public void execute(String name, int telefone, int identity) throws ToastError {
+    public void execute(String name, int phone, int socialSecurity) throws ToastError {
+
         if (name == null || name.isEmpty()) {
             throw new ToastError("Nome do amigo não pode ser nulo", "Campo não pode ser nulo");
         }
-        if (telefone == 0 ) {
+        if (phone == 0 ) {
             throw new ToastError("Número de telefone não pode ser zero", "Campo não pode ser zero");
         }
-        if (identity == 0 ) {
+        if (social_security == 0 ) {
             throw new ToastError("Número de identidade não pode ser zero", "Campo não pode ser zero");
         }
 
-        this.toolRepository.createTool(brand, name, cost);
+        this.friendRepository.updateFriend(name, phone, social_security);
     }
 }
 

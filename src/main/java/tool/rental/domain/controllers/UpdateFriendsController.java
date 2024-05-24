@@ -17,8 +17,9 @@ public class UpdateFriendsController extends Controller {
             super(frame);
         }
 
-        public void updateFriend(String name,  int telefone, int indentity) throws ToastError {
-            this.updateFriendUseCase.execute(brand, name, cost);
-            JOptionPane.showMessageDialog(null, "Ferramenta cadastrada com sucesso!");
+        public void updateFriend(String name,  int phone, int social_security) throws ToastError {
+            this.updateFriendUseCase.execute(name, phone, social_security);
+            JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
 
+}
 }

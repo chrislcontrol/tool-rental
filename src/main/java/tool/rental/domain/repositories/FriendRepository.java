@@ -74,7 +74,7 @@ public class FriendRepository {
             friends.trimToSize();
 
             return friends;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
         }
     }
@@ -125,48 +125,19 @@ public class FriendRepository {
         }
     }
 
-    public Friend createFriend(String name, String phone, String social_security) throws ToastError {
+    public Friend updateFriend(String id, String name, int phone, int social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
-            String id = UUID.randomUUID().toString();
 
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO FRIEND VALUES(?, ?, ?, ?, ?)");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?)");
             stm.setString(1, id);
             stm.setString(2, name);
-            stm.setString(3, phone);
-            stm.setString(4, social_security);
-            stm.setString(5, Settings.getUser().getId());
+            stm.setInt(3, phone);
+            stm.setInt(4, social_security);
 
             db.executeUpdate(stm);
-            return new Friend(id, name, phone, social_security, Settings.getUser());
+            return new Tool(id, name, phone, social_security());
 
-        } catch (SQLException exc) {
-            System.out.println(exc.getMessage());
-            throw new ToastError(
-                    "Não foi possível cadastrar o amigo(a) devido a um erro com banco de dados",
-                    "Erro de banco de dados"
-            );
         }
     }
-
-    public boolean existsByNameAndSocial_Security(String name, String social_security) throws ToastError {
-        try (DataBase db = new DataBase()) {
-            PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT id FROM FRIEND WHERE user_id = ? and name = ? and social_security = ?"
-            );
-            stm.setString(1, Settings.getUser().getId());
-            stm.setString(2, name);
-            stm.setString(3, social_security);
-            ResultSet result = db.executeQuery(stm);
-            return result.next();
-
-        } catch (SQLException exc) {
-            System.out.println(exc.getMessage());
-            throw new ToastError(
-                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
-                    "Erro de banco de dados."
-            );
-        }
-    }
-
 }
