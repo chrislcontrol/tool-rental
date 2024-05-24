@@ -54,7 +54,7 @@ public class RentalRepository {
         }
     }
 
-    public void updateRentalTimestamp(long rentalTimestamp, Friend friend, Tool tool) throws ToastError {
+    public void create(long rentalTimestamp, Friend friend, Tool tool) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 

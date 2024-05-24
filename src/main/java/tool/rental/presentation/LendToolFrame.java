@@ -4,13 +4,13 @@ import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.controllers.LendToolFrameController;
 import tool.rental.utils.PresentationFrame;
+import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -25,6 +25,8 @@ public class LendToolFrame extends PresentationFrame {
     private JTextField nameFilter;
     private String toolId;
     private String toolName;
+    private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
+
     public LendToolFrame(String toolId, String toolName) throws ToastError {
         this.toolId = toolId;
         this.toolName = toolName;
@@ -55,7 +57,7 @@ public class LendToolFrame extends PresentationFrame {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LendToolFrame.this.dispose();
+                lendToolFrameController.closeFrame();
             }
         });
 
@@ -70,11 +72,6 @@ public class LendToolFrame extends PresentationFrame {
                     }
                     String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
                     lendToolFrameController.rentTool(friendId, toolId);
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Empréstimo realizado com sucesso!"
-                            );
-                    lendToolFrameController.swapFrame(new AppMainFrame());
                 } catch (ToastError exc) {
                     exc.display();
                 }
@@ -133,8 +130,7 @@ public class LendToolFrame extends PresentationFrame {
     }
 
     private void loadData() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        model.setNumRows(0);
+
         String[][] friendsRows = this.controller.listFriendAsTableRow().toArray(new String[0][]);
 
         for (String[] friendRow : friendsRows) {
@@ -144,25 +140,8 @@ public class LendToolFrame extends PresentationFrame {
     }
 
     private void setupTable() throws ToastError {
-        DefaultTableModel model = (DefaultTableModel) this.friendsTable.getModel();
-        String[] columns = {"Id", "Nome", "Telefone", "Identidade"};
-        for (String column : columns) {
-            model.addColumn(column);
-        }
-
-
-        TableColumn column = this.friendsTable.getColumnModel().getColumn(0);
-        column.setMinWidth(0);
-        column.setMaxWidth(0);
-
-        TableColumn column2 = this.friendsTable.getColumnModel().getColumn(2);
-        column2.setMinWidth(0);
-        column2.setMaxWidth(0);
-
-        this.friendsTable.setDefaultEditor(Object.class, null);
+        tableConfigurator.setup(new String[]{"Id", "Nome", "Telefone", "Identidade"}, new int[]{0, 2});
         this.loadData();
-
-
     }
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {

@@ -19,7 +19,7 @@ import javax.swing.*;
 import java.util.List;
 
 public class AppMainController extends Controller {
-    private final IsRentalOpenUseCase isRentalOpenUseCase = new IsRentalOpenUseCase();
+    private final IsToolRentedUseCase isToolRentedUseCase = new IsToolRentedUseCase();
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
     private final ListFriendsToMainTableUseCase listFriendsToMainTableUseCase = new ListFriendsToMainTableUseCase();
     private final LogoutUseCase logoutUseCase = new LogoutUseCase();
@@ -97,7 +97,7 @@ public class AppMainController extends Controller {
     }
 
     public void openRegisterRentalModal(String toolId, String toolName) throws ToastError {
-        if (isRentalOpenUseCase.isToolRented(toolId)) {
+        if (isToolRentedUseCase.execute(toolId)) {
             throw new ToastError(
                     "Ferramenta selecionada já está emprestada!",
                     "Ferramenta já emprestada"

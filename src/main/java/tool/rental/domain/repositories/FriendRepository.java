@@ -85,38 +85,26 @@ public class FriendRepository {
                             f.name,
                             f.phone,
                             f.social_security,
+                            f.user_id,
                             t.id as t__id,
                             t.brand as t__brand,
                             t.name as t__name,
-                            t.cost as t__cost,
-                            u.id as u__id,
-                            u.username as u__username,
-                            u.has_mock as u__has_mock,
-                            r.id as r__id,
-                            r.rental_timestamp as r__rental_timestamp,
-                            r.devolution_timestamp as r__devolution_timestamp
-                            
+                            t.cost as t__cost
+    
                         FROM FRIEND f
-                        LEFT JOIN USER u on f.user_id = u.id
-                        LEFT JOIN RENTAL r on r.friend_id = f.id and r.devolution_timestamp is null
                         LEFT JOIN TOOL t on t.id = f.id
-                        WHERE f.id = ?
+                        WHERE f.id = ? AND f.user_id = ?
                     """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
+            User user = Settings.getUser();
             stm.setString(1, friendId);
+            stm.setString(2, user.getId());
 
             ResultSet result = db.executeQuery(stm);
             if (!result.next()) {
                 return null;
             }
-
-            User user = new User(
-                    result.getString("u__id"),
-                    result.getString("u__username"),
-                    false,
-                    result.getBoolean("u__has_mock")
-            );
 
             Friend friend = new Friend(
                     result.getString("id"),

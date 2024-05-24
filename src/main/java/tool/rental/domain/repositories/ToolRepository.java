@@ -228,4 +228,48 @@ public class ToolRepository {
         }
     }
 
+    public boolean isToolRented(String toolId ) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String query = """
+                        SELECT
+                            tool_id
+                         FROM 
+                            RENTAL
+                         WHERE
+                            tool_id = ? AND devolution_timestamp is null
+                         ORDER BY 
+                                tool_id DESC 
+                    """;
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            stm.setString(1, toolId);
+            ResultSet result = db.executeQuery(stm);
+
+            return result.next();
+
+        } catch (SQLException e) {
+            throw new ToastError(e.toString(), "Erro de banco de dados");
+        }
+    }
+
+    public boolean isAnyToolRentedByFriend(Friend friend) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String query = """
+                        SELECT 
+                            friend_id
+                        FROM
+                            RENTAL
+                        WHERE
+                            friend_id = ? AND devolution_timestamp is null
+                    """;
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            stm.setString(1, friend.getId());
+            ResultSet result = db.executeQuery(stm);
+
+            return result.next();
+
+        } catch (SQLException e) {
+            throw  new ToastError(e.getMessage(), "Erro de banco de dados");
+        }
+    }
+
 }

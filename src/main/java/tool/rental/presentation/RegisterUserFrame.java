@@ -15,7 +15,7 @@ public class RegisterUserFrame extends PresentationFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton confirmButton;
-    private JButton cancelButton; // Chris, favor configurar o botão!!
+    private JButton cancelButton;
     private JPasswordField confirmPasswordField;
 
     public RegisterUserFrame() {
