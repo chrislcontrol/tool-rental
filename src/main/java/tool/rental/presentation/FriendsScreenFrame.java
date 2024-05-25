@@ -117,6 +117,18 @@ public class FriendsScreenFrame extends PresentationFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int row = friendsTable.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+                String friendId = friendsTable.getModel().getValueAt(row, 0).toString();
+                try {
+                    controller.deleteFriend(friendId);
+                    loadData();
+
+                } catch (ToastError exc) {
+                    exc.display();
+                }
             }
         });
 

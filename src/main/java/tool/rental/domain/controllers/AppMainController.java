@@ -2,8 +2,9 @@ package tool.rental.domain.controllers;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
+import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Tool;
-import tool.rental.domain.infra.db.DataBase;
+import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
 import tool.rental.presentation.*;
@@ -11,6 +12,7 @@ import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+import tool.rental.domain.use_cases.DeleteFriendUseCase;
 
 import javax.swing.*;
 import java.util.List;
@@ -22,6 +24,9 @@ public class AppMainController extends Controller {
     private final CalculateSummaryUseCase calculateSummaryUseCase = new CalculateSummaryUseCase();
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
     private final ToolRepository toolRepository = new ToolRepository();
+
+    private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
+    private final FriendRepository friendsRepository = new FriendRepository();
 
     public AppMainController(PresentationFrame frame) {
         super(frame);
@@ -89,6 +94,26 @@ public class AppMainController extends Controller {
         JOptionPane.showMessageDialog(
                 null,
                 "Ferramenta devolvida com sucesso."
+        );
+    }
+
+    public void deleteFriend(String friendId) throws ToastError {
+        Friend friend = this.friendsRepository.getById(friendId);
+
+        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
+                "Tem certeza que deseja deletar este amigo?",
+                "Deletar Amigo"
+        );
+
+        if (userOption == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        this.deleteFriendUseCase.execute(friendId);
+
+        JOptionPane.showMessageDialog(
+                null,
+                "Amigo deletado com sucesso."
         );
     }
 

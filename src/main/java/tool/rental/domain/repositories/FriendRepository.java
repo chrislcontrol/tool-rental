@@ -3,6 +3,7 @@ package tool.rental.domain.repositories;
 import tool.rental.app.Settings;
 import tool.rental.domain.dao.FriendRentalSummary;
 import tool.rental.domain.entities.Friend;
+import tool.rental.domain.entities.Rental;
 import tool.rental.domain.entities.Tool;
 import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
@@ -166,6 +167,52 @@ public class FriendRepository {
                     "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
                     "Erro de banco de dados."
             );
+        }
+    }
+
+    public Friend getById(String friendId) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String query = """
+                        SELECT
+                            f.id,
+                            f.name,
+                            f.phone,
+                            f.social_security,
+                            u.id as u__id,
+                            u.username as u__username,
+                            u.has_mock as u__has_mock
+                            FROM FRIEND f
+                            LEFT JOIN USER u on f.user_id = u.id                                       
+                            WHERE f.id = ?
+                    """;
+
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            stm.setString(1, friendId);
+
+            ResultSet result = db.executeQuery(stm);
+            if (!result.next()) {
+                return null;
+            }
+
+            User user = new User(
+                    result.getString("u__id"),
+                    result.getString("u__username"),
+                    false,
+                    result.getBoolean("u__has_mock")
+            );
+
+            Friend friend = new Friend(
+                    result.getString("id"),
+                    result.getString("name"),
+                    result.getString("phone"),
+                    result.getString("social_security"),
+                    user
+            );
+
+            return friend;
+
+        } catch (SQLException e) {
+            throw new ToastError(e.toString(), "Erro de banco de dados.");
         }
     }
 
