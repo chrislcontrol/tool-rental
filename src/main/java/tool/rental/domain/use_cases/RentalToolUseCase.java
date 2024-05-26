@@ -19,12 +19,16 @@ public class RentalToolUseCase {
 
     public void execute(Friend friend, Tool tool) throws ToastError {
         long currentStamp = System.currentTimeMillis();
-        if ((toolRepository.isAnyToolRentedByFriend(friend))){
+        if (toolRepository.isAnyToolRentedByFriend(friend)){
             JOptionPane.showMessageDialog(
                     null,
                     "O(A) amigo(a) selecionado(a) já possui ferramenta(s) emprestada(s)."
             );
         }
+        JOptionPane.showMessageDialog(
+                null,
+                "Ferramenta emprestada com sucesso!"
+        );
         this.rentalRepository.create(currentStamp, friend, tool);
     }
 
