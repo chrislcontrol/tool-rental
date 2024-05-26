@@ -28,10 +28,11 @@ public class RegisterToolFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    String costText = costField.getText().replace(',', '.');
                     registerToolController.registerTool(
                             brandField.getText(),
                             nameField.getText(),
-                            Double.parseDouble(costField.getText()),
+                            Double.parseDouble(costText),
                             successCallback
 
                     );
