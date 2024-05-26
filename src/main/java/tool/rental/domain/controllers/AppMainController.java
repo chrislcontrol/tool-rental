@@ -28,6 +28,7 @@ public class AppMainController extends Controller {
     private final CalculateSummaryUseCase calculateSummaryUseCase = new CalculateSummaryUseCase();
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
     private final ToolRepository toolRepository = new ToolRepository();
+    private final DeleteToolUseCase deleteToolUseCase = new DeleteToolUseCase();
 
     public AppMainController(PresentationFrame frame) {
         super(frame);
@@ -132,5 +133,31 @@ public class AppMainController extends Controller {
 
     public void openFriendsRankFrame() throws ToastError {
         frame.swapFrame(new FriendsRankFrame(), true);
+    }
+
+    public void deleteTool(String toolId) throws ToastError {
+        Tool tool = this.toolRepository.getById(toolId);
+        if (tool.isRented()) {
+            throw new ToastError(
+                    "Não é possível deletar uma ferramenta emprestada.",
+                    "Ferramenta emprestada"
+            );
+        }
+
+        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
+                "Tem certeza que deseja deletar esta ferramenta?",
+                "Deletar ferramenta"
+        );
+
+        if (userOption == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        this.deleteToolUseCase.execute(tool);
+
+        JOptionPane.showMessageDialog(
+                null,
+                "Ferramenta deletada com sucesso!"
+        );
     }
 }

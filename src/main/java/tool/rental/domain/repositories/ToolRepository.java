@@ -272,4 +272,16 @@ public class ToolRepository {
         }
     }
 
+    public void deleteTool(Tool tool) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM TOOL WHERE id = ?");
+            stm.setString(1, tool.getId());
+            db.executeUpdate(stm);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new ToastError("Não foi possível deletar a ferramenta selecionada.",
+                    "Erro de banco de dados");
+        }
+    }
 }

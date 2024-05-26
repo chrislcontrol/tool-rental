@@ -31,6 +31,7 @@ public class AppMainFrame extends PresentationFrame {
     private JLabel friendsCountLabel;
     private JLabel toolTotalAmountLabel;
     private JCheckBox rentalCB;
+    private JButton deleteToolButton;
     private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable);
 
     public AppMainFrame() throws ToastError {
@@ -58,6 +59,7 @@ public class AppMainFrame extends PresentationFrame {
                 });
             }
         });
+
     }
 
 
@@ -161,7 +163,6 @@ public class AppMainFrame extends PresentationFrame {
                         ex.display();
                     }
                 }
-
             }
         });
 
@@ -191,6 +192,24 @@ public class AppMainFrame extends PresentationFrame {
                 } catch (ToastError exc) {
                     exc.display();
 
+                }
+            }
+        });
+
+        deleteToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = toolsTable.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+                String toolId = toolsTable.getModel().getValueAt(row, 0).toString();
+                try {
+                    controller.deleteTool(toolId);
+                    loadData();
+
+                } catch (ToastError exc){
+                    exc.display();
                 }
             }
         });
