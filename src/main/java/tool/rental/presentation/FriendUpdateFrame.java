@@ -1,6 +1,7 @@
 package tool.rental.presentation;
 
 import tool.rental.domain.controllers.UpdateFriendsController;
+import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,8 +29,32 @@ public class FriendUpdateFrame {
                             Integer.parseInt(social_securityField.getText()),
 
 
+                            );
+                } catch (ToastError ex) {
+                    ex.display();
                 }
             }
-        }
+        });
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpdateFriendsController.closeFrame();
+            }
+        });
+    }
+
+    private void setupPageLayout() {
+        this.setTitle("Registrar ferramenta");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setSize(this.userScreen.widthFraction(30), this.userScreen.heightFraction(30));
+        this.setLocationRelativeTo(null);
+    }
+
+    private void setMainPanel() {
+        this.setContentPane(this.MainPanel);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

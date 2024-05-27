@@ -21,4 +21,8 @@ public class  UpdateFriendsController extends Controller {
             this.updateFriendUseCase.execute(name, phone, social_security);
             JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
     }
+    public void closeFrame() {
+        frame.setVisible(false);
+    }
 }
+
