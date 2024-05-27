@@ -3,12 +3,10 @@ package tool.rental.domain.controllers;
 import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Tool;
+import tool.rental.domain.infra.db.DataBase;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
-import tool.rental.presentation.FriendsRankFrame;
-import tool.rental.presentation.FriendsScreenFrame;
-import tool.rental.presentation.LoginFrame;
-import tool.rental.presentation.RegisterToolFrame;
+import tool.rental.presentation.*;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
@@ -96,6 +94,10 @@ public class AppMainController extends Controller {
 
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
+    }
+
+    public void openRegisterFriendModal(Runnable callback) {
+        this.frame.swapFrame(new RegisterFriendFrame(callback), true);
     }
 
     public void openFriendsScreenFrame() throws ToastError {
