@@ -7,16 +7,16 @@ import tool.rental.utils.ToastError;
 public class UpdateFriendUseCase {
     private final FriendRepository friendRepository = new FriendRepository();
 
-    public void execute(String name, int phone, int socialSecurity) throws ToastError {
+    public void execute(String name, String phone, String social_security) throws ToastError {
 
         if (name == null || name.isEmpty()) {
             throw new ToastError("Nome do amigo não pode ser nulo", "Campo não pode ser nulo");
         }
-        if (phone == 0 ) {
-            throw new ToastError("Número de telefone não pode ser zero", "Campo não pode ser zero");
+        if (phone == null ) {
+            throw new ToastError("Número de telefone não pode ser nulo", "Campo não pode ser nulo");
         }
-        if (social_security == 0 ) {
-            throw new ToastError("Número de identidade não pode ser zero", "Campo não pode ser zero");
+        if (social_security == null ) {
+            throw new ToastError("Número de identidade não pode ser nulo", "Campo não pode ser nulo");
         }
 
         this.friendRepository.updateFriend(name, phone, social_security);

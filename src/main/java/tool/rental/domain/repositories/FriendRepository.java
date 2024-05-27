@@ -125,19 +125,25 @@ public class FriendRepository {
         }
     }
 
-    public Friend updateFriend(String id, String name, int phone, int social_security) throws ToastError {
+    public Friend updateFriend(String id, String name, String phone, String social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
 
 
             PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?)");
             stm.setString(1, id);
             stm.setString(2, name);
-            stm.setInt(3, phone);
-            stm.setInt(4, social_security);
+            stm.setString(3, phone);
+            stm.setString(4, social_security);
 
             db.executeUpdate(stm);
-            return new Tool(id, name, phone, social_security());
+            return new Friend(id, name, phone, social_security);
 
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível atualizar amigo devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
         }
     }
 }

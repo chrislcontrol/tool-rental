@@ -27,5 +27,9 @@ public class FriendUpdateFrame {
                             Integer.parseInt(phoneField.getText()),
                             Integer.parseInt(social_securityField.getText()),
 
+
+                }
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 
-public class UpdateFriendsController extends Controller {
+public class  UpdateFriendsController extends Controller {
 
         private final UpdateFriendUseCase updateFriendUseCase = new UpdateFriendUseCase();
 
@@ -20,6 +20,5 @@ public class UpdateFriendsController extends Controller {
         public void updateFriend(String name,  int phone, int social_security) throws ToastError {
             this.updateFriendUseCase.execute(name, phone, social_security);
             JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
-
-}
+    }
 }
