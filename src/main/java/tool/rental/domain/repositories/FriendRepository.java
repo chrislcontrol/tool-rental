@@ -3,12 +3,11 @@ package tool.rental.domain.repositories;
 import tool.rental.app.Settings;
 import tool.rental.domain.dao.FriendRentalSummary;
 import tool.rental.domain.entities.Friend;
-import tool.rental.domain.entities.Rental;
-import tool.rental.domain.entities.Tool;
 import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
+import javax.xml.crypto.Data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -149,6 +148,56 @@ public class FriendRepository {
             );
         }
     }
+
+    public Friend deleteFriend(String friendId) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM FRIEND WHERE id = ?");
+            stm.setString(1, friendId);
+
+            db.executeUpdate(stm);
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível deletar o amigo(a) devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
+        }return null;
+    }
+
+//    public boolean friendHasToolRented(String friendId) throws ToastError {
+//        try ( DataBase db = new DataBase()) {
+//                PreparedStatement stm = db.connection.prepareStatement(
+//                    "SELECT * FROM RENTAL WHERE friend_id = ? and devolution_timestamp IS NULL"
+//
+//            );
+//        }catch (SQLException exc) {
+//            System.out.println(exc.getMessage());
+//            throw new ToastError(
+//                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
+//                    "Erro de banco de dados."
+//            );
+//        }
+//
+//        return true;
+//    }
+
+    public boolean friendHasToolRented(String friendId) throws ToastError {
+    try (DataBase db = new DataBase()) {
+        PreparedStatement stm = db.connection.prepareStatement(
+                "SELECT * FROM RENTAL WHERE friend_id = ? AND devolution_timestamp IS NULL"
+        );
+        stm.setString(1, friendId);
+        ResultSet rs = stm.executeQuery();
+        return rs.next();
+
+    } catch (SQLException exc) {
+        System.out.println(exc.getMessage());
+        throw new ToastError(
+                "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
+                "Erro de banco de dados."
+        );
+    }
+}
 
     public boolean existsByNameAndSocial_Security(String name, String social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
