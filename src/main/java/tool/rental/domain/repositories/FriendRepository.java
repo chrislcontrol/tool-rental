@@ -125,7 +125,7 @@ public class FriendRepository {
         }
     }
 
-    public Friend updateFriend(String id, String name, String phone, String social_security) throws ToastError {
+    public Friend updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
         try (DataBase db = new DataBase()) {
 
 
@@ -135,8 +135,9 @@ public class FriendRepository {
             stm.setString(3, phone);
             stm.setString(4, social_security);
 
+
             db.executeUpdate(stm);
-            return new Friend(id, name, phone, social_security);
+            return new Friend(id, name, phone, social_security, user);
 
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());

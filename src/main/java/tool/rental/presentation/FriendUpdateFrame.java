@@ -26,7 +26,7 @@ public class FriendUpdateFrame {
                     UpdateFriendsController.updateFriend(
                             nameField.getText(),
                             Integer.parseInt(phoneField.getText()),
-                            Integer.parseInt(social_securityField.getText()),
+                            Integer.parseInt(social_securityField.getText())
 
 
                             );
