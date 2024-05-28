@@ -17,6 +17,11 @@ public class UpdateFriendUseCase {
         if (social_security == null ) {
             throw new ToastError("Número de identidade não pode ser nulo", "Campo não pode ser nulo");
         }
+        boolean exists = this.friendRepository.getFriendBySocial_Security(social_security);
+
+        if (exists) {
+            throw new ToastError("Amigo já existe com essa identidade.", "Amigo já cadastrado.");
+        }
 
         this.friendRepository.updateFriend(id, name, phone, social_security, user);
     }

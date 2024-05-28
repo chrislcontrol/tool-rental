@@ -199,4 +199,20 @@ public class FriendRepository {
             );
         }
     }
+    public boolean getFriendBySocial_Security (String social_security) throws ToastError{
+
+        try (DataBase db = new DataBase()) {
+        PreparedStatement stm = db.connection.prepareStatement("SELECT social_security FROM FRIEND WHERE social_security = ?");
+        stm.setString(1, social_security);
+        ResultSet result = db.executeQuery(stm);
+        return result.next();
+
+    } catch (SQLException exc) {
+        System.out.println(exc.getMessage());
+        throw new ToastError(
+                "Não foi possível verificar se a Identidade existe devido a um erro com o banco de dados.",
+                "Erro de banco de dados."
+            );
+        }
+    }
 }
