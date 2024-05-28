@@ -61,6 +61,7 @@
               <background color="-4583424"/>
               <font swing-font="Button.font"/>
               <foreground color="-2097160"/>
+              <hideActionText value="false"/>
               <text value="Sair"/>
             </properties>
           </component>

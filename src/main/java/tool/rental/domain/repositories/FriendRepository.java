@@ -7,7 +7,6 @@ import tool.rental.domain.entities.Tool;
 import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,6 +75,50 @@ public class FriendRepository {
             return friends;
         }catch (SQLException e) {
             throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
+        }
+    }
+
+    public Friend getById(String friendId) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String query = """
+                        SELECT
+                            f.id,
+                            f.name,
+                            f.phone,
+                            f.social_security,
+                            f.user_id,
+                            t.id as t__id,
+                            t.brand as t__brand,
+                            t.name as t__name,
+                            t.cost as t__cost
+    
+                        FROM FRIEND f
+                        LEFT JOIN TOOL t on t.id = f.id
+                        WHERE f.id = ? AND f.user_id = ?
+                    """;
+
+            PreparedStatement stm = db.connection.prepareStatement(query);
+            User user = Settings.getUser();
+            stm.setString(1, friendId);
+            stm.setString(2, user.getId());
+
+            ResultSet result = db.executeQuery(stm);
+            if (!result.next()) {
+                return null;
+            }
+
+            Friend friend = new Friend(
+                    result.getString("id"),
+                    result.getString("name"),
+                    result.getString("phone"),
+                    result.getString("social_security"),
+                    user
+            );
+
+            return friend;
+
+        } catch (SQLException e) {
+            throw new ToastError(e.toString(), "Erro de banco de dados.");
         }
     }
 

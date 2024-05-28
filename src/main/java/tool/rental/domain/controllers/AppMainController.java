@@ -6,6 +6,11 @@ import tool.rental.domain.entities.Tool;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
+import tool.rental.presentation.FriendsRankFrame;
+import tool.rental.presentation.FriendsScreenFrame;
+import tool.rental.presentation.LendToolFrame;
+import tool.rental.presentation.LoginFrame;
+import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.presentation.*;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
@@ -16,6 +21,7 @@ import javax.swing.*;
 import java.util.List;
 
 public class AppMainController extends Controller {
+    private final IsToolRentedUseCase isToolRentedUseCase = new IsToolRentedUseCase();
     private final ListToolsToMainTableUseCase listToolsToMainTableUseCase = new ListToolsToMainTableUseCase();
     private final ListFriendsToMainTableUseCase listFriendsToMainTableUseCase = new ListFriendsToMainTableUseCase();
     private final LogoutUseCase logoutUseCase = new LogoutUseCase();
@@ -90,6 +96,26 @@ public class AppMainController extends Controller {
                 null,
                 "Ferramenta devolvida com sucesso."
         );
+    }
+
+    public void openRegisterRentalModal(String toolId, String toolName, Runnable callback) throws ToastError {
+        if (isToolRentedUseCase.execute(toolId)) {
+            throw new ToastError(
+                    "Ferramenta selecionada já está emprestada!",
+                    "Ferramenta já emprestada"
+            );
+        }
+
+        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
+          "Tem certeza que deseja emprestar esta ferramenta?",
+          "Emprestar ferramenta"
+        );
+
+        if(userOption == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        this.frame.swapFrame(new LendToolFrame(toolId, toolName, callback), true);
     }
 
     public void openRegisterToolModal(Runnable callback) {

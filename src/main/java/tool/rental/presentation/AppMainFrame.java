@@ -9,6 +9,7 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -113,6 +114,31 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        this.toolsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+
+        this.lendToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
+                String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
+                try {
+                    controller.openRegisterRentalModal(toolId, toolName, () -> {
+                        try {
+                            loadData();
+                        } catch (ToastError exc) {
+                            exc.display();
+                        }
+                    });
+                } catch (ToastError exc){
+                    exc.display();
+                }
+            };
+        });
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
