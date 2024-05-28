@@ -28,4 +28,7 @@ public class ListFriendsToMainTableUseCase {
 
         return resultArray;
     }
+    public Friend getFriendById(String friendId) throws ToastError {
+        return this.friendRepository.getById(friendId);
+    }
 }

@@ -1,5 +1,6 @@
 package tool.rental.presentation;
 import tool.rental.domain.controllers.AppMainController;
+import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
@@ -47,7 +48,6 @@ public class FriendsScreenFrame extends PresentationFrame {
                 this.registerFriendButton,
                 this.updateButton,
                 this.deleteButton,
-                this.updateButton,
                 this.rankingButton,
                 this.exitButton
         );
@@ -65,6 +65,18 @@ public class FriendsScreenFrame extends PresentationFrame {
                 try {
                     controller.openFriendsRankFrame();
                 } catch (ToastError ex) {
+                    ex.display();
+                }
+            }
+        });
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = friendsTable.getSelectedRow();
+                    Friend friendSelected = controller.getFriendByIdAsTableRow(friendsTable.getValueAt(row, 0).toString());
+                    controller.openFriendsUpdateFrame(friendSelected);
+                }catch (ToastError ex) {
                     ex.display();
                 }
             }

@@ -1,34 +1,34 @@
 package tool.rental.presentation;
 
 import tool.rental.domain.controllers.UpdateFriendsController;
+import tool.rental.domain.entities.Friend;
+import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FriendUpdateFrame {
+public class FriendUpdateFrame extends PresentationFrame {
+    private final UpdateFriendsController updateFriendsController = new UpdateFriendsController(this);
     private JTextField social_securityField;
     private JTextField nameField;
     private JTextField phoneField;
     private JButton confirmButton;
     private JButton cancelButton;
-    private JPanel JPanel;
     private JPanel MainPanel;
 
-    public FriendUpdateFrame() {
+    public FriendUpdateFrame(Friend row) {
         this.setMainPanel();
         this.setupPageLayout();
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UpdateFriendsController.updateFriend(
+                    updateFriendsController.updateFriend(
                             nameField.getText(),
-                            Integer.parseInt(phoneField.getText()),
-                            Integer.parseInt(social_securityField.getText())
-
-
+                            phoneField.getText(),
+                            social_securityField.getText()
                             );
                 } catch (ToastError ex) {
                     ex.display();
@@ -38,7 +38,7 @@ public class FriendUpdateFrame {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UpdateFriendsController.closeFrame();
+                updateFriendsController.closeFrame();
             }
         });
     }

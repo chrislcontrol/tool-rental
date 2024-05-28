@@ -1,7 +1,6 @@
 package tool.rental.domain.controllers;
 
-import tool.rental.domain.entities.Friend;
-import tool.rental.domain.use_cases.RegisterToolUseCase;
+import tool.rental.domain.entities.User;
 import tool.rental.domain.use_cases.UpdateFriendUseCase;
 import tool.rental.utils.Controller;
 import tool.rental.utils.PresentationFrame;
@@ -17,13 +16,9 @@ public class  UpdateFriendsController extends Controller {
             super(frame);
         }
 
-        public void updateFriend(String id,String name,  String phone, String social_security, Runnable callback) throws ToastError {
-            this.updateFriendUseCase.execute(id,name, phone, social_security);
+        public void updateFriend(String id,String name,  String phone, String social_security,User user) throws ToastError {
+            this.updateFriendUseCase.execute(id,name, phone, social_security,user);
             JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
-
-            callback.run();
-
-            closeFrame();
 
     }
     public void closeFrame() {
