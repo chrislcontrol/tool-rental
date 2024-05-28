@@ -19,7 +19,7 @@ public class  UpdateFriendsController extends Controller {
         public void updateFriend(String id,String name,  String phone, String social_security,User user) throws ToastError {
             this.updateFriendUseCase.execute(id,name, phone, social_security,user);
             JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
-
+            this.closeFrame();
     }
     public void closeFrame() {
         frame.setVisible(false);

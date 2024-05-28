@@ -172,11 +172,20 @@ public class FriendRepository {
         try (DataBase db = new DataBase()) {
 
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO FRIEND VALUES(?, ?, ?, ?)");
-            stm.setString(1, id);
-            stm.setString(2, name);
-            stm.setString(3, phone);
-            stm.setString(4, social_security);
+            PreparedStatement stm = db.connection.prepareStatement(
+            """
+            UPDATE FRIEND 
+
+            SET name = ?,
+                phone = ?,
+                social_security = ?
+
+            WHERE id = ?
+            """);
+            stm.setString(1, name);
+            stm.setString(2, phone);
+            stm.setString(3, social_security);
+            stm.setString(4, id);
 
 
             db.executeUpdate(stm);
