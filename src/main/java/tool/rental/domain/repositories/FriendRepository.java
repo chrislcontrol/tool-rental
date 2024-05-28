@@ -171,7 +171,6 @@ public class FriendRepository {
     public Friend updateFriend(String id, String name, String phone, String social_security,User user) throws ToastError {
         try (DataBase db = new DataBase()) {
 
-
             PreparedStatement stm = db.connection.prepareStatement(
             """
             UPDATE FRIEND 
