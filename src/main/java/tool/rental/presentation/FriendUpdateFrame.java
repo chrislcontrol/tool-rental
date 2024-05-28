@@ -17,8 +17,9 @@ public class FriendUpdateFrame extends PresentationFrame {
     private JButton confirmButton;
     private JButton cancelButton;
     private JPanel MainPanel;
+    private JPanel JPanel;
 
-    public FriendUpdateFrame(Friend row) {
+    public FriendUpdateFrame(Friend friendSelected) {
         this.setMainPanel();
         this.setupPageLayout();
         confirmButton.addActionListener(new ActionListener() {
@@ -26,9 +27,11 @@ public class FriendUpdateFrame extends PresentationFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     updateFriendsController.updateFriend(
+                            friendSelected.getId(),
                             nameField.getText(),
                             phoneField.getText(),
-                            social_securityField.getText()
+                            social_securityField.getText(),
+                            friendSelected.getUser()
                             );
                 } catch (ToastError ex) {
                     ex.display();

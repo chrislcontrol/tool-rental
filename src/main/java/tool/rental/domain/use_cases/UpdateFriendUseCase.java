@@ -2,6 +2,7 @@ package tool.rental.domain.use_cases;
 
 import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.utils.ToastError;
+import tool.rental.domain.entities.User;
 
 public class UpdateFriendUseCase {
     private final FriendRepository friendRepository = new FriendRepository();
