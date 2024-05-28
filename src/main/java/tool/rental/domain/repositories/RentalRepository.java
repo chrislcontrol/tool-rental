@@ -1,13 +1,16 @@
 package tool.rental.domain.repositories;
 
 import tool.rental.app.Settings;
+import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Rental;
+import tool.rental.domain.entities.Tool;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class RentalRepository {
     public int countBorrowedByUser() throws ToastError {
@@ -48,6 +51,26 @@ public class RentalRepository {
 
         } catch (SQLException e) {
             throw new ToastError(e.toString(), "Erro de banco de dados");
+        }
+    }
+
+    public void create(long rentalTimestamp, Friend friend, Tool tool) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String id = UUID.randomUUID().toString();
+
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO RENTAL VALUES(?, ?, null, ?, ?)");
+            stm.setString(1, id);
+            stm.setLong(2, rentalTimestamp);
+            stm.setString(3, friend.getId());
+            stm.setString(4, tool.getId());
+
+            db.executeUpdate(stm);
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                "Não foi possível registrar o empréstimo da ferramenta devido a um erro de banco de dados.",
+                    "Erro de banco de dados");
         }
     }
 
