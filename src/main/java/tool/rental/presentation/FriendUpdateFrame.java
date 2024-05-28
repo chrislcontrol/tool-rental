@@ -44,7 +44,7 @@ public class FriendUpdateFrame {
     }
 
     private void setupPageLayout() {
-        this.setTitle("Registrar ferramenta");
+        this.setTitle("Atualizar Amigo");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(this.userScreen.widthFraction(30), this.userScreen.heightFraction(30));
         this.setLocationRelativeTo(null);
@@ -52,9 +52,5 @@ public class FriendUpdateFrame {
 
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 }

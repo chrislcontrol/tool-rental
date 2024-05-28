@@ -16,6 +16,7 @@ import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+import tool.rental.presentation.FriendUpdateFrame;
 
 import javax.swing.*;
 import java.util.List;
@@ -121,6 +122,9 @@ public class AppMainController extends Controller {
 
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
+    }
+    public void openUpdateFriendModal(Runnable callback) {
+        this.frame.swapFrame(new UpdateFriendFrame(callback),true);
     }
 
     public void openRegisterFriendModal(Runnable callback) {
