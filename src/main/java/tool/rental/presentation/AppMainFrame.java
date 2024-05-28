@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppMainFrame extends PresentationFrame {
@@ -126,20 +127,28 @@ public class AppMainFrame extends PresentationFrame {
         this.lendToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
-                String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
+                int[] selectedRows = toolsTable.getSelectedRows();
+                ArrayList<String> toolIds = new ArrayList<>();
+
+                for (int row : selectedRows) {
+                    String toolId = toolsTable.getValueAt(row, 0).toString();
+                    toolIds.add(toolId);
+                }
+
                 try {
-                    controller.openRegisterRentalModal(toolId, toolName, () -> {
+                    controller.openRegisterRentalModal(toolIds, () -> {
                         try {
                             loadData();
                         } catch (ToastError exc) {
                             exc.display();
                         }
                     });
-                } catch (ToastError exc){
+                } catch (ToastError exc) {
                     exc.display();
                 }
-            };
+            }
+
+            ;
         });
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
@@ -208,7 +217,7 @@ public class AppMainFrame extends PresentationFrame {
                     controller.deleteTool(toolId);
                     loadData();
 
-                } catch (ToastError exc){
+                } catch (ToastError exc) {
                     exc.display();
                 }
             }

@@ -21,21 +21,17 @@ public class LendToolFrame extends PresentationFrame {
     private JPanel mainPanel;
     private JButton rentButton;
     private JButton cancelButton;
-    private JLabel JLtoolName;
     private JTable friendsTable;
     private JTextField nameFilter;
-    private String toolId;
-    private String toolName;
+    private List<String> toolIds;
     private Runnable sucessCallBack;
     private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
 
-    public LendToolFrame(String toolId, String toolName, Runnable sucessCallback) throws ToastError {
+    public LendToolFrame(List<String> toolId, Runnable sucessCallback) throws ToastError {
         this.sucessCallBack = sucessCallback;
-        this.toolId = toolId;
-        this.toolName = toolName;
+        this.toolIds = toolId;
         this.setMainPanel();
         this.setupPageLayout();
-        this.setTextToolName();
         this.setUpListeners();
         this.setupTable();
         this.setPointer(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
@@ -68,13 +64,13 @@ public class LendToolFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (lendToolFrameController.isToolRented(toolId)){
+                    if (toolIds.size() == 1 && lendToolFrameController.isToolRented(toolIds.getFirst())){
                         throw new ToastError(
                                 "A ferramenta não pode ser emprestada para mais de um amigo!",
                                 "Ferramenta já emprestada");
                     }
                     String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
-                    lendToolFrameController.rentTool(friendId, toolId, sucessCallBack);
+                    lendToolFrameController.rentTool(friendId, toolIds, sucessCallBack);
                 } catch (ToastError exc) {
                     exc.display();
                 }
@@ -126,10 +122,6 @@ public class LendToolFrame extends PresentationFrame {
                 filterTable();
             }
         });
-    }
-
-    private void setTextToolName(){
-        JLtoolName.setText(toolName);
     }
 
     private void loadData() throws ToastError {

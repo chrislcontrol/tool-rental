@@ -9,10 +9,12 @@ import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ToolRepository {
@@ -127,6 +129,21 @@ public class ToolRepository {
     }
 
     public Tool getById(String toolId) throws ToastError {
+        ArrayList<String> toolIds = new ArrayList<>() {
+            {
+                add(toolId);
+            }
+        };
+        List<Tool> tools = filterByIds(toolIds);
+        if (tools.isEmpty()) {
+            return null;
+        }
+
+        return tools.getFirst();
+    }
+
+
+    public List<Tool> filterByIds(List<String> toolIds) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT
@@ -134,10 +151,6 @@ public class ToolRepository {
                             t.brand,
                             t.name,
                             t.cost,
-                            u.id as u__id,
-                            u.username as u__username,
-                            u.has_mock as u__has_mock,
-                            r.id as r__id,
                             r.rental_timestamp as r__rental_timestamp,
                             r.devolution_timestamp as r__devolution_timestamp,
                             f.id as f__id,
@@ -146,38 +159,36 @@ public class ToolRepository {
                             f.social_security as f__social_security
                             
                         FROM TOOL t
-                        LEFT JOIN USER u on t.user_id = u.id
                         LEFT JOIN RENTAL r on r.tool_id = t.id and r.devolution_timestamp is null
                         LEFT JOIN FRIEND f on f.id = r.friend_id
-                        WHERE t.id = ?
+                        WHERE t.id in (?)
                     """;
 
+            Array arrayOfId = db.connection.createArrayOf("VARCHAR", toolIds.toArray());
+
             PreparedStatement stm = db.connection.prepareStatement(query);
-            stm.setString(1, toolId);
+            stm.setArray(1, arrayOfId);
 
             ResultSet result = db.executeQuery(stm);
-            if (!result.next()) {
-                return null;
+            ArrayList<Tool> tools = new ArrayList<>();
+
+            User user = Settings.getUser();
+
+            while (result.next()) {
+                Tool tool = new Tool(
+                        result.getString("id"),
+                        result.getString("brand"),
+                        result.getString("name"),
+                        result.getDouble("cost"),
+                        user
+                );
+                tools.add(tool);
+                setCurrentRentalToTool(tool, result);
             }
 
-            User user = new User(
-                    result.getString("u__id"),
-                    result.getString("u__username"),
-                    false,
-                    result.getBoolean("u__has_mock")
-            );
+            tools.trimToSize();
 
-            Tool tool = new Tool(
-                    result.getString("id"),
-                    result.getString("brand"),
-                    result.getString("name"),
-                    result.getDouble("cost"),
-                    user
-            );
-
-            this.setCurrentRentalToTool(tool, result);
-
-            return tool;
+            return tools;
 
         } catch (SQLException e) {
             throw new ToastError(e.toString(), "Erro de banco de dados.");
@@ -228,7 +239,7 @@ public class ToolRepository {
         }
     }
 
-    public boolean isToolRented(String toolId ) throws ToastError {
+    public boolean isToolRented(String toolId) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT
@@ -268,7 +279,7 @@ public class ToolRepository {
             return result.next();
 
         } catch (SQLException e) {
-            throw  new ToastError(e.getMessage(), "Erro de banco de dados");
+            throw new ToastError(e.getMessage(), "Erro de banco de dados");
         }
     }
 
@@ -278,7 +289,7 @@ public class ToolRepository {
             stm.setString(1, tool.getId());
             db.executeUpdate(stm);
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new ToastError("Não foi possível deletar a ferramenta selecionada.",
                     "Erro de banco de dados");

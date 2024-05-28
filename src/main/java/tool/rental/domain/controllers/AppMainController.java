@@ -99,8 +99,8 @@ public class AppMainController extends Controller {
         );
     }
 
-    public void openRegisterRentalModal(String toolId, String toolName, Runnable callback) throws ToastError {
-        if (isToolRentedUseCase.execute(toolId)) {
+    public void openRegisterRentalModal(List<String> toolIds, Runnable callback) throws ToastError {
+        if (toolIds.size() == 1 && isToolRentedUseCase.execute(toolIds.getFirst())) {
             throw new ToastError(
                     "Ferramenta selecionada já está emprestada!",
                     "Ferramenta já emprestada"
@@ -108,7 +108,7 @@ public class AppMainController extends Controller {
         }
 
         int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
-          "Tem certeza que deseja emprestar esta ferramenta?",
+          "Tem certeza que deseja emprestar estas ferramentas?",
           "Emprestar ferramenta"
         );
 
@@ -116,7 +116,7 @@ public class AppMainController extends Controller {
             return;
         }
 
-        this.frame.swapFrame(new LendToolFrame(toolId, toolName, callback), true);
+        this.frame.swapFrame(new LendToolFrame(toolIds, callback), true);
     }
 
     public void openRegisterToolModal(Runnable callback) {

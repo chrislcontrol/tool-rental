@@ -11,21 +11,40 @@ import tool.rental.presentation.LendToolFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.ToastError;
 
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class LendToolFrameController extends Controller {
     private final FriendRepository friendRepository = new FriendRepository();
     private final ToolRepository toolRepository = new ToolRepository();
     private final RentalToolUseCase rentalToolUseCase = new RentalToolUseCase();
     private final IsToolRentedUseCase isToolRentedUseCase = new IsToolRentedUseCase();
 
-    public LendToolFrameController(LendToolFrame frame){
+    public LendToolFrameController(LendToolFrame frame) {
         super(frame);
 
     }
 
-    public void rentTool(String friendId, String toolId, Runnable callback) throws ToastError {
-        Tool tool = this.toolRepository.getById(toolId);
+    public void rentTool(String friendId, List<String> toolIds, Runnable callback) throws ToastError {
         Friend friend = this.friendRepository.getById(friendId);
-        this.rentalToolUseCase.execute(friend, tool);
+        List<Tool> tools = this.toolRepository.filterByIds(toolIds);
+        ArrayList<String> failures = new ArrayList<>();
+
+        for (Tool tool : tools) {
+            try {
+                this.rentalToolUseCase.execute(friend, tool);
+            } catch (ToastError exc) {
+                failures.add(tool.getId());
+            }
+        }
+
+        failures.trimToSize();
+
+        JOptionPane.showMessageDialog(
+                null,
+                String.format("Não foi possível emprestar %s ferramentas.", failures.size())
+        );
 
         callback.run();
 
@@ -33,7 +52,7 @@ public class LendToolFrameController extends Controller {
     }
 
     public boolean isToolRented(String toolId) throws ToastError {
-       return isToolRentedUseCase.execute(toolId);
+        return isToolRentedUseCase.execute(toolId);
     }
 
     private void returnToMainFrame() throws ToastError {
