@@ -99,8 +99,8 @@ public class App {
                                 
                 CREATE TABLE IF NOT EXISTS RENTAL (
                 	id TEXT(36) NOT NULL,
-                	rental_timestamp INTEGER NOT NULL,
-                	devolution_timestamp INTEGER,
+                	rental_timestamp LONG NOT NULL,
+                	devolution_timestamp LONG,
                 	friend_id TEXT(36) NOT NULL,
                 	tool_id TEXT(36) NOT NULL,
                 	CONSTRAINT RENTAL_PK PRIMARY KEY (id),

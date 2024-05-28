@@ -9,6 +9,7 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -30,6 +31,7 @@ public class AppMainFrame extends PresentationFrame {
     private JLabel friendsCountLabel;
     private JLabel toolTotalAmountLabel;
     private JCheckBox rentalCB;
+    private JButton deleteToolButton;
     private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable);
 
     public AppMainFrame() throws ToastError {
@@ -57,6 +59,7 @@ public class AppMainFrame extends PresentationFrame {
                 });
             }
         });
+
     }
 
 
@@ -113,6 +116,31 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        this.toolsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+
+        this.lendToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String toolId = toolsTable.getValueAt(toolsTable.getSelectedRow(), 0).toString();
+                String toolName = toolsTable.getValueAt(toolsTable.getSelectedRow(), 2).toString();
+                try {
+                    controller.openRegisterRentalModal(toolId, toolName, () -> {
+                        try {
+                            loadData();
+                        } catch (ToastError exc) {
+                            exc.display();
+                        }
+                    });
+                } catch (ToastError exc){
+                    exc.display();
+                }
+            };
+        });
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,7 +163,6 @@ public class AppMainFrame extends PresentationFrame {
                         ex.display();
                     }
                 }
-
             }
         });
 
@@ -165,6 +192,24 @@ public class AppMainFrame extends PresentationFrame {
                 } catch (ToastError exc) {
                     exc.display();
 
+                }
+            }
+        });
+
+        deleteToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = toolsTable.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+                String toolId = toolsTable.getModel().getValueAt(row, 0).toString();
+                try {
+                    controller.deleteTool(toolId);
+                    loadData();
+
+                } catch (ToastError exc){
+                    exc.display();
                 }
             }
         });
