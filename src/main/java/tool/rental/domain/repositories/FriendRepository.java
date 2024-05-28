@@ -168,12 +168,57 @@ public class FriendRepository {
         }
     }
 
-    public Friend updateFriend(String id, String name, String phone, String social_security,User user) throws ToastError {
+    public Friend createFriend(String name, String phone, String social_security) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            String id = UUID.randomUUID().toString();
+
+
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO FRIEND VALUES(?, ?, ?, ?, ?)");
+            stm.setString(1, id);
+            stm.setString(2, name);
+            stm.setString(3, phone);
+            stm.setString(4, social_security);
+            stm.setString(5, Settings.getUser().getId());
+
+            db.executeUpdate(stm);
+            return new Friend(id, name, phone, social_security, Settings.getUser());
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível cadastrar o amigo(a) devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
+        }
+    }
+
+    public boolean existsByNameAndSocial_Security(String name, String social_security) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement(
+                    "SELECT id FROM FRIEND WHERE user_id = ? and name = ? and social_security = ?"
+            );
+            stm.setString(1, Settings.getUser().getId());
+            stm.setString(2, name);
+            stm.setString(3, social_security);
+            ResultSet result = db.executeQuery(stm);
+            return result.next();
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
+                    "Erro de banco de dados."
+            );
+        }
+    }
+
+    public Friend updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
         try (DataBase db = new DataBase()) {
 
             PreparedStatement stm = db.connection.prepareStatement(
-            """
-            UPDATE FRIEND 
+                    """
+            
+                            UPDATE FRIEND 
 
             SET name = ?,
                 phone = ?,
@@ -195,22 +240,6 @@ public class FriendRepository {
             throw new ToastError(
                     "Não foi possível atualizar amigo devido a um erro com banco de dados",
                     "Erro de banco de dados"
-            );
-        }
-    }
-    public boolean getFriendBySocial_Security (String social_security) throws ToastError{
-
-        try (DataBase db = new DataBase()) {
-        PreparedStatement stm = db.connection.prepareStatement("SELECT social_security FROM FRIEND WHERE social_security = ?");
-        stm.setString(1, social_security);
-        ResultSet result = db.executeQuery(stm);
-        return result.next();
-
-    } catch (SQLException exc) {
-        System.out.println(exc.getMessage());
-        throw new ToastError(
-                "Não foi possível verificar se a Identidade existe devido a um erro com o banco de dados.",
-                "Erro de banco de dados."
             );
         }
     }
