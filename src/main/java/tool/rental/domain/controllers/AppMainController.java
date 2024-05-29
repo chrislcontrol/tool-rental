@@ -170,4 +170,8 @@ public class AppMainController extends Controller {
                 "Ferramenta deletada com sucesso!"
         );
     }
+
+    public void openRentalReportFrame() throws ToastError {
+        frame.swapFrame(new RentalReportFrame(), true);
+    }
 }
