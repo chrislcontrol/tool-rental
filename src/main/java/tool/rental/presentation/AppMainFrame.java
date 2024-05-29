@@ -32,6 +32,7 @@ public class AppMainFrame extends PresentationFrame {
     private JLabel toolTotalAmountLabel;
     private JCheckBox rentalCB;
     private JButton deleteToolButton;
+    private JButton rentalReportButton;
     private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable);
 
     public AppMainFrame() throws ToastError {
@@ -44,7 +45,9 @@ public class AppMainFrame extends PresentationFrame {
                 this.registerToolButton,
                 this.lendToolButton,
                 this.returnToolButton,
-                this.exitButton
+                this.exitButton,
+                this.deleteToolButton,
+                this.rentalReportButton
         );
         this.setupTable();
         registerToolButton.addActionListener(new ActionListener() {
@@ -60,6 +63,16 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        rentalReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.openRentalReportFrame();
+                } catch (ToastError exc) {
+                    exc.display();
+                }
+            }
+        });
     }
 
 
