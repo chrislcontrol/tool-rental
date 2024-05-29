@@ -17,6 +17,9 @@ public class UpdateFriendUseCase {
         if (social_security == null ) {
             throw new ToastError("Número de identidade não pode ser nulo", "Campo não pode ser nulo");
         }
+        if (!social_security.matches("\\d{11}")){
+            throw new ToastError("Só podem ser informados números com 11 caractéres","Campo deve ter apenas números de 11 caractéres");
+        }
         boolean exists = this.friendRepository.existsByNameAndSocial_Security(name, social_security);
 
         if (exists) {
