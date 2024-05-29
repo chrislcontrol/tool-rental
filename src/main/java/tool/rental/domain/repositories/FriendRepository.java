@@ -129,8 +129,7 @@ public class FriendRepository {
                     	f.name,
                     	f.social_security,
                     	count(r.id) as total_rental,
-                    	SUM(CASE WHEN r.devolution_timestamp IS NULL THEN 1 ELSE 0 END) as current_borrowed
-                                        
+                    	SUM(CASE WHEN r.id is not null and r.devolution_timestamp IS NULL THEN 1 ELSE 0 END) as current_borrowed
                     FROM
                     	FRIEND f
                     	
@@ -138,9 +137,9 @@ public class FriendRepository {
                     	on r.friend_id = f.id
                     	
                     WHERE f.USER_ID = ?
+                    
                     group by f.name, f.social_security
-                                        
-                    order by total_rental
+                    order by total_rental DESC
                     """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
