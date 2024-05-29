@@ -1,5 +1,6 @@
 package tool.rental.domain.controllers;
 
+import tool.rental.domain.entities.Friend;
 import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Tool;
@@ -16,6 +17,7 @@ import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+import tool.rental.presentation.FriendUpdateFrame;
 
 import javax.swing.*;
 import java.util.List;
@@ -44,6 +46,10 @@ public class AppMainController extends Controller {
 
     public List<String[]> listFriendAsTableRow() throws ToastError {
         return this.listFriendsToMainTableUseCase.execute();
+    }
+
+    public Friend getFriendByIdAsTableRow(String friendId) throws ToastError {
+        return this.listFriendsToMainTableUseCase.getFriendById(friendId);
     }
 
     public CalculateSummaryDTO calculateSummary() throws ToastError {
@@ -121,6 +127,7 @@ public class AppMainController extends Controller {
 
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
+
     }
 
     public void openRegisterFriendModal(Runnable callback) {
@@ -133,6 +140,9 @@ public class AppMainController extends Controller {
 
     public void openFriendsRankFrame() throws ToastError {
         frame.swapFrame(new FriendsRankFrame(), true);
+    }
+    public void openFriendsUpdateFrame(Friend row) throws  ToastError{
+        frame.swapFrame(new FriendUpdateFrame(row),true);
     }
 
     public void deleteTool(String toolId) throws ToastError {

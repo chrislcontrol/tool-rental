@@ -73,7 +73,7 @@ public class FriendRepository {
             friends.trimToSize();
 
             return friends;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
         }
     }
@@ -211,4 +211,35 @@ public class FriendRepository {
         }
     }
 
+    public Friend updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
+        try (DataBase db = new DataBase()) {
+
+            PreparedStatement stm = db.connection.prepareStatement(
+                    """
+            
+                            UPDATE FRIEND 
+
+            SET name = ?,
+                phone = ?,
+                social_security = ?
+
+            WHERE id = ?
+            """);
+            stm.setString(1, name);
+            stm.setString(2, phone);
+            stm.setString(3, social_security);
+            stm.setString(4, id);
+
+
+            db.executeUpdate(stm);
+            return new Friend(id, name, phone, social_security, user);
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível atualizar amigo devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
+        }
+    }
 }

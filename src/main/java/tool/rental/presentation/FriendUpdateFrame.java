@@ -1,41 +1,38 @@
 package tool.rental.presentation;
 
-import tool.rental.domain.controllers.RegisterToolController;
+import tool.rental.domain.controllers.UpdateFriendsController;
+import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
-
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterToolFrame extends PresentationFrame {
-
-    private final RegisterToolController registerToolController = new RegisterToolController(this);
-
-    private JTextField costField;
-    private JTextField brandField;
+public class FriendUpdateFrame extends PresentationFrame {
+    private final UpdateFriendsController updateFriendsController = new UpdateFriendsController(this);
+    private JTextField social_securityField;
+    private JTextField nameField;
+    private JTextField phoneField;
     private JButton confirmButton;
     private JButton cancelButton;
     private JPanel MainPanel;
-    private JTextField nameField;
+    private JPanel JPanel;
 
-
-    public RegisterToolFrame(Runnable successCallback) {
+    public FriendUpdateFrame(Friend friendSelected) {
         this.setMainPanel();
         this.setupPageLayout();
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String costText = costField.getText().replace(',', '.');
-                    registerToolController.registerTool(
-                            brandField.getText(),
+                    updateFriendsController.updateFriend(
+                            friendSelected.getId(),
                             nameField.getText(),
-                            Double.parseDouble(costText),
-                            successCallback
-
-                    );
+                            phoneField.getText(),
+                            social_securityField.getText(),
+                            friendSelected.getUser()
+                            );
                 } catch (ToastError ex) {
                     ex.display();
                 }
@@ -44,13 +41,13 @@ public class RegisterToolFrame extends PresentationFrame {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registerToolController.closeFrame();
+                updateFriendsController.closeFrame();
             }
         });
     }
 
     private void setupPageLayout() {
-        this.setTitle("Registrar ferramenta");
+        this.setTitle("Atualizar Amigo");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(this.userScreen.widthFraction(30), this.userScreen.heightFraction(30));
         this.setLocationRelativeTo(null);
@@ -59,9 +56,4 @@ public class RegisterToolFrame extends PresentationFrame {
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
     }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }
-
