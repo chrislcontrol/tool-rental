@@ -25,6 +25,7 @@ public class TableConfigurator {
     }
 
     public void setup(String[] columns, int[] hiddenColumns) {
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         DefaultTableModel model = getTableModel();
 
         for (String column : columns) {

@@ -1,5 +1,6 @@
 package tool.rental.domain.controllers;
 
+import tool.rental.domain.entities.Friend;
 import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Friend;
@@ -28,6 +29,7 @@ import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+import tool.rental.presentation.FriendUpdateFrame;
 
 import javax.swing.*;
 import java.util.List;
@@ -59,6 +61,10 @@ public class AppMainController extends Controller {
 
     public List<String[]> listFriendAsTableRow() throws ToastError {
         return this.listFriendsToMainTableUseCase.execute();
+    }
+
+    public Friend getFriendByIdAsTableRow(String friendId) throws ToastError {
+        return this.listFriendsToMainTableUseCase.getFriendById(friendId);
     }
 
     public CalculateSummaryDTO calculateSummary() throws ToastError {
@@ -114,25 +120,25 @@ public class AppMainController extends Controller {
         );
     }
 
-    public void deleteFriend(String friendId) throws ToastError {
-        Friend friend = this.friendsRepository.getById(friendId);
-
-        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
-                "Tem certeza que deseja deletar este amigo?",
-                "Deletar Amigo"
-        );
-
-        if (userOption == JOptionPane.NO_OPTION) {
-            return;
-        }
-
-        this.deleteFriendUseCase.execute(friendId);
-
-        JOptionPane.showMessageDialog(
-                null,
-                "Amigo deletado com sucesso."
-        );
-    }
+//    public void deleteFriend(String friendId) throws ToastError {
+//        Friend friend = this.friendsRepository.getById(friendId);
+//
+//        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
+//                "Tem certeza que deseja deletar este amigo?",
+//                "Deletar Amigo"
+//        );
+//
+//        if (userOption == JOptionPane.NO_OPTION) {
+//            return;
+//        }
+//
+//        this.deleteFriendUseCase.execute(friendId);
+//
+//        JOptionPane.showMessageDialog(
+//                null,
+//                "Amigo deletado com sucesso."
+//        );
+//    }
 
     public void openRegisterRentalModal(String toolId, String toolName, Runnable callback) throws ToastError {
         if (isToolRentedUseCase.execute(toolId)) {
@@ -156,6 +162,7 @@ public class AppMainController extends Controller {
 
     public void openRegisterToolModal(Runnable callback) {
         this.frame.swapFrame(new RegisterToolFrame(callback), true);
+
     }
 
     public void openRegisterFriendModal(Runnable callback) {
@@ -168,6 +175,9 @@ public class AppMainController extends Controller {
 
     public void openFriendsRankFrame() throws ToastError {
         frame.swapFrame(new FriendsRankFrame(), true);
+    }
+    public void openFriendsUpdateFrame(Friend row) throws  ToastError{
+        frame.swapFrame(new FriendUpdateFrame(row),true);
     }
 
     public void deleteTool(String toolId) throws ToastError {
@@ -194,5 +204,9 @@ public class AppMainController extends Controller {
                 null,
                 "Ferramenta deletada com sucesso!"
         );
+    }
+
+    public void openRentalReportFrame() throws ToastError {
+        frame.swapFrame(new RentalReportFrame(), true);
     }
 }

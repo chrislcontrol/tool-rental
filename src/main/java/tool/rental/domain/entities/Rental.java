@@ -43,14 +43,36 @@ public class Rental extends Model {
         return new Date(timestamp);
     }
 
+    public Date getDevolutionDatetime() {
+        long timestamp = getDevolutionTimestamp();
+
+        return timestamp == 0 ? null : new Date(timestamp);
+    }
+
+    private String getFormattedDate(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
     public String getFormattedRentalDate(String format) {
         Date rentalDatetime = getRentalDatetime();
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(rentalDatetime);
+        return getFormattedDate(rentalDatetime, format);
     }
 
     public String getFormattedRentalDate() {
-        return this.getFormattedRentalDate("dd/MM/yyyy");
+        return getFormattedRentalDate("dd/MM/yyyy");
+    }
+
+    public String getFormattedDevolutionDate(String format) {
+        Date devolutionDatetime = getDevolutionDatetime();
+        if (devolutionDatetime == null) {
+            return "";
+        }
+        return getFormattedDate(devolutionDatetime, format);
+    }
+
+    public String getFormattedDevolutionDate() {
+        return getFormattedDevolutionDate("dd/MM/yyyy");
     }
 
     public Friend getFriend() {

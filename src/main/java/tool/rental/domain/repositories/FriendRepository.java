@@ -75,7 +75,7 @@ public class FriendRepository {
             friends.trimToSize();
 
             return friends;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
         }
     }
@@ -131,8 +131,7 @@ public class FriendRepository {
                     	f.name,
                     	f.social_security,
                     	count(r.id) as total_rental,
-                    	SUM(CASE WHEN r.devolution_timestamp IS NULL THEN 1 ELSE 0 END) as current_borrowed
-                                        
+                    	SUM(CASE WHEN r.id is not null and r.devolution_timestamp IS NULL THEN 1 ELSE 0 END) as current_borrowed
                     FROM
                     	FRIEND f
                     	
@@ -140,9 +139,9 @@ public class FriendRepository {
                     	on r.friend_id = f.id
                     	
                     WHERE f.USER_ID = ?
+                    
                     group by f.name, f.social_security
-                                        
-                    order by total_rental
+                    order by total_rental DESC
                     """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
@@ -247,4 +246,35 @@ public class FriendRepository {
         }
     }
 
+    public Friend updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
+        try (DataBase db = new DataBase()) {
+
+            PreparedStatement stm = db.connection.prepareStatement(
+                    """
+            
+                            UPDATE FRIEND 
+
+            SET name = ?,
+                phone = ?,
+                social_security = ?
+
+            WHERE id = ?
+            """);
+            stm.setString(1, name);
+            stm.setString(2, phone);
+            stm.setString(3, social_security);
+            stm.setString(4, id);
+
+
+            db.executeUpdate(stm);
+            return new Friend(id, name, phone, social_security, user);
+
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            throw new ToastError(
+                    "Não foi possível atualizar amigo devido a um erro com banco de dados",
+                    "Erro de banco de dados"
+            );
+        }
+    }
 }
