@@ -33,6 +33,7 @@ public class AppMainFrame extends PresentationFrame {
     private JCheckBox rentalCB;
     private JButton deleteToolButton;
     private JButton rentalReportButton;
+    private JButton updateToolButton;
     private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable);
 
     public AppMainFrame() throws ToastError {
@@ -47,7 +48,8 @@ public class AppMainFrame extends PresentationFrame {
                 this.returnToolButton,
                 this.exitButton,
                 this.deleteToolButton,
-                this.rentalReportButton
+                this.rentalReportButton,
+                this.updateToolButton
         );
         this.setupTable();
         registerToolButton.addActionListener(new ActionListener() {
@@ -126,13 +128,6 @@ public class AppMainFrame extends PresentationFrame {
                 } catch (ToastError exc) {
                     exc.display();
                 }
-            }
-        });
-
-        this.toolsTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
             }
         });
 
@@ -222,6 +217,28 @@ public class AppMainFrame extends PresentationFrame {
                     loadData();
 
                 } catch (ToastError exc){
+                    exc.display();
+                }
+            }
+        });
+
+        updateToolButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = toolsTable.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+                String toolId = toolsTable.getValueAt(row, 0).toString();
+                try {
+                    controller.openUpdateToolFrame(toolId, () -> {
+                        try {
+                            loadData();
+                        } catch (ToastError exc) {
+                            exc.display();
+                        }
+                    });
+                } catch(ToastError exc) {
                     exc.display();
                 }
             }

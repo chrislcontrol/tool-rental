@@ -278,10 +278,28 @@ public class ToolRepository {
             stm.setString(1, tool.getId());
             db.executeUpdate(stm);
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new ToastError("Não foi possível deletar a ferramenta selecionada.",
                     "Erro de banco de dados");
+        }
+    }
+
+    public void updateTool(Tool tool, String brand, String name, double cost) throws ToastError {
+        try (DataBase db = new DataBase()) {
+            PreparedStatement stm = db.connection.prepareStatement(
+                    "UPDATE TOOL SET brand = ?, name = ?, cost = ? WHERE id = ? ");
+            stm.setString(1, brand);
+            stm.setString(2, name);
+            stm.setDouble(3, cost);
+            stm.setString(4, tool.getId());
+
+            db.executeUpdate(stm);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new ToastError("Não foi possível atualizar a ferramenta",
+                    "Erro de banco de dados.");
         }
     }
 }

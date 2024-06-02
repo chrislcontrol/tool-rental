@@ -174,4 +174,9 @@ public class AppMainController extends Controller {
     public void openRentalReportFrame() throws ToastError {
         frame.swapFrame(new RentalReportFrame(), true);
     }
+
+    public void openUpdateToolFrame(String toolId, Runnable callback) throws ToastError {
+        frame.swapFrame(new UpdateToolFrame(toolId, callback), true);
+    }
+
 }
