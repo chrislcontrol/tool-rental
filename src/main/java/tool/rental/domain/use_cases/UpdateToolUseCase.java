@@ -16,8 +16,8 @@ public class UpdateToolUseCase {
             throw new ToastError("Nome da ferramenta não pode ser nulo.", "Campo não pode ser nulo"
             );
         }
-        if (cost == 0.00) {
-            throw new ToastError("Preço da ferramenta não pode ser zero.", "Campo não pode ser zero"
+        if (cost <= 0.00) {
+            throw new ToastError("Preço da ferramenta não pode ser zero ou valor negativo.", "Campo não pode ser zero ou valor negativo"
             );
         }
         if (toolRepository.existsByNameAndBrand(name, brand)) {
