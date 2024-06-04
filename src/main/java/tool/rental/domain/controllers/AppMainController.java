@@ -120,26 +120,6 @@ public class AppMainController extends Controller {
         );
     }
 
-//    public void deleteFriend(String friendId) throws ToastError {
-//        Friend friend = this.friendsRepository.getById(friendId);
-//
-//        int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
-//                "Tem certeza que deseja deletar este amigo?",
-//                "Deletar Amigo"
-//        );
-//
-//        if (userOption == JOptionPane.NO_OPTION) {
-//            return;
-//        }
-//
-//        this.deleteFriendUseCase.execute(friendId);
-//
-//        JOptionPane.showMessageDialog(
-//                null,
-//                "Amigo deletado com sucesso."
-//        );
-//    }
-
     public void openRegisterRentalModal(String toolId, String toolName, Runnable callback) throws ToastError {
         if (isToolRentedUseCase.execute(toolId)) {
             throw new ToastError(
