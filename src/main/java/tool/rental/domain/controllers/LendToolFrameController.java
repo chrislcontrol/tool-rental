@@ -36,10 +36,6 @@ public class LendToolFrameController extends Controller {
        return isToolRentedUseCase.execute(toolId);
     }
 
-    private void returnToMainFrame() throws ToastError {
-        this.frame.swapFrame(new AppMainFrame());
-    }
-
     public void closeFrame() {
         frame.setVisible(false);
 
