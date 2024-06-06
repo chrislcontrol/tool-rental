@@ -25,6 +25,12 @@ public class RegisterFriendFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if(social_securityField.getText().length()!=11){
+                        throw new ToastError(
+                    "Não foi possível cadastrar amigo pois a identidade deve possuir 11 caracteres",
+                    "Entrada de dados em formato inválido"
+                    );
+                    }
                     registerFriendController.registerFriend(
                             nameField.getText(),
                             phoneField.getText(),

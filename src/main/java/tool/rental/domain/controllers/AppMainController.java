@@ -3,8 +3,9 @@ package tool.rental.domain.controllers;
 import tool.rental.domain.entities.Friend;
 import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
+import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Tool;
-import tool.rental.domain.infra.db.DataBase;
+import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
 import tool.rental.presentation.FriendsRankFrame;
@@ -13,6 +14,17 @@ import tool.rental.presentation.LendToolFrame;
 import tool.rental.presentation.LoginFrame;
 import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.presentation.*;
+import tool.rental.domain.use_cases.CalculateSummaryUseCase;
+import tool.rental.domain.use_cases.DeleteFriendUseCase;
+import tool.rental.domain.use_cases.ListFriendsToMainTableUseCase;
+import tool.rental.domain.use_cases.ListToolsToMainTableUseCase;
+import tool.rental.domain.use_cases.LogoutUseCase;
+import tool.rental.domain.use_cases.ReturnToolUseCase;
+import tool.rental.presentation.FriendsRankFrame;
+import tool.rental.presentation.FriendsScreenFrame;
+import tool.rental.presentation.LoginFrame;
+import tool.rental.presentation.RegisterFriendFrame;
+import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
@@ -31,6 +43,9 @@ public class AppMainController extends Controller {
     private final ReturnToolUseCase returnToolUseCase = new ReturnToolUseCase();
     private final ToolRepository toolRepository = new ToolRepository();
     private final DeleteToolUseCase deleteToolUseCase = new DeleteToolUseCase();
+
+    private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
+    private final FriendRepository friendsRepository = new FriendRepository();
 
     public AppMainController(PresentationFrame frame) {
         super(frame);
