@@ -52,7 +52,7 @@ ensuring correct sharing of event reminders.
 ```
 Christian Silva (RA: 1072322888)
 Francesco Ghisi (RA: 1072325009)
-Lucas Roberto da Rosa (RA: 10724111936)
+Lucas Roberto da Rosa (RA: 10724111936)(LucasRobertodaRosa, 10724111936)
 Nicholas da Silva (RA: 1072320766)
 Vinícius Goulart Alves (RA: 1072320937)
 ```
