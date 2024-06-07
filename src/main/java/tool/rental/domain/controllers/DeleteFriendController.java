@@ -25,7 +25,7 @@ public class DeleteFriendController extends Controller {
                 "Deletar Amigo"
         );
 
-        if (userOption == JOptionPane.NO_OPTION) {
+        if (userOption != JOptionPane.YES_OPTION) {
             return;
         }
 

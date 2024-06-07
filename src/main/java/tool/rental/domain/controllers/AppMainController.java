@@ -77,7 +77,7 @@ public class AppMainController extends Controller {
                 "Sair"
         );
 
-        if (userOption == JOptionPane.NO_OPTION) {
+        if (userOption != JOptionPane.YES_OPTION) {
             return;
         }
 
@@ -108,7 +108,7 @@ public class AppMainController extends Controller {
                 "Devolver ferramenta"
         );
 
-        if (userOption == JOptionPane.NO_OPTION) {
+        if (userOption != JOptionPane.YES_OPTION) {
             return;
         }
 
@@ -133,7 +133,7 @@ public class AppMainController extends Controller {
           "Emprestar ferramenta"
         );
 
-        if(userOption == JOptionPane.NO_OPTION) {
+        if(userOption != JOptionPane.YES_OPTION) {
             return;
         }
 
@@ -174,7 +174,7 @@ public class AppMainController extends Controller {
                 "Deletar ferramenta"
         );
 
-        if (userOption == JOptionPane.NO_OPTION) {
+        if (userOption != JOptionPane.YES_OPTION) {
             return;
         }
 
