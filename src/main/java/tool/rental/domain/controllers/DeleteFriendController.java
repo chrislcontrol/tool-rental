@@ -14,31 +14,9 @@ import javax.swing.JOptionPane;
  * The controller for deleting a friend.
  */
 public class DeleteFriendController extends Controller {
-<<<<<<< HEAD
-=======
     private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
     private FriendRepository friendsRepository = new FriendRepository();
 
-    public DeleteFriendController(PresentationFrame frame) {
-        super(frame);
-    }
->>>>>>> 03faa47abefcaaf32a1e87b46ee1bf1d4060bb88
-
-    /**
-     * The use case to delete a friend.
-     */
-    private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
-
-    /**
-     * The friend repository.
-     */
-    private FriendRepository friendsRepository = new FriendRepository();
-
-    /**
-     * Creates a new instance of the DeleteFriendController.
-     *
-     * @param frame the presentation frame
-     */
     public DeleteFriendController(PresentationFrame frame) {
         super(frame);
     }

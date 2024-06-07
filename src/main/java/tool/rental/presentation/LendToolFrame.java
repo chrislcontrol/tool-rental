@@ -2,6 +2,7 @@ package tool.rental.presentation;
 
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
+import tool.rental.domain.controllers.LendToolFrameController;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;

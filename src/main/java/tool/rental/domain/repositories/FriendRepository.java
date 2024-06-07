@@ -14,20 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * A friend repository class that provides methods to manage friends.
- */
 public class FriendRepository {
-
-    /**
-     * Counts the number of friends for a user.
-     *
-     * @return the number of friends
-     * @throws ToastError if a database error occurs
-     */
     public int countByUser() throws ToastError {
         try (DataBase dataBase = new DataBase()) {
-            String query = "SELECT COUNT(id) as total from FRIEND WHERE user_id =?";
+            String query = "SELECT COUNT(id) as total from FRIEND WHERE user_id = ?";
             PreparedStatement stm = dataBase.connection.prepareStatement(query);
             stm.setString(1, Settings.getUser().getId());
 
@@ -46,12 +36,6 @@ public class FriendRepository {
 
     }
 
-    /**
-     * Lists all friends for a user.
-     *
-     * @return a list of friends
-     * @throws ToastError if a database error occurs
-     */
     public ArrayList<Friend> listAll() throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -63,7 +47,7 @@ public class FriendRepository {
                             FROM
                                 FRIEND f
                             WHERE
-                                f.user_id =?
+                                f.user_id = ?
                             ORDER BY
                                 f.name
                             """;
@@ -94,13 +78,6 @@ public class FriendRepository {
         }
     }
 
-    /**
-     * Retrieves a friend by ID.
-     *
-     * @param friendId the ID of the friend
-     * @return the friend, or null if not found
-     * @throws ToastError if a database error occurs
-     */
     public Friend getById(String friendId) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -117,7 +94,7 @@ public class FriendRepository {
                         
                         FROM FRIEND f
                         LEFT JOIN TOOL t on t.id = f.id
-                        WHERE f.id =? AND f.user_id =?
+                        WHERE f.id = ? AND f.user_id = ?
                     """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
@@ -145,12 +122,6 @@ public class FriendRepository {
         }
     }
 
-    /**
-     * Finds the rental summary for friends.
-     *
-     * @return a list of friend rental summaries
-     * @throws ToastError if a database error occurs
-     */
     public List<FriendRentalSummary> findRentalSummary() throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -165,8 +136,8 @@ public class FriendRepository {
                     LEFT JOIN RENTAL r
                     	on r.friend_id = f.id
                     	
-                    WHERE f.USER_ID =?
-                    
+                    WHERE f.USER_ID = ?
+                                        
                     group by f.name, f.social_security
                     order by total_rental DESC
                     """;
@@ -196,21 +167,12 @@ public class FriendRepository {
         }
     }
 
-    /**
-     * Creates a new friend.
-     *
-     * @param name the name of the friend
-     * @param phone the phone number of the friend
-     * @param social_security the social security number of the friend
-     * @return the created friend
-     * @throws ToastError if a database error occurs
-     */
     public Friend createFriend(String name, String phone, String social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO FRIEND VALUES(?,?,?,?,?)");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO FRIEND VALUES(?, ?, ?, ?, ?)");
             stm.setString(1, id);
             stm.setString(2, name);
             stm.setString(3, phone);
@@ -229,16 +191,9 @@ public class FriendRepository {
         }
     }
 
-    /**
-     * Deletes a friend.
-     *
-     * @param friendId the ID of the friend to delete
-     * @return the deleted friend, or null if not found
-     * @throws ToastError if a database error occurs
-     */
     public Friend deleteFriend(String friendId) throws ToastError {
         try (DataBase db = new DataBase()) {
-            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM FRIEND WHERE id =?");
+            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM FRIEND WHERE id = ?");
             stm.setString(1, friendId);
 
             db.executeUpdate(stm);
@@ -252,17 +207,9 @@ public class FriendRepository {
         return null;
     }
 
-    /**
-     * Checks if a friend has a tool rented.
-     *
-     * @param friendId the ID of the friend
-     * @return true if the friend has a tool rented, false otherwise
-     * @throws ToastError if a database error occurs
-     */
     public boolean friendHasToolRented(String friendId) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT * FROM RENTAL WHERE friend_id =? AND devolution_timestamp IS NULL"
                     "SELECT * FROM RENTAL WHERE friend_id = ? AND devolution_timestamp IS NULL"
             );
             stm.setString(1, friendId);
@@ -278,18 +225,10 @@ public class FriendRepository {
         }
     }
 
-    /**
-     * Checks if a friend exists by name and social security number.
-     *
-     * @param name the name of the friend
-     * @param social_security the social security number of the friend
-     * @return true if the friend exists, false otherwise
-     * @throws ToastError if a database error occurs
-     */
     public boolean existsByNameAndSocial_Security(String name, String social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT id FROM FRIEND WHERE user_id =? and name =? and social_security =?"
+                    "SELECT id FROM FRIEND WHERE user_id = ? and name = ? and social_security = ?"
             );
             stm.setString(1, Settings.getUser().getId());
             stm.setString(2, name);
@@ -306,31 +245,20 @@ public class FriendRepository {
         }
     }
 
-    /**
-     * Updates a friend.
-     *
-     * @param id the ID of the friend
-     * @param name the new name of the friend
-     * @param phone the new phone number of the friend
-     * @param social_security the new social security number of the friend
-     * @param user the user who owns the friend
-     * @return the updated friend
-     * @throws ToastError if a database error occurs
-     */
     public Friend updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
-        try (DataBase db = new DataBase()){
+        try (DataBase db = new DataBase()) {
 
             PreparedStatement stm = db.connection.prepareStatement(
                     """
                                         
                                             UPDATE FRIEND 
 
-            SET name =?,
-                phone =?,
-                social_security =?
+                            SET name = ?,
+                                phone = ?,
+                                social_security = ?
 
-            WHERE id =?
-            """);
+                            WHERE id = ?
+                            """);
             stm.setString(1, name);
             stm.setString(2, phone);
             stm.setString(3, social_security);

@@ -4,6 +4,7 @@ import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Friend;
 import tool.rental.domain.entities.Tool;
+import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
 import tool.rental.presentation.*;
@@ -256,15 +257,12 @@ public class AppMainController extends Controller {
         frame.swapFrame(new FriendsRankFrame(), true);
     }
 
-<<<<<<< HEAD
     /**
      * Opens the friends update frame.
      *
      * @param row the friend to update
      * @throws ToastError if an error occurs
      */
-=======
->>>>>>> 03faa47abefcaaf32a1e87b46ee1bf1d4060bb88
     public void openFriendsUpdateFrame(Friend row) throws ToastError {
         frame.swapFrame(new FriendUpdateFrame(row), true);
     }
