@@ -1,7 +1,6 @@
 package tool.rental.presentation;
 
 import tool.rental.domain.controllers.AppMainController;
-import tool.rental.domain.controllers.DeleteFriendController;
 import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
