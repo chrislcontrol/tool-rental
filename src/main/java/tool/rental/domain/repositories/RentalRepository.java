@@ -6,7 +6,6 @@ import tool.rental.domain.entities.Rental;
 import tool.rental.domain.entities.Tool;
 import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
-import tool.rental.utils.Toast;
 import tool.rental.utils.ToastError;
 
 import java.sql.PreparedStatement;
@@ -16,7 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * A rental repository class that provides methods to manage rentals.
+ */
 public class RentalRepository {
+
+    /**
+     * Counts the number of tools borrowed by a user.
+     *
+     * @return the number of tools borrowed
+     * @throws ToastError if a database error occurs
+     */
     public int countBorrowedByUser() throws ToastError {
         try (DataBase dataBase = new DataBase()) {
             String query = """
@@ -42,6 +51,13 @@ public class RentalRepository {
         }
     }
 
+    /**
+     * Updates the devolution timestamp of a rental.
+     *
+     * @param rental the rental to update
+     * @param devolutionTimestamp the new devolution timestamp
+     * @throws ToastError if a database error occurs
+     */
     public void updateDevolutionTimestamp(Rental rental, long devolutionTimestamp) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -58,6 +74,14 @@ public class RentalRepository {
         }
     }
 
+    /**
+     * Creates a new rental.
+     *
+     * @param rentalTimestamp the timestamp of the rental
+     * @param friend the friend who borrowed the tool
+     * @param tool the tool that was borrowed
+     * @throws ToastError if a database error occurs
+     */
     public void create(long rentalTimestamp, Friend friend, Tool tool) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
@@ -78,6 +102,12 @@ public class RentalRepository {
         }
     }
 
+    /**
+     * Lists all rentals.
+     *
+     * @return a list of rentals
+     * @throws ToastError if a database error occurs
+     */
     public List<Rental> listAll() throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(

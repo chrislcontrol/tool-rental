@@ -5,17 +5,27 @@ import tool.rental.domain.entities.User;
 import tool.rental.domain.infra.db.DataBase;
 import tool.rental.utils.ToastError;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A cache repository class that provides methods to manage the cache of logged in users.
+ */
 public class CacheRepository {
+
+    /**
+     * Sets a user as cached in the database.
+     *
+     * @param user the user to be cached
+     * @throws ToastError if a database error occurs
+     */
     public void setUserAsCached(User user) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "INSERT INTO main.CACHE VALUES (?, ?)"
+                    "INSERT INTO main.CACHE VALUES (?,?)"
             );
 
             stm.setString(1, UUID.randomUUID().toString());
@@ -34,6 +44,11 @@ public class CacheRepository {
         }
     }
 
+    /**
+     * Clears the cache of logged in users from the database.
+     *
+     * @throws ToastError if a database error occurs
+     */
     public void clearCache() throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement("DELETE FROM CACHE");
@@ -46,6 +61,12 @@ public class CacheRepository {
         }
     }
 
+    /**
+     * Retrieves the cached user from the database.
+     *
+     * @return the cached user, or null if no user is cached
+     * @throws ToastError if a database error occurs
+     */
     public Cache getCache() throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
@@ -79,5 +100,4 @@ public class CacheRepository {
             return null;
         }
     }
-
 }

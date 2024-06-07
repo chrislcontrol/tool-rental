@@ -8,15 +8,38 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 import tool.rental.domain.repositories.FriendRepository;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
+/**
+ * The controller for deleting a friend.
+ */
 public class DeleteFriendController extends Controller {
-    private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
-    private FriendRepository friendsRepository = new FriendRepository();
-    public DeleteFriendController(PresentationFrame frame) {
-            super(frame);
-        }
 
+    /**
+     * The use case to delete a friend.
+     */
+    private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
+
+    /**
+     * The friend repository.
+     */
+    private FriendRepository friendsRepository = new FriendRepository();
+
+    /**
+     * Creates a new instance of the DeleteFriendController.
+     *
+     * @param frame the presentation frame
+     */
+    public DeleteFriendController(PresentationFrame frame) {
+        super(frame);
+    }
+
+    /**
+     * Deletes a friend.
+     *
+     * @param friendId the ID of the friend to delete
+     * @throws ToastError if an error occurs
+     */
     public void deleteFriend(String friendId) throws ToastError {
         Friend friend = this.friendsRepository.getById(friendId);
 

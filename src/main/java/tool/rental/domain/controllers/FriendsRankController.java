@@ -9,13 +9,31 @@ import tool.rental.utils.ToastError;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The controller for the friends rank.
+ */
 public class FriendsRankController extends Controller {
+
+    /**
+     * The use case to get the rental summary.
+     */
     private final GetRentalSummaryUseCase getRentalSummaryUseCase = new GetRentalSummaryUseCase();
 
+    /**
+     * Creates a new instance of the FriendsRankController.
+     *
+     * @param frame the presentation frame
+     */
     public FriendsRankController(PresentationFrame frame) {
         super(frame);
     }
 
+    /**
+     * Gets the rental summary.
+     *
+     * @return the rental summary as a list of table rows
+     * @throws ToastError if an error occurs
+     */
     public List<String[]> getRentalSummary() throws ToastError {
         List<FriendRentalSummary> result = getRentalSummaryUseCase.execute();
         ArrayList<String[]> summaries = new ArrayList<>(result.size());
