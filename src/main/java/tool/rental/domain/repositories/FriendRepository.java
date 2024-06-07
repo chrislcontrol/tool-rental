@@ -14,7 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Repository class for handling operations related to friends.
+ */
 public class FriendRepository {
+
+    /**
+     * Counts the number of friends associated with the current user.
+     *
+     * @return The total count of friends.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public int countByUser() throws ToastError {
         try (DataBase dataBase = new DataBase()) {
             String query = "SELECT COUNT(id) as total from FRIEND WHERE user_id = ?";
@@ -29,13 +39,17 @@ public class FriendRepository {
 
             return result.getInt("total");
 
-
         } catch (SQLException e) {
-            throw new ToastError(e.toString(), "Erro de banco de dados.");
+            throw new ToastError(e.toString(), "Database Error");
         }
-
     }
 
+    /**
+     * Lists all friends associated with the current user.
+     *
+     * @return The list of friends.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public ArrayList<Friend> listAll() throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -66,18 +80,23 @@ public class FriendRepository {
                         result.getString("f__social_security"),
                         user
                 );
-
-
                 friends.add(friend);
             }
             friends.trimToSize();
 
             return friends;
         } catch (SQLException e) {
-            throw new ToastError("Erro ao listar os amigos. " + e, "Erro de banco de dados.");
+            throw new ToastError("Error listing friends. " + e, "Database Error");
         }
     }
 
+    /**
+     * Gets a friend by their ID.
+     *
+     * @param friendId The ID of the friend to retrieve.
+     * @return The friend object if found, null otherwise.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public Friend getById(String friendId) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -118,10 +137,16 @@ public class FriendRepository {
             return friend;
 
         } catch (SQLException e) {
-            throw new ToastError(e.toString(), "Erro de banco de dados.");
+            throw new ToastError(e.toString(), "Database Error");
         }
     }
 
+    /**
+     * Generates a summary of friend rentals.
+     *
+     * @return The list of friend rental summaries.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public List<FriendRentalSummary> findRentalSummary() throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -163,14 +188,22 @@ public class FriendRepository {
             return results;
 
         } catch (SQLException e) {
-            throw new ToastError(e.toString(), "Erro de banco de dados");
+            throw new ToastError(e.toString(), "Database Error");
         }
     }
 
+    /**
+     * Creates a new friend.
+     *
+     * @param name            The name of the friend.
+     * @param phone           The phone number of the friend.
+     * @param social_security The social security number of the friend.
+     * @return The newly created friend object.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public Friend createFriend(String name, String phone, String social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
-
 
             PreparedStatement stm = db.connection.prepareStatement("INSERT INTO FRIEND VALUES(?, ?, ?, ?, ?)");
             stm.setString(1, id);
@@ -185,12 +218,19 @@ public class FriendRepository {
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
             throw new ToastError(
-                    "Não foi possível cadastrar o amigo(a) devido a um erro com banco de dados",
-                    "Erro de banco de dados"
+                    "Could not create friend due to a database error",
+                    "Database Error"
             );
         }
     }
 
+    /**
+     * Deletes a friend.
+     *
+     * @param friendId The ID of the friend to delete.
+     * @return Null since the friend is deleted.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public Friend deleteFriend(String friendId) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement("DELETE FROM FRIEND WHERE id = ?");
@@ -200,13 +240,20 @@ public class FriendRepository {
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
             throw new ToastError(
-                    "Não foi possível deletar o amigo(a) devido a um erro com banco de dados",
-                    "Erro de banco de dados"
+                    "Could not delete friend due to a database error",
+                    "Database Error"
             );
         }
         return null;
     }
 
+    /**
+     * Checks if a friend has any tools rented.
+     *
+     * @param friendId The ID of the friend.
+     * @return True if the friend has tools rented, false otherwise.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public boolean friendHasToolRented(String friendId) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
@@ -219,12 +266,20 @@ public class FriendRepository {
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
             throw new ToastError(
-                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
-                    "Erro de banco de dados."
+                    "Could not check if friend has tools rented due to a database error",
+                    "Database Error"
             );
         }
     }
 
+    /**
+     * Checks if a friend exists by name and social security.
+     *
+     * @param name            The name of the friend.
+     * @param social_security The social security number of the friend.
+     * @return True if the friend exists, false otherwise.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public boolean existsByNameAndSocial_Security(String name, String social_security) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
@@ -239,12 +294,23 @@ public class FriendRepository {
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
             throw new ToastError(
-                    "Não foi possível verificar se o usuário existe devido a um erro com o banco de dados.",
-                    "Erro de banco de dados."
+                    "Could not check if friend exists due to a database error",
+                    "Database Error"
             );
         }
     }
 
+    /**
+     * Updates a friend's information.
+     *
+     * @param id              The ID of the friend to update.
+     * @param name            The new name of the friend.
+     * @param phone           The new phone number of the friend.
+     * @param social_security The new social security number of the friend.
+     * @param user            The user associated with the friend.
+     * @return The updated friend object.
+     * @throws ToastError If an error occurs during database operation.
+     */
     public Friend updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
         try (DataBase db = new DataBase()) {
 
@@ -264,15 +330,14 @@ public class FriendRepository {
             stm.setString(3, social_security);
             stm.setString(4, id);
 
-
             db.executeUpdate(stm);
             return new Friend(id, name, phone, social_security, user);
 
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
             throw new ToastError(
-                    "Não foi possível atualizar amigo devido a um erro com banco de dados",
-                    "Erro de banco de dados"
+                    "Could not update friend due to a database error",
+                    "Database Error"
             );
         }
     }
