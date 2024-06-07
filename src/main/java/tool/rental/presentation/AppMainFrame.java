@@ -7,39 +7,52 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+/**
+ * Represents the main frame of the application, providing user interface and interaction functionalities.
+ */
 public class AppMainFrame extends PresentationFrame {
+    private final AppMainController controller = new AppMainController(this); // Controller for the main frame
+    private JTable toolsTable; // Table displaying tool information
+    private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable); // Configurator for the tools table
+    private JPanel mainPanel; // Main panel containing UI components
+    private JButton registerFriendButton; // Button to register a new friend
+    private JButton registerToolButton; // Button to register a new tool
+    private JButton lendToolButton; // Button to lend a tool to a friend
+    private JButton returnToolButton; // Button to return a borrowed tool
+    private JButton deleteToolButton; // Button to delete a tool
+    private JButton rentalReportButton; // Button to view rental reports
+    private JButton updateToolButton; // Button to update tool information
+    private JButton exitButton; // Button to exit the application
+    private JLabel toolCountLabel; // Label displaying the total number of tools
+    private JLabel loanToolCountLabel; // Label displaying the number of tools on loan
+    private JLabel friendsCountLabel; // Label displaying the total number of friends
+    private JLabel toolTotalAmountLabel; // Label displaying the total cost of tools
+    private JCheckBox rentalCB; // Checkbox to filter rented tools
 
-    private final AppMainController controller = new AppMainController(this);
-    private JPanel mainPanel;
-    private JButton registerFriendButton;
-    private JButton registerToolButton;
-    private JButton lendToolButton;
-    private JButton returnToolButton;
-    private JTable toolsTable;
-    private JButton exitButton;
-    private JLabel toolCountLabel;
-    private JLabel loanToolCountLabel;
-    private JLabel friendsCountLabel;
-    private JLabel toolTotalAmountLabel;
-    private JCheckBox rentalCB;
-    private JButton deleteToolButton;
-    private JButton rentalReportButton;
-    private JButton updateToolButton;
-    private final TableConfigurator tableConfigurator = new TableConfigurator(toolsTable);
-
+    /**
+     * Constructs a new instance of the AppMainFrame class.
+     *
+     * @throws ToastError if an error occurs during initialization.
+     */
     public AppMainFrame() throws ToastError {
-        this.setMainPanel();
-        this.setupPageLayout();
-        this.setUpListeners();
-        this.setPointer(
+        this.setMainPanel(); // Set the main panel
+        this.setupPageLayout(); // Setup page layout
+        this.setUpListeners(); // Setup event listeners
+        this.setPointer( // Set cursor pointer for interactive components
                 Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
                 this.registerFriendButton,
                 this.registerToolButton,
@@ -50,10 +63,14 @@ public class AppMainFrame extends PresentationFrame {
                 this.rentalReportButton,
                 this.updateToolButton
         );
-        this.setupTable();
+        this.setupTable(); // Setup the tools table
     }
 
-
+    /**
+     * Calculates and updates the summary information displayed on the UI.
+     *
+     * @throws ToastError if an error occurs during the calculation.
+     */
     private void calculateSummary() throws ToastError {
         CalculateSummaryDTO summary = this.controller.calculateSummary();
 
@@ -63,11 +80,21 @@ public class AppMainFrame extends PresentationFrame {
         this.toolTotalAmountLabel.setText("Valor total: " + summary.toolCostSum());
     }
 
+    /**
+     * Sets up the tools table with necessary configurations.
+     *
+     * @throws ToastError if an error occurs during setup.
+     */
     private void setupTable() throws ToastError {
         tableConfigurator.setup("ID", "Marca", "Nome", "Custo", "Emprestada para", "Data de empréstimo");
         this.loadData();
     }
 
+    /**
+     * Loads data into the tools table based on the selected filter option.
+     *
+     * @throws ToastError if an error occurs during data loading.
+     */
     private void loadData() throws ToastError {
         boolean rentedOnly = this.rentalCB.isSelected();
         List<String[]> toolRows = this.controller.listToolsAsTableRow(rentedOnly);
@@ -77,12 +104,21 @@ public class AppMainFrame extends PresentationFrame {
         this.calculateSummary();
     }
 
+    /**
+     * Sets the cursor pointer for the given components.
+     *
+     * @param cursor     the cursor type.
+     * @param components the components to set the cursor for.
+     */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);
         }
     }
 
+    /**
+     * Sets up the layout of the main frame.
+     */
     private void setupPageLayout() {
         this.setTitle(String.format("Tool Rental (%s)", Settings.getUser().getUsername()));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -91,11 +127,18 @@ public class AppMainFrame extends PresentationFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel of the frame.
+     */
     private void setMainPanel() {
         this.setContentPane(this.mainPanel);
     }
 
+    /**
+     * Sets up event listeners for UI components.
+     */
     protected void setUpListeners() {
+        // ActionListener for exitButton
         this.exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,6 +150,7 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        // ActionListener for lendToolButton
         this.lendToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,10 +168,10 @@ public class AppMainFrame extends PresentationFrame {
                     exc.display();
                 }
             }
-
-            ;
         });
-        registerFriendButton.addActionListener(new ActionListener() {
+
+        // ActionListener for registerFriendButton
+        this.registerFriendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -138,6 +182,7 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        // KeyListener for toolsTable
         this.toolsTable.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -152,6 +197,7 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
+        // ActionListener for returnToolButton
         this.returnToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -163,13 +209,13 @@ public class AppMainFrame extends PresentationFrame {
                 try {
                     controller.returnTool(toolId);
                     loadData();
-
                 } catch (ToastError exc) {
                     exc.display();
                 }
             }
         });
 
+        // ActionListener for rentalCB (checkbox)
         rentalCB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -177,12 +223,12 @@ public class AppMainFrame extends PresentationFrame {
                     loadData();
                 } catch (ToastError exc) {
                     exc.display();
-
                 }
             }
         });
 
-        deleteToolButton.addActionListener(new ActionListener() {
+        // ActionListener for deleteToolButton
+        this.deleteToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = toolsTable.getSelectedRow();
@@ -193,14 +239,14 @@ public class AppMainFrame extends PresentationFrame {
                 try {
                     controller.deleteTool(toolId);
                     loadData();
-
                 } catch (ToastError exc) {
                     exc.display();
                 }
             }
         });
 
-        updateToolButton.addActionListener(new ActionListener() {
+        // ActionListener for updateToolButton
+        this.updateToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = toolsTable.getSelectedRow();
@@ -222,7 +268,8 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
-        registerToolButton.addActionListener(new ActionListener() {
+        // ActionListener for registerToolButton
+        this.registerToolButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.openRegisterToolModal(() -> {
@@ -235,7 +282,8 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
-        rentalReportButton.addActionListener(new ActionListener() {
+        // ActionListener for rentalReportButton
+        this.rentalReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {

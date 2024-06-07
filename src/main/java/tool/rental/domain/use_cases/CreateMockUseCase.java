@@ -9,18 +9,29 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * This class represents a use case for creating mock data in the database.
+ * It inserts mock data into the FRIEND, TOOL, and RENTAL tables for a given user.
+ */
 public class CreateMockUseCase {
-    private final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository(); // Repository for users
 
+    /**
+     * Executes the use case to create mock data for the given user.
+     *
+     * @param user The user for whom mock data needs to be created.
+     * @throws ToastError if an error occurs during the execution.
+     */
     public void execute(User user) throws ToastError {
-        String[] queries = this.createQueries(user);
+        String[] queries = this.createQueries(user); // Create SQL queries for inserting mock data
         try (DataBase db = new DataBase()) {
-
+            // Execute each SQL query to insert mock data into the database
             for (String query : queries) {
                 PreparedStatement stm = db.connection.prepareStatement(query);
                 db.executeUpdate(stm);
             }
 
+            // Set the mock flag for the user in the repository
             this.userRepository.setMock(user, true);
 
         } catch (SQLException e) {
@@ -28,16 +39,24 @@ public class CreateMockUseCase {
         }
     }
 
+    /**
+     * Creates SQL queries to insert mock data for the given user into the FRIEND, TOOL, and RENTAL tables.
+     *
+     * @param user The user for whom mock data needs to be created.
+     * @return Array of SQL queries to insert mock data.
+     */
     private String[] createQueries(User user) {
-        String[][] ids = new String[3][4];
-        String userId = user.getId();
+        String[][] ids = new String[3][4]; // Array to store generated UUIDs for mock data
+        String userId = user.getId(); // User ID
 
+        // Generate UUIDs for mock data
         for (String[] idArray : ids) {
             for (int i = 0; i < idArray.length; i++) {
                 idArray[i] = UUID.randomUUID().toString();
             }
         }
 
+        // SQL queries to insert mock data into FRIEND, TOOL, and RENTAL tables
         return new String[]{
                 String.format(
                         """
@@ -86,3 +105,4 @@ public class CreateMockUseCase {
         };
     }
 }
+
