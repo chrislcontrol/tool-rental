@@ -36,7 +36,7 @@ public class RentalReportController extends Controller {
     public List<String[]> getRentalReport() throws ToastError {
         List<RentalReportDTO> reports = getRentalReportUseCase.execute();
         return reports.stream().map(
-                report -> new String[] {
+                report -> new String[]{
                         report.id(),
                         report.rentalDate(),
                         report.devolutionDate(),

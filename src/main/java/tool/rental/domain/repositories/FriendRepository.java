@@ -114,7 +114,7 @@ public class FriendRepository {
                             t.brand as t__brand,
                             t.name as t__name,
                             t.cost as t__cost
-    
+                        
                         FROM FRIEND f
                         LEFT JOIN TOOL t on t.id = f.id
                         WHERE f.id =? AND f.user_id =?
@@ -248,7 +248,8 @@ public class FriendRepository {
                     "Não foi possível deletar o amigo(a) devido a um erro com banco de dados",
                     "Erro de banco de dados"
             );
-        }return null;
+        }
+        return null;
     }
 
     /**
@@ -262,6 +263,7 @@ public class FriendRepository {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
                     "SELECT * FROM RENTAL WHERE friend_id =? AND devolution_timestamp IS NULL"
+                    "SELECT * FROM RENTAL WHERE friend_id = ? AND devolution_timestamp IS NULL"
             );
             stm.setString(1, friendId);
             ResultSet rs = stm.executeQuery();
@@ -320,8 +322,8 @@ public class FriendRepository {
 
             PreparedStatement stm = db.connection.prepareStatement(
                     """
-            
-                            UPDATE FRIEND 
+                                        
+                                            UPDATE FRIEND 
 
             SET name =?,
                 phone =?,

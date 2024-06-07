@@ -1,12 +1,12 @@
 package tool.rental.domain.controllers;
 
 import tool.rental.domain.entities.Friend;
+import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.use_cases.DeleteFriendUseCase;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
-import tool.rental.domain.repositories.FriendRepository;
 
 import javax.swing.JOptionPane;
 
@@ -14,6 +14,15 @@ import javax.swing.JOptionPane;
  * The controller for deleting a friend.
  */
 public class DeleteFriendController extends Controller {
+<<<<<<< HEAD
+=======
+    private final DeleteFriendUseCase deleteFriendUseCase = new DeleteFriendUseCase();
+    private FriendRepository friendsRepository = new FriendRepository();
+
+    public DeleteFriendController(PresentationFrame frame) {
+        super(frame);
+    }
+>>>>>>> 03faa47abefcaaf32a1e87b46ee1bf1d4060bb88
 
     /**
      * The use case to delete a friend.
@@ -48,7 +57,7 @@ public class DeleteFriendController extends Controller {
                 "Deletar Amigo"
         );
 
-        if (userOption == JOptionPane.NO_OPTION) {
+        if (userOption != JOptionPane.YES_OPTION) {
             return;
         }
 

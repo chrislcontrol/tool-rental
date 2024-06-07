@@ -35,12 +35,16 @@ public class LendToolFrameController extends Controller {
      */
     private final IsToolRentedUseCase isToolRentedUseCase = new IsToolRentedUseCase();
 
+<<<<<<< HEAD
     /**
      * Creates a new instance of the LendToolFrameController.
      *
      * @param frame the lend tool frame
      */
     public LendToolFrameController(LendToolFrame frame){
+=======
+    public LendToolFrameController(LendToolFrame frame) {
+>>>>>>> 03faa47abefcaaf32a1e87b46ee1bf1d4060bb88
         super(frame);
     }
 
@@ -70,7 +74,7 @@ public class LendToolFrameController extends Controller {
      * @throws ToastError if an error occurs
      */
     public boolean isToolRented(String toolId) throws ToastError {
-       return isToolRentedUseCase.execute(toolId);
+        return isToolRentedUseCase.execute(toolId);
     }
 
     /**

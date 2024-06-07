@@ -129,7 +129,7 @@ public class ToolRepository {
      */
     public CountIdAndSumCostDAO countAndSumCostByUser() throws ToastError {
         try (DataBase dataBase = new DataBase()) {
-            String query = "SELECT COUNT(id) as total_count, SUM(cost) as total_cost from TOOL WHERE user_id =?";
+            String query = "SELECT COUNT(id) as total_count, SUM(cost) as total_cost from TOOL WHERE user_id = ?";
             PreparedStatement stm = dataBase.connection.prepareStatement(query);
             stm.setString(1, Settings.getUser().getId());
 
@@ -166,7 +166,7 @@ public class ToolRepository {
                             t.cost,
                             u.id as u__id,
                             u.username as u__username,
-                           u.has_mock as u__has_mock,
+                            u.has_mock as u__has_mock,
                             r.id as r__id,
                             r.rental_timestamp as r__rental_timestamp,
                             r.devolution_timestamp as r__devolution_timestamp,
@@ -179,7 +179,7 @@ public class ToolRepository {
                         LEFT JOIN USER u on t.user_id = u.id
                         LEFT JOIN RENTAL r on r.tool_id = t.id and r.devolution_timestamp is null
                         LEFT JOIN FRIEND f on f.id = r.friend_id
-                        WHERE t.id =?
+                        WHERE t.id = ?
                     """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
@@ -228,7 +228,7 @@ public class ToolRepository {
             String id = UUID.randomUUID().toString();
 
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?,?,?,?,?)");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?, ?)");
             stm.setString(1, id);
             stm.setString(2, brand);
             stm.setString(3, name);
@@ -258,7 +258,7 @@ public class ToolRepository {
     public boolean existsByNameAndBrand(String name, String brand) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT id FROM TOOL WHERE user_id =? and name =? and brand =?"
+                    "SELECT id FROM TOOL WHERE user_id = ? and name = ? and brand = ?"
             );
             stm.setString(1, Settings.getUser().getId());
             stm.setString(2, name);
@@ -282,7 +282,7 @@ public class ToolRepository {
      * @return true if the tool is rented, false otherwise
      * @throws ToastError if an error occurs while checking for the rental
      */
-    public boolean isToolRented(String toolId ) throws ToastError {
+    public boolean isToolRented(String toolId) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT
@@ -290,7 +290,7 @@ public class ToolRepository {
                          FROM 
                             RENTAL
                          WHERE
-                            tool_id =? AND devolution_timestamp is null
+                            tool_id = ? AND devolution_timestamp is null
                          ORDER BY 
                                 tool_id DESC 
                     """;
@@ -320,7 +320,7 @@ public class ToolRepository {
                         FROM
                             RENTAL
                         WHERE
-                            friend_id =? AND devolution_timestamp is null
+                            friend_id = ? AND devolution_timestamp is null
                     """;
             PreparedStatement stm = db.connection.prepareStatement(query);
             stm.setString(1, friend.getId());
@@ -329,7 +329,7 @@ public class ToolRepository {
             return result.next();
 
         } catch (SQLException e) {
-            throw  new ToastError(e.getMessage(), "Erro de banco de dados");
+            throw new ToastError(e.getMessage(), "Erro de banco de dados");
         }
     }
 
@@ -341,7 +341,7 @@ public class ToolRepository {
      */
     public void deleteTool(Tool tool) throws ToastError {
         try (DataBase db = new DataBase()) {
-            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM TOOL WHERE id =?");
+            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM TOOL WHERE id = ?");
             stm.setString(1, tool.getId());
             db.executeUpdate(stm);
 
@@ -364,7 +364,7 @@ public class ToolRepository {
     public void updateTool(Tool tool, String brand, String name, double cost) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "UPDATE TOOL SET brand =?, name =?, cost =? WHERE id =? ");
+                    "UPDATE TOOL SET brand = ?, name = ?, cost = ? WHERE id = ? ");
             stm.setString(1, brand);
             stm.setString(2, name);
             stm.setDouble(3, cost);
@@ -374,7 +374,7 @@ public class ToolRepository {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new ToastError("Não foi possível atualizara ferramenta",
+            throw new ToastError("Não foi possível atualizar a ferramenta",
                     "Erro de banco de dados.");
         }
     }

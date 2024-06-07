@@ -7,7 +7,7 @@ import tool.rental.utils.ToastError;
 public class UpdateToolUseCase {
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public void execute (Tool tool, String brand, String name, double cost) throws ToastError {
+    public void execute(Tool tool, String brand, String name, double cost) throws ToastError {
         if (brand == null || brand.isEmpty()) {
             throw new ToastError("Marca da ferramenta não pode ser nulo.", "Campo não pode ser nulo"
             );

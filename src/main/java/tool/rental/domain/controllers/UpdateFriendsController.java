@@ -8,6 +8,7 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.JOptionPane;
 
+
 /**
  * The controller for updating a friend.
  */
