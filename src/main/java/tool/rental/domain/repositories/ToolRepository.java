@@ -15,8 +15,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Represents a repository for tools in the tool rental system.
+ */
 public class ToolRepository {
 
+    /**
+     * Sets the current rental of a tool based on the provided result set.
+     *
+     * @param tool the tool to set the current rental for
+     * @param result the result set containing the rental information
+     * @throws SQLException if an error occurs while processing the result set
+     */
     private void setCurrentRentalToTool(Tool tool, ResultSet result) throws SQLException {
         String rentalId = result.getString("r__id");
         if (rentalId == null) {
@@ -42,6 +52,13 @@ public class ToolRepository {
 
     }
 
+    /**
+     * Lists all tools, optionally filtering by rented only.
+     *
+     * @param rentedOnly whether to only include rented tools
+     * @return a list of tools
+     * @throws ToastError if an error occurs while listing the tools
+     */
     public ArrayList<Tool> listAll(boolean rentedOnly) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -67,7 +84,7 @@ public class ToolRepository {
                     LEFT JOIN FRIEND f
                     	on f.id = r.friend_id
                     WHERE
-                    	t.user_id = ?
+                    	t.user_id =?
                     """;
             if (rentedOnly) {
                 query += " and f__id is not null";
@@ -104,9 +121,15 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Counts and sums the cost of tools by user.
+     *
+     * @return a CountIdAndSumCostDAO object containing the count and sum
+     * @throws ToastError if an error occurs while counting and summing
+     */
     public CountIdAndSumCostDAO countAndSumCostByUser() throws ToastError {
         try (DataBase dataBase = new DataBase()) {
-            String query = "SELECT COUNT(id) as total_count, SUM(cost) as total_cost from TOOL WHERE user_id = ?";
+            String query = "SELECT COUNT(id) as total_count, SUM(cost) as total_cost from TOOL WHERE user_id =?";
             PreparedStatement stm = dataBase.connection.prepareStatement(query);
             stm.setString(1, Settings.getUser().getId());
 
@@ -126,6 +149,13 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Gets a tool by its ID.
+     *
+     * @param toolId the ID of the tool to retrieve
+     * @return the tool, or null if not found
+     * @throws ToastError if an error occurs while retrieving the tool
+     */
     public Tool getById(String toolId) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -136,7 +166,7 @@ public class ToolRepository {
                             t.cost,
                             u.id as u__id,
                             u.username as u__username,
-                            u.has_mock as u__has_mock,
+                           u.has_mock as u__has_mock,
                             r.id as r__id,
                             r.rental_timestamp as r__rental_timestamp,
                             r.devolution_timestamp as r__devolution_timestamp,
@@ -149,7 +179,7 @@ public class ToolRepository {
                         LEFT JOIN USER u on t.user_id = u.id
                         LEFT JOIN RENTAL r on r.tool_id = t.id and r.devolution_timestamp is null
                         LEFT JOIN FRIEND f on f.id = r.friend_id
-                        WHERE t.id = ?
+                        WHERE t.id =?
                     """;
 
             PreparedStatement stm = db.connection.prepareStatement(query);
@@ -184,12 +214,21 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Creates a new tool.
+     *
+     * @param brand the brand of the tool
+     * @param name the name of the tool
+     * @param cost the cost of the tool
+     * @return the created tool
+     * @throws ToastError if an error occurs while creating the tool
+     */
     public Tool createTool(String brand, String name, double cost) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
 
 
-            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?, ?, ?, ?, ?)");
+            PreparedStatement stm = db.connection.prepareStatement("INSERT INTO TOOL VALUES(?,?,?,?,?)");
             stm.setString(1, id);
             stm.setString(2, brand);
             stm.setString(3, name);
@@ -208,10 +247,18 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Checks if a tool exists by name and brand.
+     *
+     * @param name the name of the tool
+     * @param brand the brand of the tool
+     * @return true if the tool exists, false otherwise
+     * @throws ToastError if an error occurs while checking for the tool
+     */
     public boolean existsByNameAndBrand(String name, String brand) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "SELECT id FROM TOOL WHERE user_id = ? and name = ? and brand = ?"
+                    "SELECT id FROM TOOL WHERE user_id =? and name =? and brand =?"
             );
             stm.setString(1, Settings.getUser().getId());
             stm.setString(2, name);
@@ -228,6 +275,13 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Checks if a tool is rented.
+     *
+     * @param toolId the ID of the tool to check
+     * @return true if the tool is rented, false otherwise
+     * @throws ToastError if an error occurs while checking for the rental
+     */
     public boolean isToolRented(String toolId ) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -236,7 +290,7 @@ public class ToolRepository {
                          FROM 
                             RENTAL
                          WHERE
-                            tool_id = ? AND devolution_timestamp is null
+                            tool_id =? AND devolution_timestamp is null
                          ORDER BY 
                                 tool_id DESC 
                     """;
@@ -251,6 +305,13 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Checks if any tool is rented by a friend.
+     *
+     * @param friend the friend to check
+     * @return true if any tool is rented by the friend, false otherwise
+     * @throws ToastError if an error occurs while checking for the rental
+     */
     public boolean isAnyToolRentedByFriend(Friend friend) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
@@ -259,7 +320,7 @@ public class ToolRepository {
                         FROM
                             RENTAL
                         WHERE
-                            friend_id = ? AND devolution_timestamp is null
+                            friend_id =? AND devolution_timestamp is null
                     """;
             PreparedStatement stm = db.connection.prepareStatement(query);
             stm.setString(1, friend.getId());
@@ -272,9 +333,15 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Deletes a tool.
+     *
+     * @param tool the tool to delete
+     * @throws ToastError if an error occurs while deleting the tool
+     */
     public void deleteTool(Tool tool) throws ToastError {
         try (DataBase db = new DataBase()) {
-            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM TOOL WHERE id = ?");
+            PreparedStatement stm = db.connection.prepareStatement("DELETE FROM TOOL WHERE id =?");
             stm.setString(1, tool.getId());
             db.executeUpdate(stm);
 
@@ -285,10 +352,19 @@ public class ToolRepository {
         }
     }
 
+    /**
+     * Updates a tool.
+     *
+     * @param tool the tool to update
+     * @param brand the new brand of the tool
+     * @param name the new name of the tool
+     * @param cost the new cost of the tool
+     * @throws ToastError if an error occurs while updating the tool
+     */
     public void updateTool(Tool tool, String brand, String name, double cost) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
-                    "UPDATE TOOL SET brand = ?, name = ?, cost = ? WHERE id = ? ");
+                    "UPDATE TOOL SET brand =?, name =?, cost =? WHERE id =? ");
             stm.setString(1, brand);
             stm.setString(2, name);
             stm.setDouble(3, cost);
@@ -298,7 +374,7 @@ public class ToolRepository {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new ToastError("Não foi possível atualizar a ferramenta",
+            throw new ToastError("Não foi possível atualizara ferramenta",
                     "Erro de banco de dados.");
         }
     }

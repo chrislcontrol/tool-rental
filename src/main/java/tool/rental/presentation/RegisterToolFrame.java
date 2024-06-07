@@ -9,18 +9,47 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents a frame for registering a tool.
+ */
 public class RegisterToolFrame extends PresentationFrame {
 
+    /**
+     * The controller for registering a tool.
+     */
     private final RegisterToolController registerToolController = new RegisterToolController(this);
 
+    /**
+     * The text field for entering the cost of the tool.
+     */
     private JTextField costField;
+    /**
+     * The text field for entering the brand of the tool.
+     */
     private JTextField brandField;
+    /**
+     * The button for confirming the registration of the tool.
+     */
     private JButton confirmButton;
+    /**
+     * The button for canceling the registration of the tool.
+     */
     private JButton cancelButton;
+    /**
+     * The main panel of the frame.
+     */
     private JPanel MainPanel;
+    /**
+     * The text field for entering the name of the tool.
+     */
     private JTextField nameField;
 
 
+    /**
+     * Constructs a new RegisterToolFrame with a success callback.
+     *
+     * @param successCallback the callback to be executed when the tool is successfully registered
+     */
     public RegisterToolFrame(Runnable successCallback) {
         this.setMainPanel();
         this.setupPageLayout();
@@ -49,6 +78,9 @@ public class RegisterToolFrame extends PresentationFrame {
         });
     }
 
+    /**
+     * Sets up the layout of the page.
+     */
     private void setupPageLayout() {
         this.setTitle("Registrar ferramenta");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -56,10 +88,16 @@ public class RegisterToolFrame extends PresentationFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel of the frame.
+     */
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
     }
 
+    /**
+     * Creates the UI components.
+     */
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
