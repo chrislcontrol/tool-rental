@@ -9,17 +9,43 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A frame for updating friend information.
+ */
 public class FriendUpdateFrame extends PresentationFrame {
+
+    /** The controller for updating friends. */
     private final UpdateFriendsController updateFriendsController = new UpdateFriendsController(this);
+
+    /** Text field for entering social security number. */
     private JTextField social_securityField;
+
+    /** Text field for entering friend's name. */
     private JTextField nameField;
+
+    /** Text field for entering friend's phone number. */
     private JTextField phoneField;
+
+    /** Button to confirm friend update. */
     private JButton confirmButton;
+
+    /** Button to cancel friend update. */
     private JButton cancelButton;
+
+    /** The main panel of the frame. */
     private JPanel MainPanel;
+
+    /** Panel for additional content. */
     private JPanel JPanel;
+
+    /** Another panel for additional content. */
     private JPanel JPanel1;
 
+    /**
+     * Constructs a new FriendUpdateFrame for updating friend information.
+     *
+     * @param friendSelected The friend object whose information is being updated.
+     */
     public FriendUpdateFrame(Friend friendSelected) {
         this.setMainPanel();
         this.setupPageLayout();
@@ -47,6 +73,9 @@ public class FriendUpdateFrame extends PresentationFrame {
         });
     }
 
+    /**
+     * Sets up the layout of the frame.
+     */
     private void setupPageLayout() {
         this.setTitle("Atualizar Amigo");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -54,6 +83,9 @@ public class FriendUpdateFrame extends PresentationFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel of the frame.
+     */
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
     }
