@@ -228,7 +228,7 @@ public class ToolRepository {
         }
     }
 
-    public boolean isToolRented(String toolId ) throws ToastError {
+    public boolean isToolRented(String toolId) throws ToastError {
         try (DataBase db = new DataBase()) {
             String query = """
                         SELECT
@@ -268,7 +268,7 @@ public class ToolRepository {
             return result.next();
 
         } catch (SQLException e) {
-            throw  new ToastError(e.getMessage(), "Erro de banco de dados");
+            throw new ToastError(e.getMessage(), "Erro de banco de dados");
         }
     }
 

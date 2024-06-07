@@ -6,7 +6,8 @@ import tool.rental.domain.use_cases.UpdateToolUseCase;
 import tool.rental.utils.Controller;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
 
 public class UpdateToolController extends Controller {
 

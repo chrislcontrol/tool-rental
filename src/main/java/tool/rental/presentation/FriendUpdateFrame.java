@@ -32,7 +32,7 @@ public class FriendUpdateFrame extends PresentationFrame {
                             phoneField.getText(),
                             social_securityField.getText(),
                             friendSelected.getUser()
-                            );
+                    );
                 } catch (ToastError ex) {
                     ex.display();
                 }

@@ -3,6 +3,7 @@ package tool.rental.presentation;
 import tool.rental.domain.controllers.UpdateToolController;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +43,7 @@ public class UpdateToolFrame extends PresentationFrame {
                     if (costField.getText() == null || costField.getText().isEmpty()) {
                         throw new ToastError("Preço não pode ser nulo.", "Campo não pode ser nulo");
                     }
-                    String costText = costField.getText().replace("," , ".");
+                    String costText = costField.getText().replace(",", ".");
                     updateToolController.updateTool(
                             toolId,
                             brandField.getText(),
@@ -51,7 +52,7 @@ public class UpdateToolFrame extends PresentationFrame {
                             successCallback
                     );
 
-                } catch(ToastError exc) {
+                } catch (ToastError exc) {
                     exc.display();
                 }
             }
@@ -70,7 +71,7 @@ public class UpdateToolFrame extends PresentationFrame {
     }
 
     private void setPointer(Cursor cursor, JComponent... components) {
-        for(JComponent component : components) {
+        for (JComponent component : components) {
             component.setCursor(cursor);
         }
     }

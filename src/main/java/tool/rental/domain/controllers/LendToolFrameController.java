@@ -6,7 +6,6 @@ import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.IsToolRentedUseCase;
 import tool.rental.domain.use_cases.RentalToolUseCase;
-import tool.rental.presentation.AppMainFrame;
 import tool.rental.presentation.LendToolFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.ToastError;
@@ -17,7 +16,7 @@ public class LendToolFrameController extends Controller {
     private final RentalToolUseCase rentalToolUseCase = new RentalToolUseCase();
     private final IsToolRentedUseCase isToolRentedUseCase = new IsToolRentedUseCase();
 
-    public LendToolFrameController(LendToolFrame frame){
+    public LendToolFrameController(LendToolFrame frame) {
         super(frame);
 
     }
@@ -33,7 +32,7 @@ public class LendToolFrameController extends Controller {
     }
 
     public boolean isToolRented(String toolId) throws ToastError {
-       return isToolRentedUseCase.execute(toolId);
+        return isToolRentedUseCase.execute(toolId);
     }
 
     public void closeFrame() {

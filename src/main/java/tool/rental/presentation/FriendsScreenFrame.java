@@ -1,23 +1,22 @@
 package tool.rental.presentation;
+
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.controllers.DeleteFriendController;
 import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.*;
-import javax.swing.table.TableRowSorter;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 public class FriendsScreenFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
@@ -78,7 +77,7 @@ public class FriendsScreenFrame extends PresentationFrame {
                     int row = friendsTable.getSelectedRow();
                     Friend friendSelected = controller.getFriendByIdAsTableRow(friendsTable.getValueAt(row, 0).toString());
                     controller.openFriendsUpdateFrame(friendSelected);
-                }catch (ToastError ex) {
+                } catch (ToastError ex) {
                     ex.display();
                 }
             }

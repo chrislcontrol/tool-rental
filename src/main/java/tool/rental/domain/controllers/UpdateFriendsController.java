@@ -8,19 +8,20 @@ import tool.rental.utils.ToastError;
 
 import javax.swing.*;
 
-public class  UpdateFriendsController extends Controller {
+public class UpdateFriendsController extends Controller {
 
-        private final UpdateFriendUseCase updateFriendUseCase = new UpdateFriendUseCase();
+    private final UpdateFriendUseCase updateFriendUseCase = new UpdateFriendUseCase();
 
-        public UpdateFriendsController(PresentationFrame frame) {
-            super(frame);
-        }
-
-        public void updateFriend(String id,String name,  String phone, String social_security,User user) throws ToastError {
-            this.updateFriendUseCase.execute(id,name, phone, social_security,user);
-            JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
-            this.closeFrame();
+    public UpdateFriendsController(PresentationFrame frame) {
+        super(frame);
     }
+
+    public void updateFriend(String id, String name, String phone, String social_security, User user) throws ToastError {
+        this.updateFriendUseCase.execute(id, name, phone, social_security, user);
+        JOptionPane.showMessageDialog(null, "Amigo atualizado com sucesso!");
+        this.closeFrame();
+    }
+
     public void closeFrame() {
         frame.setVisible(false);
     }
