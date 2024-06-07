@@ -6,7 +6,7 @@ import tool.rental.utils.ToastError;
 public class IsToolRentedUseCase {
     private final ToolRepository toolRepository = new ToolRepository();
 
-    public boolean execute(String toolId ) throws ToastError {
+    public boolean execute(String toolId) throws ToastError {
         return toolRepository.isToolRented(toolId);
     }
 }

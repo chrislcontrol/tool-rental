@@ -1,8 +1,6 @@
 package tool.rental.presentation;
 
-import tool.rental.domain.controllers.FriendsRankController;
 import tool.rental.domain.controllers.RentalReportController;
-import tool.rental.domain.dto.RentalReportDTO;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;

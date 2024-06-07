@@ -3,6 +3,7 @@ package tool.rental.presentation;
 import tool.rental.domain.controllers.RegisterFriendController;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,11 +26,11 @@ public class RegisterFriendFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(social_securityField.getText().length()!=11){
+                    if (social_securityField.getText().length() != 11) {
                         throw new ToastError(
-                    "Não foi possível cadastrar amigo pois a identidade deve possuir 11 caracteres",
-                    "Entrada de dados em formato inválido"
-                    );
+                                "Não foi possível cadastrar amigo pois a identidade deve possuir 11 caracteres",
+                                "Entrada de dados em formato inválido"
+                        );
                     }
                     registerFriendController.registerFriend(
                             nameField.getText(),

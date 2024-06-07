@@ -82,34 +82,34 @@ public class RentalRepository {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
                     """
-                        SELECT
-                            r.id as r__id,
-                            r.rental_timestamp as r__rental_timestamp,
-                            r.devolution_timestamp as r__devolution_timestamp,
-                            f.id as f__id,
-                            f.name as f__name,
-                            f.phone as f__phone,
-                            f.social_security as f__social_security,
-                            t.id as t__id,
-                            t.brand as t__brand,
-                            t.name as t__name,
-                            t.cost as t__cost
-                            
-                          FROM RENTAL r
-                          
-                          LEFT JOIN FRIEND f on
-                            f.id = r.friend_id
-                            
-                          LEFT JOIN TOOL t on
-                            t.id = r.tool_id
-                          
-                          WHERE
-                            t.user_id = ?
-                            
-                          ORDER BY
-                            r__rental_timestamp DESC
+                            SELECT
+                                r.id as r__id,
+                                r.rental_timestamp as r__rental_timestamp,
+                                r.devolution_timestamp as r__devolution_timestamp,
+                                f.id as f__id,
+                                f.name as f__name,
+                                f.phone as f__phone,
+                                f.social_security as f__social_security,
+                                t.id as t__id,
+                                t.brand as t__brand,
+                                t.name as t__name,
+                                t.cost as t__cost
+                                
+                              FROM RENTAL r
                               
-                        """
+                              LEFT JOIN FRIEND f on
+                                f.id = r.friend_id
+                                
+                              LEFT JOIN TOOL t on
+                                t.id = r.tool_id
+                              
+                              WHERE
+                                t.user_id = ?
+                                
+                              ORDER BY
+                                r__rental_timestamp DESC
+                                  
+                            """
             );
 
             User user = Settings.getUser();

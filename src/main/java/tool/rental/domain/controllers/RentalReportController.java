@@ -6,7 +6,6 @@ import tool.rental.utils.Controller;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RentalReportController extends Controller {
@@ -19,7 +18,7 @@ public class RentalReportController extends Controller {
     public List<String[]> getRentalReport() throws ToastError {
         List<RentalReportDTO> reports = getRentalReportUseCase.execute();
         return reports.stream().map(
-                report -> new String[] {
+                report -> new String[]{
                         report.id(),
                         report.rentalDate(),
                         report.devolutionDate(),

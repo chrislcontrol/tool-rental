@@ -3,7 +3,6 @@ package tool.rental.utils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import java.util.List;
 
 public class TableConfigurator {
     private final JTable table;

@@ -12,7 +12,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class LendToolFrame extends PresentationFrame {
@@ -41,7 +44,7 @@ public class LendToolFrame extends PresentationFrame {
         this.setPointer(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
                 this.rentButton,
                 this.cancelButton
-                );
+        );
     }
 
     private void setupPageLayout() {
@@ -68,7 +71,7 @@ public class LendToolFrame extends PresentationFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (lendToolFrameController.isToolRented(toolId)){
+                    if (lendToolFrameController.isToolRented(toolId)) {
                         throw new ToastError(
                                 "A ferramenta não pode ser emprestada para mais de um amigo!",
                                 "Ferramenta já emprestada");
@@ -128,7 +131,7 @@ public class LendToolFrame extends PresentationFrame {
         });
     }
 
-    private void setTextToolName(){
+    private void setTextToolName() {
         JLtoolName.setText(toolName);
     }
 
@@ -143,6 +146,7 @@ public class LendToolFrame extends PresentationFrame {
         tableConfigurator.setup(new String[]{"Id", "Nome", "Telefone", "Identidade"}, new int[]{0, 2});
         this.loadData();
     }
+
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);

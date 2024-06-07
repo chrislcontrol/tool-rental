@@ -74,7 +74,7 @@ public class UserRepository {
         }
     }
 
-    public void setMock(User user, boolean hasMock) throws ToastError{
+    public void setMock(User user, boolean hasMock) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement("UPDATE USER SET has_mock = ? WHERE id = ?");
             stm.setBoolean(1, hasMock);

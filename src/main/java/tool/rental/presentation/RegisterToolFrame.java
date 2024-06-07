@@ -4,7 +4,6 @@ import tool.rental.domain.controllers.RegisterToolController;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
 
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

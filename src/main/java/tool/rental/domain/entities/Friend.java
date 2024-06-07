@@ -31,7 +31,6 @@ public class Friend extends Model {
     }
 
 
-
     public String getSocialSecurity() {
         return socialSecurity;
     }

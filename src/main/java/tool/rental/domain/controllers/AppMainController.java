@@ -1,6 +1,5 @@
 package tool.rental.domain.controllers;
 
-import tool.rental.domain.entities.Friend;
 import tool.rental.app.Settings;
 import tool.rental.domain.dto.CalculateSummaryDTO;
 import tool.rental.domain.entities.Friend;
@@ -8,28 +7,11 @@ import tool.rental.domain.entities.Tool;
 import tool.rental.domain.repositories.FriendRepository;
 import tool.rental.domain.repositories.ToolRepository;
 import tool.rental.domain.use_cases.*;
-import tool.rental.presentation.FriendsRankFrame;
-import tool.rental.presentation.FriendsScreenFrame;
-import tool.rental.presentation.LendToolFrame;
-import tool.rental.presentation.LoginFrame;
-import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.presentation.*;
-import tool.rental.domain.use_cases.CalculateSummaryUseCase;
-import tool.rental.domain.use_cases.DeleteFriendUseCase;
-import tool.rental.domain.use_cases.ListFriendsToMainTableUseCase;
-import tool.rental.domain.use_cases.ListToolsToMainTableUseCase;
-import tool.rental.domain.use_cases.LogoutUseCase;
-import tool.rental.domain.use_cases.ReturnToolUseCase;
-import tool.rental.presentation.FriendsRankFrame;
-import tool.rental.presentation.FriendsScreenFrame;
-import tool.rental.presentation.LoginFrame;
-import tool.rental.presentation.RegisterFriendFrame;
-import tool.rental.presentation.RegisterToolFrame;
 import tool.rental.utils.Controller;
 import tool.rental.utils.JOptionPaneUtils;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.ToastError;
-import tool.rental.presentation.FriendUpdateFrame;
 
 import javax.swing.*;
 import java.util.List;
@@ -129,11 +111,11 @@ public class AppMainController extends Controller {
         }
 
         int userOption = JOptionPaneUtils.showInputYesOrNoDialog(
-          "Tem certeza que deseja emprestar esta ferramenta?",
-          "Emprestar ferramenta"
+                "Tem certeza que deseja emprestar esta ferramenta?",
+                "Emprestar ferramenta"
         );
 
-        if(userOption != JOptionPane.YES_OPTION) {
+        if (userOption != JOptionPane.YES_OPTION) {
             return;
         }
 
@@ -156,8 +138,9 @@ public class AppMainController extends Controller {
     public void openFriendsRankFrame() throws ToastError {
         frame.swapFrame(new FriendsRankFrame(), true);
     }
-    public void openFriendsUpdateFrame(Friend row) throws  ToastError{
-        frame.swapFrame(new FriendUpdateFrame(row),true);
+
+    public void openFriendsUpdateFrame(Friend row) throws ToastError {
+        frame.swapFrame(new FriendUpdateFrame(row), true);
     }
 
     public void deleteTool(String toolId) throws ToastError {
