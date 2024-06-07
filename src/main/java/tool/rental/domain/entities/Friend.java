@@ -30,6 +30,8 @@ public class Friend extends Model {
         return phone;
     }
 
+
+
     public String getSocialSecurity() {
         return socialSecurity;
     }

@@ -1,5 +1,6 @@
 package tool.rental.presentation;
 import tool.rental.domain.controllers.AppMainController;
+import tool.rental.domain.controllers.DeleteFriendController;
 import tool.rental.domain.entities.Friend;
 import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
@@ -20,6 +21,7 @@ import javax.swing.event.DocumentListener;
 
 public class FriendsScreenFrame extends PresentationFrame {
     private final AppMainController controller = new AppMainController(this);
+    private final DeleteFriendController deleteFriendController = new DeleteFriendController(this);
     private JTable friendsTable;
     private JScrollPane JScrollPanel;
     private JPanel Panel1;
@@ -129,6 +131,18 @@ public class FriendsScreenFrame extends PresentationFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int row = friendsTable.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+                String friendId = friendsTable.getModel().getValueAt(row, 0).toString();
+                try {
+                    deleteFriendController.deleteFriend(friendId);
+                    loadData();
+
+                } catch (ToastError exc) {
+                    exc.display();
+                }
             }
         });
 
