@@ -4,17 +4,13 @@ A software development for graduation subject
 
 ## Requirements:
 ```
-- SDK 21
-- SQL Lite 3
-- Maven
+- Java 21
 ```
 
-## Run project:
-
-```
-- set main class as: src.main.java.tool.rental.app.App
-- run main class (don´t forget to build with Maven dependencies)
-```
+## Using application:
+- Download Java 21.
+- Download release source code.
+- Run tool-rental.jar
 
 ## Workflow:
 Presentation(Frame) -> Controller(Domain) -> UseCase(Domain) -> Repository(Domain.Infra.DB)
