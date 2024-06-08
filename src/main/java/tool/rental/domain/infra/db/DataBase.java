@@ -8,10 +8,6 @@ import java.util.Objects;
 
 public class DataBase implements AutoCloseable {
     public Connection connection;
-    public final ToastError ConnectionError = new ToastError(
-            "Falha ao conectar ao banco de dados.",
-            "Erro de banco de dados"
-    );
 
     private enum METHOD {
         UPDATE,
@@ -51,7 +47,7 @@ public class DataBase implements AutoCloseable {
                 return null;
             }
             System.out.println(message);
-            throw this.ConnectionError;
+            throw new ToastError("Erro ao conectar no banco de dados: " + exception.getMessage(), "Erro DB");
 
         }
     }
@@ -80,7 +76,7 @@ public class DataBase implements AutoCloseable {
 
         } catch (SQLException | ClassNotFoundException exception) {
             System.out.println(exception.getMessage());
-            throw this.ConnectionError;
+            throw new ToastError("Erro ao conectar no banco de dados: " + exception.getMessage(), "Erro DB");
         }
     }
 
