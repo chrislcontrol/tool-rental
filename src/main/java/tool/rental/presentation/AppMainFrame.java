@@ -9,19 +9,24 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.Color;
 import java.awt.Cursor;
-import javax.swing.*;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -30,11 +35,16 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Represents the main frame of the application, providing user interface and interaction functionalities.
+ * Main application frame for the tool rental system.
+ * Extends PresentationFrame and initializes the UI components
+ * and event listeners.
  */
 public class AppMainFrame extends PresentationFrame {
 
+    // Controller for handling the main application logic
     private final AppMainController controller = new AppMainController(this);
+
+    // UI Components
     private JPanel mainPanel;
     private JButton registerFriendButton;
     private JButton registerToolButton;
@@ -53,9 +63,9 @@ public class AppMainFrame extends PresentationFrame {
     private final TableConfigurator tableConfigurator;
 
     /**
-     * Constructs a new instance of the AppMainFrame class.
+     * Constructs the main application frame and initializes components.
      *
-     * @throws ToastError if an error occurs during initialization.
+     * @throws ToastError if there is an error during initialization
      */
     public AppMainFrame() throws ToastError {
         this.setMainPanel();
@@ -63,10 +73,10 @@ public class AppMainFrame extends PresentationFrame {
 
         this.setupPageLayout();
         this.setUpListeners();
-        this.setMainPanel(); // Set the main panel
-        this.setupPageLayout(); // Setup page layout
-        this.setUpListeners(); // Setup event listeners
-        this.setPointer( // Set cursor pointer for interactive components
+        this.setMainPanel();
+        this.setupPageLayout();
+        this.setUpListeners();
+        this.setPointer(
                 Cursor.getPredefinedCursor(Cursor.HAND_CURSOR),
                 this.registerFriendButton,
                 this.registerToolButton,
@@ -77,13 +87,13 @@ public class AppMainFrame extends PresentationFrame {
                 this.rentalReportButton,
                 this.updateToolButton
         );
-        this.setupTable(); // Setup the tools table
+        this.setupTable();
     }
 
     /**
-     * Calculates and updates the summary information displayed on the UI.
+     * Calculates and displays summary statistics.
      *
-     * @throws ToastError if an error occurs during the calculation.
+     * @throws ToastError if there is an error during the calculation
      */
     private void calculateSummary() throws ToastError {
         CalculateSummaryDTO summary = this.controller.calculateSummary();
@@ -95,9 +105,9 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     /**
-     * Sets up the tools table with necessary configurations.
+     * Sets up the tools table with column headers and loads the initial data.
      *
-     * @throws ToastError if an error occurs during setup.
+     * @throws ToastError if there is an error during the setup or data loading
      */
     private void setupTable() throws ToastError {
         tableConfigurator.setup("ID", "Marca", "Nome", "Custo", "Emprestada para", "Data de empréstimo");
@@ -105,9 +115,9 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     /**
-     * Loads data into the tools table based on the selected filter option.
+     * Loads data into the tools table and updates summary statistics.
      *
-     * @throws ToastError if an error occurs during data loading.
+     * @throws ToastError if there is an error during data loading
      */
     private void loadData() throws ToastError {
         boolean rentedOnly = this.rentalCB.isSelected();
@@ -119,10 +129,10 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     /**
-     * Sets the cursor pointer for the given components.
+     * Sets the cursor pointer for the specified components.
      *
-     * @param cursor     the cursor type.
-     * @param components the components to set the cursor for.
+     * @param cursor the cursor to be set
+     * @param components the components to apply the cursor to
      */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
@@ -131,7 +141,7 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     /**
-     * Sets up the layout of the main frame.
+     * Configures the main frame layout and properties.
      */
     private void setupPageLayout() {
         this.setTitle(String.format("Tool Rental (%s)", Settings.getUser().getUsername()));
@@ -142,7 +152,7 @@ public class AppMainFrame extends PresentationFrame {
     }
 
     /**
-     * Sets the main panel of the frame.
+     * Sets the main panel for the frame.
      */
     private void setMainPanel() {
         this.setContentPane(this.mainPanel);
@@ -229,7 +239,7 @@ public class AppMainFrame extends PresentationFrame {
             }
         });
 
-        // ActionListener for rentalCB (checkbox)
+        // ActionListener for rentalCB
         rentalCB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

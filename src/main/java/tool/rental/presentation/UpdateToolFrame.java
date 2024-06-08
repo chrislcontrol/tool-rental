@@ -12,19 +12,34 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Frame for updating tool information in the tool rental system.
+ * Extends PresentationFrame and initializes the UI components, event listeners, and layout.
+ */
 public class UpdateToolFrame extends PresentationFrame {
 
+    // Controller for handling update tool logic
     private final UpdateToolController updateToolController = new UpdateToolController(this);
 
+    // UI Components
     private JPanel MainPanel;
     private JTextField brandField;
     private JTextField nameField;
     private JTextField costField;
     private JButton confirmButton;
     private JButton cancelButton;
+
+    // Tool ID and success callback
     private final String toolId;
     private final Runnable successCallback;
 
+    /**
+     * Constructs the update tool frame and initializes components.
+     *
+     * @param toolId the ID of the tool to be updated
+     * @param successCallback the callback to be executed on successful update
+     * @throws ToastError if there is an error during initialization
+     */
     public UpdateToolFrame(String toolId, Runnable successCallback) throws ToastError {
         this.toolId = toolId;
         this.successCallback = successCallback;
@@ -38,14 +53,20 @@ public class UpdateToolFrame extends PresentationFrame {
         );
     }
 
+    /**
+     * Sets up the event listeners for the buttons.
+     */
     protected void setupListeners() {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    // Check if cost field is empty
                     if (costField.getText() == null || costField.getText().isEmpty()) {
                         throw new ToastError("Preço não pode ser nulo.", "Campo não pode ser nulo");
                     }
+
+                    // Parse the cost field
                     String costText = costField.getText().replace(",", ".");
                     updateToolController.updateTool(
                             toolId,
@@ -54,7 +75,6 @@ public class UpdateToolFrame extends PresentationFrame {
                             Double.parseDouble(costText),
                             successCallback
                     );
-
                 } catch (ToastError exc) {
                     exc.display();
                 }
@@ -69,16 +89,28 @@ public class UpdateToolFrame extends PresentationFrame {
         });
     }
 
+    /**
+     * Sets the main panel for the frame.
+     */
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
     }
 
+    /**
+     * Sets the cursor pointer for interactive components.
+     *
+     * @param cursor the cursor to be set
+     * @param components the components to which the cursor will be set
+     */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);
         }
     }
 
+    /**
+     * Configures the frame layout and properties.
+     */
     private void setupPageLayout() {
         this.setTitle("Atualizar ferramenta");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

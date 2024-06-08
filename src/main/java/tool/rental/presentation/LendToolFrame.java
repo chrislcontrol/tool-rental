@@ -25,23 +25,41 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Frame for lending tools to friends in the tool rental system.
+ * Extends PresentationFrame and initializes the UI components, table setup, and event listeners.
+ */
 public class LendToolFrame extends PresentationFrame {
+
+    // Controllers for handling the main application logic and tool lending logic
     private final AppMainController controller = new AppMainController(this);
     private final LendToolFrameController lendToolFrameController = new LendToolFrameController(this);
+
+    // UI Components
     private JPanel mainPanel;
     private JButton rentButton;
     private JButton cancelButton;
     private JLabel JLtoolName;
     private JTable friendsTable;
     private JTextField nameFilter;
+
+    // Tool details and success callback
     private final String toolId;
     private final String toolName;
-    private final Runnable sucessCallBack;
+    private final Runnable successCallback;
     private final TableConfigurator tableConfigurator;
 
-    public LendToolFrame(String toolId, String toolName, Runnable sucessCallback) throws ToastError {
+    /**
+     * Constructs the lend tool frame and initializes components.
+     *
+     * @param toolId         the ID of the tool to be lent
+     * @param toolName       the name of the tool to be lent
+     * @param successCallback the callback to be executed upon successful lending
+     * @throws ToastError if there is an error during initialization
+     */
+    public LendToolFrame(String toolId, String toolName, Runnable successCallback) throws ToastError {
         this.tableConfigurator = new TableConfigurator(friendsTable);
-        this.sucessCallBack = sucessCallback;
+        this.successCallback = successCallback;
         this.toolId = toolId;
         this.toolName = toolName;
         this.setMainPanel();
@@ -55,6 +73,9 @@ public class LendToolFrame extends PresentationFrame {
         );
     }
 
+    /**
+     * Configures the frame layout and properties.
+     */
     private void setupPageLayout() {
         this.setTitle(String.format("Empréstimo de ferramenta (%s) ", Settings.getUser().getUsername()));
         this.setDefaultCloseOperation(LendToolFrame.DISPOSE_ON_CLOSE);
@@ -62,12 +83,19 @@ public class LendToolFrame extends PresentationFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel for the frame.
+     */
     private void setMainPanel() {
         this.setContentPane(this.mainPanel);
         this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
     }
 
+    /**
+     * Sets up event listeners for the UI components.
+     */
     protected void setUpListeners() {
+        // Cancel button action listener
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,6 +103,7 @@ public class LendToolFrame extends PresentationFrame {
             }
         });
 
+        // Rent button action listener
         this.rentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,19 +114,19 @@ public class LendToolFrame extends PresentationFrame {
                                 "Ferramenta já emprestada");
                     }
                     String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
-                    lendToolFrameController.rentTool(friendId, toolId, sucessCallBack);
+                    lendToolFrameController.rentTool(friendId, toolId, successCallback);
                 } catch (ToastError exc) {
                     exc.display();
                 }
             }
         });
 
+        // Name filter key listener for filtering table based on input
         nameFilter.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 if (nameFilter.getText().isEmpty()) {
-
                     DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
                     model.setRowCount(0);
                     try {
@@ -109,18 +138,7 @@ public class LendToolFrame extends PresentationFrame {
             }
         });
 
-        nameFilter.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-            }
-        });
-
+        // Document listener for filtering table based on input
         nameFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -139,28 +157,48 @@ public class LendToolFrame extends PresentationFrame {
         });
     }
 
+    /**
+     * Sets the tool name label with the provided tool name.
+     */
     private void setTextToolName() {
         JLtoolName.setText(toolName);
     }
 
+    /**
+     * Loads data into the friends table.
+     *
+     * @throws ToastError if there is an error during data loading
+     */
     private void loadData() throws ToastError {
         List<String[]> friendsRows = this.controller.listFriendAsTableRow();
-
         tableConfigurator.insertRows(friendsRows, true);
-
     }
 
+    /**
+     * Sets up the friends table with column headers and loads the initial data.
+     *
+     * @throws ToastError if there is an error during the setup or data loading
+     */
     private void setupTable() throws ToastError {
         tableConfigurator.setup(new String[]{"Id", "Nome", "Telefone", "Identidade"}, new int[]{0, 2});
         this.loadData();
     }
 
+    /**
+     * Sets the cursor pointer for the specified components.
+     *
+     * @param cursor the cursor to be set
+     * @param components the components to apply the cursor to
+     */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);
         }
     }
 
+    /**
+     * Filters the friends table based on the input text in the name filter.
+     */
     private void filterTable() {
         String filterText = nameFilter.getText().toLowerCase();
         DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
