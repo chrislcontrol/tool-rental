@@ -1,5 +1,7 @@
 package tool.rental.presentation;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.controllers.DeleteFriendController;
 import tool.rental.domain.entities.Friend;
@@ -18,57 +20,23 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-/**
- * Represents a frame for displaying and managing the list of friends.
- */
 public class FriendsScreenFrame extends PresentationFrame {
-
-    // Controller instance to manage interactions for this frame
     private final AppMainController controller = new AppMainController(this);
-
-    // Controller instance to manage friend deletion
     private final DeleteFriendController deleteFriendController = new DeleteFriendController(this);
-
-    // Table to display the list of friends
     private JTable friendsTable;
-
-    // Scroll pane for the friends table
-    private JScrollPane jScrollPane;
-
-    // Panel for components
-    private JPanel panel1;
-
-    // Button to update friend information
+    private JScrollPane JScrollPanel;
+    private JPanel Panel1;
     private JButton updateButton;
-
-    // Button to delete a friend
     private JButton deleteButton;
-
-    // Button to register a new friend
     private JButton registerFriendButton;
-
-    // Button to exit the screen
     private JButton exitButton;
-
-    // Button to view friend ranking
     private JButton rankingButton;
-
-    // Main panel of the frame
-    private JPanel mainPanel;
-
-    // Table configurator for configuring the friends table
-    private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
-
-    // Text field for filtering friend names
+    private JPanel MainPanel;
+    private final TableConfigurator tableConfigurator;
     private JTextField nameFilter;
 
-    /**
-     * Constructs a new FriendsScreenFrame.
-     *
-     * @throws ToastError if there is an error setting up the frame.
-     */
     public FriendsScreenFrame() throws ToastError {
-        this.createUIComponents();
+        this.tableConfigurator = new TableConfigurator(friendsTable);
         this.setupPageLayout();
         this.setMainPanel();
         this.setPointer(
@@ -87,7 +55,6 @@ public class FriendsScreenFrame extends PresentationFrame {
                 dispose();
             }
         });
-
         rankingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,7 +65,6 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
-
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,12 +77,12 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
-
         nameFilter.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 if (nameFilter.getText().isEmpty()) {
+
                     DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
                     model.setRowCount(0);
                     try {
@@ -125,6 +91,18 @@ public class FriendsScreenFrame extends PresentationFrame {
                         ex.display();
                     }
                 }
+            }
+        });
+
+        nameFilter.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
             }
         });
 
@@ -144,7 +122,6 @@ public class FriendsScreenFrame extends PresentationFrame {
                 filterTable();
             }
         });
-
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -156,6 +133,7 @@ public class FriendsScreenFrame extends PresentationFrame {
                 try {
                     deleteFriendController.deleteFriend(friendId);
                     loadData();
+
                 } catch (ToastError exc) {
                     exc.display();
                 }
@@ -175,7 +153,6 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
-
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -187,61 +164,41 @@ public class FriendsScreenFrame extends PresentationFrame {
                     }
                 });
             }
+
+
         });
     }
 
-    /**
-     * Sets up the page layout for the frame.
-     */
     private void setupPageLayout() {
-        this.setTitle("Amigos"); // Set the title of the frame
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Set close operation
-        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60)); // Set size of the frame
-        this.setLocationRelativeTo(null); // Center the frame on the screen
+        this.setTitle("Amigos");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
+        this.setLocationRelativeTo(null);
     }
 
-    /**
-     * Sets the main panel of the frame.
-     */
     private void setMainPanel() {
-        this.setContentPane(this.mainPanel); // Set the main panel of the frame
+        this.setContentPane(this.MainPanel);
     }
 
-    /**
-     * Sets the pointer cursor for the specified components.
-     *
-     * @param cursor     The cursor to set
-     * @param components The components to set the cursor for
-     */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);
         }
     }
 
-    /**
-     * Sets up the table with appropriate column headers and loads data into it.
-     *
-     * @throws ToastError if there is an error setting up the table or loading data.
-     */
     public void setupTable() throws ToastError {
-        tableConfigurator.setup("Id", "Nome", "Telefone", "Identidade"); // Setup column headers
-        this.loadData(); // Load data into the table
+        tableConfigurator.setup("Id", "Nome", "Telefone", "Identidade");
+        this.loadData();
+
     }
 
-    /**
-     * Loads data into the table.
-     *
-     * @throws ToastError if there is an error loading data into the table.
-     */
     private void loadData() throws ToastError {
-        List<String[]> friendsRows = this.controller.listFriendAsTableRow(); // Get friend data
-        tableConfigurator.insertRows(friendsRows, true); // Insert rows into the table
+        List<String[]> friendsRows = this.controller.listFriendAsTableRow();
+
+        tableConfigurator.insertRows(friendsRows, true);
+
     }
 
-    /**
-     * Filters the table based on the text entered in the name filter.
-     */
     private void filterTable() {
         String filterText = nameFilter.getText().toLowerCase();
         DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
@@ -254,17 +211,97 @@ public class FriendsScreenFrame extends PresentationFrame {
         }
     }
 
-    /**
-     * Creates the UI components for the frame.
-     */
-    private void createUIComponents() {
-        // Create friends table and scroll pane
-        friendsTable = new JTable();
-        jScrollPane = new JScrollPane(friendsTable);
-
-        // Create panel
-        panel1 = new JPanel();
+    {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+        $$$setupUI$$$();
     }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        MainPanel = new JPanel();
+        MainPanel.setLayout(new GridLayoutManager(2, 2, new Insets(50, 25, 50, 25), -1, -1));
+        MainPanel.setBackground(new Color(-14539224));
+        MainPanel.setEnabled(true);
+        Panel1 = new JPanel();
+        Panel1.setLayout(new GridLayoutManager(5, 1, new Insets(50, 25, 50, 25), -1, -1));
+        Panel1.setBackground(new Color(-14539224));
+        Panel1.setForeground(new Color(-2097160));
+        MainPanel.add(Panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        updateButton = new JButton();
+        updateButton.setBackground(new Color(-16313046));
+        updateButton.setForeground(new Color(-2097160));
+        updateButton.setText("Atualizar");
+        Panel1.add(updateButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        deleteButton = new JButton();
+        deleteButton.setBackground(new Color(-16313046));
+        deleteButton.setForeground(new Color(-2097160));
+        deleteButton.setText("Deletar");
+        Panel1.add(deleteButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        registerFriendButton = new JButton();
+        registerFriendButton.setBackground(new Color(-16313046));
+        registerFriendButton.setForeground(new Color(-2097160));
+        registerFriendButton.setHorizontalTextPosition(11);
+        registerFriendButton.setText("Cadastrar");
+        Panel1.add(registerFriendButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exitButton = new JButton();
+        exitButton.setBackground(new Color(-4583424));
+        Font exitButtonFont = UIManager.getFont("Button.font");
+        if (exitButtonFont != null) exitButton.setFont(exitButtonFont);
+        exitButton.setForeground(new Color(-2097160));
+        exitButton.setHideActionText(false);
+        exitButton.setText("Sair");
+        Panel1.add(exitButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        rankingButton = new JButton();
+        rankingButton.setBackground(new Color(-16313046));
+        rankingButton.setForeground(new Color(-2097160));
+        rankingButton.setText("Ranking");
+        Panel1.add(rankingButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        JScrollPanel = new JScrollPane();
+        JScrollPanel.setBackground(new Color(-14408668));
+        MainPanel.add(JScrollPanel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        friendsTable = new JTable();
+        friendsTable.setForeground(new Color(-15527649));
+        friendsTable.setSelectionForeground(new Color(-4649));
+        friendsTable.setShowVerticalLines(true);
+        JScrollPanel.setViewportView(friendsTable);
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setBackground(new Color(-14539224));
+        Font panel1Font = UIManager.getFont("Button.font");
+        if (panel1Font != null) panel1.setFont(panel1Font);
+        panel1.setForeground(new Color(-14539224));
+        MainPanel.add(panel1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        nameFilter = new JTextField();
+        nameFilter.setBackground(new Color(-2097160));
+        Font nameFilterFont = UIManager.getFont("Button.font");
+        if (nameFilterFont != null) nameFilter.setFont(nameFilterFont);
+        nameFilter.setForeground(new Color(-14539224));
+        panel1.add(nameFilter, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setBackground(new Color(-2097160));
+        label1.setEnabled(true);
+        Font label1Font = UIManager.getFont("Button.font");
+        if (label1Font != null) label1.setFont(label1Font);
+        label1.setForeground(new Color(-2097160));
+        label1.setText(" Pesquisar : ");
+        panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return MainPanel;
+    }
+
 }
 
 

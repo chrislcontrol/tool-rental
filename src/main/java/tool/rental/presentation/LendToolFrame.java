@@ -1,5 +1,8 @@
 package tool.rental.presentation;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import tool.rental.app.Settings;
 import tool.rental.domain.controllers.AppMainController;
 import tool.rental.domain.controllers.LendToolFrameController;
@@ -8,67 +11,37 @@ import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Locale;
 
-/**
- * Represents a frame for lending a tool to a friend.
- */
 public class LendToolFrame extends PresentationFrame {
-
-    // Controller instance to manage the lending of the tool
     private final AppMainController controller = new AppMainController(this);
-
-    // Controller instance to manage the actions within the lend tool frame
     private final LendToolFrameController lendToolFrameController = new LendToolFrameController(this);
-
-    // Main panel of the frame
     private JPanel mainPanel;
-
-    // Button to confirm the tool lending
     private JButton rentButton;
-
-    // Button to cancel the tool lending
     private JButton cancelButton;
-
-    // Label to display the name of the tool
     private JLabel JLtoolName;
-
-    // Table displaying the list of friends
     private JTable friendsTable;
-
-    // Text field for filtering friends by name
     private JTextField nameFilter;
+    private final String toolId;
+    private final String toolName;
+    private final Runnable sucessCallBack;
+    private final TableConfigurator tableConfigurator;
 
-    // ID of the tool being lent
-    private String toolId;
-
-    // Name of the tool being lent
-    private String toolName;
-
-    // Callback to execute upon successful lending of the tool
-    private Runnable successCallback;
-
-    // Table configurator instance for setting up the friends table
-    private final TableConfigurator tableConfigurator = new TableConfigurator(friendsTable);
-
-    /**
-     * Constructs a new LendToolFrame.
-     *
-     * @param toolId         The ID of the tool being lent
-     * @param toolName       The name of the tool being lent
-     * @param successCallback The callback to execute upon successful lending of the tool
-     * @throws ToastError If an error occurs while setting up the frame
-     */
-    public LendToolFrame(String toolId, String toolName, Runnable successCallback) throws ToastError {
-        this.successCallback = successCallback;
+    public LendToolFrame(String toolId, String toolName, Runnable sucessCallback) throws ToastError {
+        this.tableConfigurator = new TableConfigurator(friendsTable);
+        this.sucessCallBack = sucessCallback;
         this.toolId = toolId;
         this.toolName = toolName;
         this.setMainPanel();
@@ -82,147 +55,247 @@ public class LendToolFrame extends PresentationFrame {
         );
     }
 
-    /**
-     * Sets up the page layout for the frame.
-     */
     private void setupPageLayout() {
-        this.setTitle(String.format("Empréstimo de ferramenta (%s) ", Settings.getUser().getUsername())); // Set the title of the frame
-        this.setDefaultCloseOperation(LendToolFrame.DISPOSE_ON_CLOSE); // Set close operation
-        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60)); // Set size of the frame
-        this.setLocationRelativeTo(null); // Center the frame on the screen
+        this.setTitle(String.format("Empréstimo de ferramenta (%s) ", Settings.getUser().getUsername()));
+        this.setDefaultCloseOperation(LendToolFrame.DISPOSE_ON_CLOSE);
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
+        this.setLocationRelativeTo(null);
     }
 
-    /**
-     * Sets the main panel of the frame.
-     */
     private void setMainPanel() {
-        this.setContentPane(this.mainPanel); // Set the main panel of the frame
-        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60)); // Set size of the frame
+        this.setContentPane(this.mainPanel);
+        this.setSize(this.userScreen.widthFraction(60), this.userScreen.heightFraction(60));
     }
 
-    /**
-     * Sets up listeners for UI components.
-     */
     protected void setUpListeners() {
-        // Action listener for the cancel button
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                lendToolFrameController.closeFrame(); // Close the frame
+                lendToolFrameController.closeFrame();
             }
         });
 
-        // Action listener for the rent button
         this.rentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // Check if the tool is already rented
                     if (lendToolFrameController.isToolRented(toolId)) {
                         throw new ToastError(
                                 "A ferramenta não pode ser emprestada para mais de um amigo!",
-                                "Ferramenta já emprestada"
-                        );
+                                "Ferramenta já emprestada");
                     }
-                    // Get the ID of the friend selected
                     String friendId = friendsTable.getValueAt(friendsTable.getSelectedRow(), 0).toString();
-                    // Rent the tool to the selected friend
-                    lendToolFrameController.rentTool(friendId, toolId, successCallback);
+                    lendToolFrameController.rentTool(friendId, toolId, sucessCallBack);
                 } catch (ToastError exc) {
-                    exc.display(); // Display the error message
+                    exc.display();
                 }
             }
         });
 
-        // Key listener for the name filter text field
         nameFilter.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 if (nameFilter.getText().isEmpty()) {
-                    // Clear the table if the filter text is empty
+
                     DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
                     model.setRowCount(0);
                     try {
-                        loadData(); // Load the friends data
+                        loadData();
                     } catch (ToastError ex) {
-                        ex.display(); // Display the error message
+                        ex.display();
                     }
                 }
             }
         });
 
-        // Document listener for the name filter text field
+        nameFilter.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+            }
+        });
+
         nameFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                filterTable(); // Filter the table based on the text entered
+                filterTable();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                filterTable(); // Filter the table based on the text entered
+                filterTable();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                filterTable(); // Filter the table based on the text entered
+                filterTable();
             }
         });
     }
 
-    /**
-     * Sets the text of the tool name label.
-     */
     private void setTextToolName() {
-        JLtoolName.setText(toolName); // Set the text of the tool name label
+        JLtoolName.setText(toolName);
     }
 
-    /**
-     * Loads data into the friends table.
-     *
-     * @throws ToastError If an error occurs while loading the data
-     */
     private void loadData() throws ToastError {
-        List<String[]> friendsRows = this.controller.listFriendAsTableRow(); // Get the list of friends as table rows
-        tableConfigurator.insertRows(friendsRows, true); // Insert the rows into the table
+        List<String[]> friendsRows = this.controller.listFriendAsTableRow();
+
+        tableConfigurator.insertRows(friendsRows, true);
+
     }
 
-    /**
-     * Sets up the friends table.
-     *
-     * @throws ToastError If an error occurs while setting up the table
-     */
     private void setupTable() throws ToastError {
-        tableConfigurator.setup(new String[]{"Id", "Nome", "Telefone", "Identidade"}, new int[]{0, 2}); // Set up the table columns
-        this.loadData(); // Load data into the table
+        tableConfigurator.setup(new String[]{"Id", "Nome", "Telefone", "Identidade"}, new int[]{0, 2});
+        this.loadData();
     }
 
-    /**
-     * Sets the cursor for the specified components.
-     *
-     * @param cursor     The cursor to set
-     * @param components The components to set the cursor for
-     */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
-            component.setCursor(cursor); // Set the cursor for each component
+            component.setCursor(cursor);
         }
     }
 
-    /**
-     * Filters the friends table based on the text entered in the name filter text field.
-     */
     private void filterTable() {
-        String filterText = nameFilter.getText().toLowerCase(); // Get the filter text
-        DefaultTableModel model = (DefaultTableModel) friendsTable.getModel(); // Get the table model
+        String filterText = nameFilter.getText().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
 
-        // Iterate through each row of the table
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
-            String name = (String) model.getValueAt(i, 1); // Get the name from the current row
+            String name = (String) model.getValueAt(i, 1);
             if (!name.toLowerCase().contains(filterText)) {
-                model.removeRow(i); // Remove the row if the name does not contain the filter text
+                model.removeRow(i);
             }
         }
     }
+
+    {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+        $$$setupUI$$$();
+    }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayoutManager(4, 5, new Insets(50, 25, 50, 25), -1, -1));
+        mainPanel.setBackground(new Color(-14539224));
+        mainPanel.setEnabled(true);
+        final Spacer spacer1 = new Spacer();
+        mainPanel.add(spacer1, new GridConstraints(0, 0, 3, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        mainPanel.add(spacer2, new GridConstraints(0, 4, 3, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        mainPanel.add(scrollPane1, new GridConstraints(0, 2, 3, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        friendsTable = new JTable();
+        scrollPane1.setViewportView(friendsTable);
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setBackground(new Color(-14539224));
+        Font panel1Font = UIManager.getFont("Button.font");
+        if (panel1Font != null) panel1.setFont(panel1Font);
+        panel1.setForeground(new Color(-14539224));
+        mainPanel.add(panel1, new GridConstraints(3, 2, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        nameFilter = new JTextField();
+        nameFilter.setBackground(new Color(-2097160));
+        Font nameFilterFont = UIManager.getFont("TextField.font");
+        if (nameFilterFont != null) nameFilter.setFont(nameFilterFont);
+        nameFilter.setForeground(new Color(-16777216));
+        panel1.add(nameFilter, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setBackground(new Color(-2097160));
+        label1.setEnabled(true);
+        Font label1Font = UIManager.getFont("Button.font");
+        if (label1Font != null) label1.setFont(label1Font);
+        label1.setForeground(new Color(-2097160));
+        label1.setText(" Pesquisar : ");
+        panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setBackground(new Color(-14539224));
+        panel2.setForeground(new Color(-2097160));
+        mainPanel.add(panel2, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        rentButton = new JButton();
+        rentButton.setBackground(new Color(-16313046));
+        Font rentButtonFont = UIManager.getFont("Button.font");
+        if (rentButtonFont != null) rentButton.setFont(rentButtonFont);
+        rentButton.setForeground(new Color(-2097160));
+        rentButton.setText("Emprestar");
+        panel2.add(rentButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        cancelButton = new JButton();
+        cancelButton.setBackground(new Color(-4583424));
+        Font cancelButtonFont = UIManager.getFont("Button.font");
+        if (cancelButtonFont != null) cancelButton.setFont(cancelButtonFont);
+        cancelButton.setForeground(new Color(-2097160));
+        cancelButton.setText("Sair");
+        panel2.add(cancelButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.setBackground(new Color(-14539224));
+        panel3.setForeground(new Color(-2097160));
+        mainPanel.add(panel3, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(-2097160)), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JLabel label2 = new JLabel();
+        label2.setBackground(new Color(-14539224));
+        Font label2Font = this.$$$getFont$$$(null, -1, 18, label2.getFont());
+        if (label2Font != null) label2.setFont(label2Font);
+        label2.setForeground(new Color(-2097160));
+        label2.setText("Emprestar para:");
+        panel3.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(136, 11), null, 0, false));
+        final JLabel label3 = new JLabel();
+        label3.setBackground(new Color(-14539224));
+        Font label3Font = this.$$$getFont$$$(null, -1, 18, label3.getFont());
+        if (label3Font != null) label3.setFont(label3Font);
+        label3.setForeground(new Color(-2097160));
+        label3.setText("Ferramenta:");
+        panel3.add(label3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        JLtoolName = new JLabel();
+        JLtoolName.setBackground(new Color(-14539224));
+        Font JLtoolNameFont = this.$$$getFont$$$(null, -1, 18, JLtoolName.getFont());
+        if (JLtoolNameFont != null) JLtoolName.setFont(JLtoolNameFont);
+        JLtoolName.setForeground(new Color(-2097160));
+        JLtoolName.setText("");
+        panel3.add(JLtoolName, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return mainPanel;
+    }
+
 }
