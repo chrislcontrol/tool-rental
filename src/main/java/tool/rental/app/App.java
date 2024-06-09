@@ -11,9 +11,22 @@ import tool.rental.utils.ToastError;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * The main application class.
+ */
 public class App {
+
+    /**
+     * The cache repository used to store and retrieve cache data.
+     */
     private static final CacheRepository cacheRepository = new CacheRepository();
 
+    /**
+     * The main entry point of the application.
+     *
+     * @param args the command-line arguments
+     * @throws Exception if an error occurs during the execution of the application
+     */
     public static void main(String[] args) throws Exception {
         try {
             setupDB();
@@ -28,7 +41,11 @@ public class App {
         }
     }
 
-
+    /**
+     * Runs the application.
+     *
+     * @throws Toast if an error occurs during the execution of the application
+     */
     public static void runApp() throws Toast {
         Cache cache = cacheRepository.getCache();
         if (cache != null) {
@@ -40,11 +57,16 @@ public class App {
         firstFrame.setVisible(true);
     }
 
+    /**
+     * Sets up the database by executing a series of SQL queries.
+     *
+     * @throws Toast if an error occurs during the setup of the database
+     */
     public static void setupDB() throws Toast {
         String[] queries = new String[]{
                 """
                 -- "USER" definition
-                                
+                
                 CREATE TABLE IF NOT EXISTS "USER" (
                 	id TEXT(36) NOT NULL,
                 	username TEXT(25) NOT NULL,
@@ -54,16 +76,15 @@ public class App {
                 );
                 """,
                 """
-                                
+                
                 CREATE UNIQUE INDEX IF NOT EXISTS USER_username_IDX ON "USER" (username);
                 
                 """,
 
                 """
-                                
-                                
+                
                 -- CACHE definition
-                                
+                
                 CREATE TABLE IF NOT EXISTS CACHE (
                 	id TEXT NOT NULL,
                 	logged_user_id TEXT NOT NULL,
@@ -73,10 +94,9 @@ public class App {
                 
                 """,
                 """
-                                
-                                
+                
                 -- FRIEND definition
-                                
+                
                 CREATE TABLE IF NOT EXISTS FRIEND (
                 	id TEXT NOT NULL,
                 	name TEXT NOT NULL,
@@ -89,14 +109,14 @@ public class App {
                 
                 """,
                 """
-                                
+                
                 CREATE INDEX IF NOT EXISTS FRIEND_user_id_IDX ON FRIEND (user_id);
                 
                 """,
                 """
-                                
+                
                 -- RENTAL definition
-                                
+                
                 CREATE TABLE IF NOT EXISTS RENTAL (
                 	id TEXT(36) NOT NULL,
                 	rental_timestamp LONG NOT NULL,
@@ -110,15 +130,14 @@ public class App {
                 
                 """,
                 """
-                                
+                
                 CREATE INDEX IF NOT EXISTS RENTAL_friend_id_IDX ON RENTAL (friend_id);
                 
                 """,
                 """
-                                
-                                
+                
                 -- TOOL definition
-                                
+                
                 CREATE TABLE IF NOT EXISTS TOOL (
                 	id TEXT NOT NULL,
                 	brand TEXT NOT NULL,
@@ -131,7 +150,7 @@ public class App {
                 
                 """,
                 """
-                                
+                
                 CREATE INDEX IF NOT EXISTS TOOL_user_id_IDX ON TOOL (user_id);
                 """
         };

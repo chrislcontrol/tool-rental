@@ -7,18 +7,34 @@ import tool.rental.utils.PresentationFrame;
 import tool.rental.utils.TableConfigurator;
 import tool.rental.utils.ToastError;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.Color;
+import java.awt.Insets;
 import java.util.List;
 
+/**
+ * Frame for displaying the ranking of friends based on their rental activity.
+ * Extends PresentationFrame and initializes the UI components and table setup.
+ */
 public class FriendsRankFrame extends PresentationFrame {
+
+    // Controller for handling the ranking logic
     private final FriendsRankController controller = new FriendsRankController(this);
+
+    // UI Components
     private JTable friendsTable;
     private JScrollPane JScrollPanel;
     private JPanel MainPanel;
     private final TableConfigurator tableConfigurator;
 
-
+    /**
+     * Constructs the friends ranking frame and initializes components.
+     *
+     * @throws ToastError if there is an error during initialization
+     */
     public FriendsRankFrame() throws ToastError {
         this.tableConfigurator = new TableConfigurator(friendsTable);
         setupPageLayout();
@@ -26,6 +42,9 @@ public class FriendsRankFrame extends PresentationFrame {
         setupTable();
     }
 
+    /**
+     * Configures the frame layout and properties.
+     */
     private void setupPageLayout() {
         setTitle("Rank de amigos");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -33,10 +52,18 @@ public class FriendsRankFrame extends PresentationFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel for the frame.
+     */
     private void setMainPanel() {
         setContentPane(this.MainPanel);
     }
 
+    /**
+     * Sets up the friends table with column headers and loads the initial data.
+     *
+     * @throws ToastError if there is an error during the setup or data loading
+     */
     public void setupTable() throws ToastError {
         String[] columns = {
                 "Posição",
@@ -49,6 +76,11 @@ public class FriendsRankFrame extends PresentationFrame {
         this.loadData();
     }
 
+    /**
+     * Loads data into the friends table.
+     *
+     * @throws ToastError if there is an error during data loading
+     */
     private void loadData() throws ToastError {
         List<String[]> summary = this.controller.getRentalSummary();
         tableConfigurator.insertRows(summary, true);

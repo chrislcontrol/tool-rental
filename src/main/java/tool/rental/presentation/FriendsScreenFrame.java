@@ -20,9 +20,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+/**
+ * Frame for displaying and managing friends in the tool rental system.
+ * Extends PresentationFrame and initializes the UI components, table setup, and event listeners.
+ */
 public class FriendsScreenFrame extends PresentationFrame {
+
+    // Controllers for handling the main application logic and deletion of friends
     private final AppMainController controller = new AppMainController(this);
     private final DeleteFriendController deleteFriendController = new DeleteFriendController(this);
+
+    // UI Components
     private JTable friendsTable;
     private JScrollPane JScrollPanel;
     private JPanel Panel1;
@@ -35,6 +43,11 @@ public class FriendsScreenFrame extends PresentationFrame {
     private final TableConfigurator tableConfigurator;
     private JTextField nameFilter;
 
+    /**
+     * Constructs the friends screen frame and initializes components.
+     *
+     * @throws ToastError if there is an error during initialization
+     */
     public FriendsScreenFrame() throws ToastError {
         this.tableConfigurator = new TableConfigurator(friendsTable);
         this.setupPageLayout();
@@ -49,12 +62,15 @@ public class FriendsScreenFrame extends PresentationFrame {
         );
         this.setupTable();
 
+        // Exit button action listener
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
+
+        // Ranking button action listener
         rankingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,6 +81,8 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
+
+        // Update button action listener
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,12 +95,13 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
+
+        // Name filter key listener for filtering table based on input
         nameFilter.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 if (nameFilter.getText().isEmpty()) {
-
                     DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();
                     model.setRowCount(0);
                     try {
@@ -94,18 +113,7 @@ public class FriendsScreenFrame extends PresentationFrame {
             }
         });
 
-        nameFilter.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-            }
-        });
-
+        // Document listener for filtering table based on input
         nameFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -122,6 +130,8 @@ public class FriendsScreenFrame extends PresentationFrame {
                 filterTable();
             }
         });
+
+        // Delete button action listener
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -133,13 +143,13 @@ public class FriendsScreenFrame extends PresentationFrame {
                 try {
                     deleteFriendController.deleteFriend(friendId);
                     loadData();
-
                 } catch (ToastError exc) {
                     exc.display();
                 }
             }
         });
 
+        // Key listener for friends table
         friendsTable.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -153,6 +163,8 @@ public class FriendsScreenFrame extends PresentationFrame {
                 }
             }
         });
+
+        // Register friend button action listener
         registerFriendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,11 +176,12 @@ public class FriendsScreenFrame extends PresentationFrame {
                     }
                 });
             }
-
-
         });
     }
 
+    /**
+     * Configures the frame layout and properties.
+     */
     private void setupPageLayout() {
         this.setTitle("Amigos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -176,29 +189,48 @@ public class FriendsScreenFrame extends PresentationFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel for the frame.
+     */
     private void setMainPanel() {
         this.setContentPane(this.MainPanel);
     }
 
+    /**
+     * Sets the cursor pointer for the specified components.
+     *
+     * @param cursor the cursor to be set
+     * @param components the components to apply the cursor to
+     */
     private void setPointer(Cursor cursor, JComponent... components) {
         for (JComponent component : components) {
             component.setCursor(cursor);
         }
     }
 
+    /**
+     * Sets up the friends table with column headers and loads the initial data.
+     *
+     * @throws ToastError if there is an error during the setup or data loading
+     */
     public void setupTable() throws ToastError {
         tableConfigurator.setup("Id", "Nome", "Telefone", "Identidade");
         this.loadData();
-
     }
 
+    /**
+     * Loads data into the friends table.
+     *
+     * @throws ToastError if there is an error during data loading
+     */
     private void loadData() throws ToastError {
         List<String[]> friendsRows = this.controller.listFriendAsTableRow();
-
         tableConfigurator.insertRows(friendsRows, true);
-
     }
 
+    /**
+     * Filters the friends table based on the input text in the name filter.
+     */
     private void filterTable() {
         String filterText = nameFilter.getText().toLowerCase();
         DefaultTableModel model = (DefaultTableModel) friendsTable.getModel();

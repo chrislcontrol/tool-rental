@@ -10,7 +10,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A user repository class that provides methods to manage users.
+ */
 public class UserRepository {
+
+    /**
+     * Finds a user by username and password.
+     *
+     * @param username the username of the user
+     * @param encodedPassword the encoded password of the user
+     * @return the user, or null if not found
+     * @throws ToastError if a database error occurs
+     */
     public User findByUsernameAndPassword(String username, String encodedPassword) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement(
@@ -36,6 +48,14 @@ public class UserRepository {
         }
     }
 
+    /**
+     * Creates a new user.
+     *
+     * @param username the username of the user
+     * @param encodedPassword the encoded password of the user
+     * @return the created user
+     * @throws ToastError if a database error occurs
+     */
     public User createUser(String username, String encodedPassword) throws ToastError {
         try (DataBase db = new DataBase()) {
             String id = UUID.randomUUID().toString();
@@ -58,6 +78,13 @@ public class UserRepository {
         }
     }
 
+    /**
+     * Checks if a user exists by username.
+     *
+     * @param username the username of the user
+     * @return true if the user exists, false otherwise
+     * @throws ToastError if a database error occurs
+     */
     public boolean existsByUsername(String username) throws ToastError {
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement("SELECT id FROM USER WHERE username = ?");
@@ -74,7 +101,14 @@ public class UserRepository {
         }
     }
 
-    public void setMock(User user, boolean hasMock) throws ToastError {
+    /**
+     * Sets the mock flag for a user.
+     *
+     * @param user the user to update
+     * @param hasMock the new value of the mock flag
+     * @throws ToastError if a database error occurs
+     */
+    public void setMock(User user, boolean hasMock) throws ToastError{
         try (DataBase db = new DataBase()) {
             PreparedStatement stm = db.connection.prepareStatement("UPDATE USER SET has_mock = ? WHERE id = ?");
             stm.setBoolean(1, hasMock);

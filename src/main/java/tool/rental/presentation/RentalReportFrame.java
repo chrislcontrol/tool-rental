@@ -11,22 +11,36 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Frame for displaying the rental report in the tool rental system.
+ * Extends PresentationFrame and initializes the UI components, table setup, and data loading.
+ */
 public class RentalReportFrame extends PresentationFrame {
+
+    // Controller for handling rental report logic
     private final RentalReportController controller = new RentalReportController(this);
+
+    // UI Components
     private JTable rentalsTable;
     private JScrollPane JScrollPanel;
     private JPanel MainPanel;
     private final TableConfigurator tableConfigurator;
 
-
+    /**
+     * Constructs the rental report frame and initializes components.
+     *
+     * @throws ToastError if there is an error during initialization
+     */
     public RentalReportFrame() throws ToastError {
         this.tableConfigurator = new TableConfigurator(rentalsTable);
-
         setupPageLayout();
         setMainPanel();
         setupTable();
     }
 
+    /**
+     * Configures the frame layout and properties.
+     */
     private void setupPageLayout() {
         setTitle("Relatório de empréstimos");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -34,10 +48,18 @@ public class RentalReportFrame extends PresentationFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets the main panel for the frame.
+     */
     private void setMainPanel() {
         setContentPane(this.MainPanel);
     }
 
+    /**
+     * Sets up the rentals table with column headers and loads the initial data.
+     *
+     * @throws ToastError if there is an error during the setup or data loading
+     */
     public void setupTable() throws ToastError {
         tableConfigurator.setup(
                 "ID",
@@ -49,6 +71,11 @@ public class RentalReportFrame extends PresentationFrame {
         this.loadData();
     }
 
+    /**
+     * Loads data into the rentals table.
+     *
+     * @throws ToastError if there is an error during data loading
+     */
     private void loadData() throws ToastError {
         List<String[]> reports = controller.getRentalReport();
         tableConfigurator.insertRows(reports, true);
